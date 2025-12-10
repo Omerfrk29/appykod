@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Digital Excellence",
+    "titlePrefix": "We Build",
+    "titleSuffix": "",
+    "subtitle": "Transforming ideas into powerful, scalable, and beautiful software solutions. Your partner in modern web development.",
+    "ctaPrimary": "Start a Project",
+    "ctaSecondary": "View Portfolio"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Comprehensive solutions for your digital needs"
+  },
+  "process": {
+    "title": "Our Process",
+    "subtitle": "From concept to reality in four simple steps",
+    "steps": {
+      "discovery": {
+        "title": "Discovery",
+        "description": "We dive deep into your requirements and business goals."
+      },
+      "design": {
+        "title": "Design",
+        "description": "We craft intuitive and beautiful user experiences."
+      },
+      "development": {
+        "title": "Development",
+        "description": "We build robust solutions using cutting-edge tech."
+      },
+      "launch": {
+        "title": "Launch",
+        "description": "We deploy, optimize, and support your growth."
+      }
+    }
+  },
+  "projects": {
+    "title": "Featured Projects",
+    "subtitle": "A showcase of our recent work",
+    "viewProject": "View Project"
+  },
+  "testimonials": {
+    "title": "Client Stories",
+    "subtitle": "Don't just take our word for it"
+  },
+  "cta": {
+    "title": "Ready to start your next project?",
+    "subtitle": "Let's turn your ideas into reality. Our team is ready to build something amazing together.",
+    "button": "Get in Touch"
+  },
+  "contact": {
+    "title": "Let's Work Together",
+    "subtitle": "Have a project in mind? We'd love to hear about it. Send us a message and we'll get back to you as soon as possible.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "namePlaceholder": "John Doe",
+      "emailPlaceholder": "john@example.com",
+      "messagePlaceholder": "Tell us about your project...",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Sent!",
+      "error": "Error"
+    }
+  },
+  "footer": {
+    "tagline": "Building digital experiences that matter.",
+    "copyright": "All rights reserved."
+  },
+  "techstack": {
+    "subtitle": "Powered by modern technologies"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred"
+  }
+}

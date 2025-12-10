@@ -1,0 +1,52 @@
+import fs from 'fs';
+import path from 'path';
+
+const DB_PATH = path.join(process.cwd(), 'data.json');
+
+export interface Service {
+    id: string;
+    title: string;
+    description: string;
+    icon: string;
+}
+
+export interface Project {
+    id: string;
+    title: string;
+    description: string;
+    imageUrl: string;
+    link: string;
+}
+
+export interface Message {
+    id: string;
+    name: string;
+    email: string;
+    content: string;
+    date: string;
+}
+
+export interface DBData {
+    services: Service[];
+    projects: Project[];
+    messages: Message[];
+}
+
+const defaultData: DBData = {
+    services: [],
+    projects: [],
+    messages: [],
+};
+
+export function getDB(): DBData {
+    if (!fs.existsSync(DB_PATH)) {
+        fs.writeFileSync(DB_PATH, JSON.stringify(defaultData, null, 2));
+        return defaultData;
+    }
+    const data = fs.readFileSync(DB_PATH, 'utf-8');
+    return JSON.parse(data);
+}
+
+export function saveDB(data: DBData) {
+    fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
+}

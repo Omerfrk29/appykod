@@ -1,0 +1,13 @@
+{
+  "services": [],
+  "projects": [],
+  "messages": [
+    {
+      "id": "e5d1a75f-713a-4bda-ab17-d10927c46cb3",
+      "date": "2025-11-25T15:38:33.097Z",
+      "name": "Test User",
+      "email": "test@example.com",
+      "content": "This is a test message from the browser subagent."
+    }
+  ]
+}

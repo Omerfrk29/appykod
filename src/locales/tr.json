@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "home": "Ana Sayfa",
+    "services": "Hizmetler",
+    "projects": "Projeler",
+    "contact": "İletişim"
+  },
+  "hero": {
+    "title": "Dijital Mükemmellik",
+    "titlePrefix": "Biz",
+    "titleSuffix": "İnşa Ediyoruz",
+    "subtitle": "Fikirleri güçlü, ölçeklenebilir ve güzel yazılım çözümlerine dönüştürüyoruz. Modern web geliştirmede ortağınız.",
+    "ctaPrimary": "Projeye Başla",
+    "ctaSecondary": "Portföyü Görüntüle"
+  },
+  "services": {
+    "title": "Hizmetlerimiz",
+    "subtitle": "Dijital ihtiyaçlarınız için kapsamlı çözümler"
+  },
+  "process": {
+    "title": "Sürecimiz",
+    "subtitle": "Konseptten gerçeğe dört basit adımda",
+    "steps": {
+      "discovery": {
+        "title": "Keşif",
+        "description": "Gereksinimlerinizi ve iş hedeflerinizi derinlemesine inceliyoruz."
+      },
+      "design": {
+        "title": "Tasarım",
+        "description": "Sezgisel ve güzel kullanıcı deneyimleri tasarlıyoruz."
+      },
+      "development": {
+        "title": "Geliştirme",
+        "description": "En son teknolojileri kullanarak sağlam çözümler inşa ediyoruz."
+      },
+      "launch": {
+        "title": "Yayınlama",
+        "description": "Dağıtım, optimizasyon ve büyümenize destek sağlıyoruz."
+      }
+    }
+  },
+  "projects": {
+    "title": "Öne Çıkan Projeler",
+    "subtitle": "Son çalışmalarımızdan bir seçki",
+    "viewProject": "Projeyi Görüntüle"
+  },
+  "testimonials": {
+    "title": "Müşteri Hikayeleri",
+    "subtitle": "Sadece bizim sözümüze güvenmeyin"
+  },
+  "cta": {
+    "title": "Bir sonraki projenize başlamaya hazır mısınız?",
+    "subtitle": "Fikirlerinizi gerçeğe dönüştürelim. Ekibimiz birlikte harika bir şeyler inşa etmeye hazır.",
+    "button": "İletişime Geç"
+  },
+  "contact": {
+    "title": "Birlikte Çalışalım",
+    "subtitle": "Aklınızda bir proje mi var? Bunu duymayı çok isteriz. Bize bir mesaj gönderin, en kısa sürede size dönüş yapalım.",
+    "form": {
+      "name": "Ad",
+      "email": "E-posta",
+      "message": "Mesaj",
+      "namePlaceholder": "Adınız Soyadınız",
+      "emailPlaceholder": "ornek@email.com",
+      "messagePlaceholder": "Projeniz hakkında bize bilgi verin...",
+      "send": "Mesaj Gönder",
+      "sending": "Gönderiliyor...",
+      "success": "Gönderildi!",
+      "error": "Hata"
+    }
+  },
+  "footer": {
+    "tagline": "Önemli dijital deneyimler inşa ediyoruz.",
+    "copyright": "Tüm hakları saklıdır."
+  },
+  "techstack": {
+    "subtitle": "Modern teknolojilerle desteklenmektedir"
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Bir hata oluştu"
+  }
+}
