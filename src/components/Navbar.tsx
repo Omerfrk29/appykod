@@ -67,7 +67,6 @@ export default function Navbar() {
             {[
               { href: '/', labelKey: 'nav.home' },
               { href: '#services', labelKey: 'nav.services' },
-              { href: '#projects', labelKey: 'nav.projects' },
               { href: '#contact', labelKey: 'nav.contact' },
             ].map((item, index) => (
               <motion.div
@@ -166,16 +165,6 @@ export default function Navbar() {
                 className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary transition-all duration-200"
               >
                 {t('nav.services')}
-              </Link>
-              <Link
-                href="#projects"
-                onClick={(e) => {
-                  handleSmoothScroll(e, '#projects');
-                  setIsOpen(false);
-                }}
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary transition-all duration-200"
-              >
-                {t('nav.projects')}
               </Link>
               <Link
                 href="#contact"

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle, Phone, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -31,7 +31,7 @@ export default function Contact() {
       } else {
         setStatus('error');
       }
-    } catch (err) {
+    } catch {
       setStatus('error');
     }
   }
@@ -52,9 +52,43 @@ export default function Contact() {
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
               {t('contact.subtitle')}
             </p>
-            <div className="hidden lg:block">
-              {/* Optional: Add decorative element or contact info here */}
-              <div className="w-full h-64 bg-gradient-to-br from-primary/20 to-danger/20 rounded-2xl blur-3xl opacity-50" />
+            {/* İletişim Bilgileri */}
+            <div className="space-y-6">
+              <motion.a
+                href="tel:+905326102957"
+                className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 group"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                whileHover={{ scale: 1.02, x: 10 }}
+              >
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-primary to-info rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <Phone className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{t('contact.info.phone')}</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">+90 (532) 610 2957</p>
+                </div>
+              </motion.a>
+
+              <motion.a
+                href="mailto:appykod@gmail.com"
+                className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition-all duration-300 group"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                whileHover={{ scale: 1.02, x: 10 }}
+              >
+                <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-danger to-warning rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <Mail className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{t('contact.info.email')}</p>
+                  <p className="text-lg font-semibold text-gray-900 dark:text-white">appykod@gmail.com</p>
+                </div>
+              </motion.a>
             </div>
           </motion.div>
 
@@ -174,7 +208,6 @@ export default function Contact() {
               <motion.button
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 type="submit"
                 className={`relative w-full flex items-center justify-center px-8 py-4 border border-transparent text-lg font-bold rounded-xl text-white transition-all duration-300 overflow-hidden ${
                   status === 'success'
@@ -194,7 +227,7 @@ export default function Contact() {
                   duration: 3,
                   repeat: Infinity,
                   ease: 'linear',
-                } : {}}
+                } : { type: "spring", stiffness: 400, damping: 17 }}
               >
                 {status === 'idle' && (
                   <>

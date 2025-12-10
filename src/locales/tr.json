@@ -56,6 +56,10 @@
   "contact": {
     "title": "Birlikte Çalışalım",
     "subtitle": "Aklınızda bir proje mi var? Bunu duymayı çok isteriz. Bize bir mesaj gönderin, en kısa sürede size dönüş yapalım.",
+    "info": {
+      "phone": "Telefon",
+      "email": "E-posta"
+    },
     "form": {
       "name": "Ad",
       "email": "E-posta",

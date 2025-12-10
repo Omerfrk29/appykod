@@ -56,6 +56,10 @@
   "contact": {
     "title": "Let's Work Together",
     "subtitle": "Have a project in mind? We'd love to hear about it. Send us a message and we'll get back to you as soon as possible.",
+    "info": {
+      "phone": "Phone",
+      "email": "Email"
+    },
     "form": {
       "name": "Name",
       "email": "Email",

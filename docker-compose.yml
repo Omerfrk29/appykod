@@ -1,0 +1,25 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: appykod-web
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - VIRTUAL_HOST=appykod.com,www.appykod.com
+      - LETSENCRYPT_HOST=appykod.com,www.appykod.com
+      - LETSENCRYPT_EMAIL=admin@appykod.com
+      - VIRTUAL_PORT=3000
+    expose:
+      - "3000"
+    volumes:
+      - ./data.json:/app/data.json
+    networks:
+      - web-network
+
+networks:
+  web-network:
+    external: true
+    name: birce_birce-network
+
