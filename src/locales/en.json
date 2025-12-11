@@ -40,9 +40,10 @@
     }
   },
   "projects": {
-    "title": "Featured Projects",
+    "title": "Our Work",
     "subtitle": "A showcase of our recent work",
-    "viewProject": "View Project"
+    "viewProject": "View Project",
+    "viewDetails": "View Details"
   },
   "testimonials": {
     "title": "Client Stories",
@@ -83,5 +84,28 @@
   "common": {
     "loading": "Loading...",
     "error": "An error occurred"
+  },
+  "serviceDetail": {
+    "backToServices": "Back to Services",
+    "features": "Features",
+    "gallery": "Gallery",
+    "faq": "Frequently Asked Questions",
+    "pricing": "Pricing",
+    "startingFrom": "Starting from",
+    "getQuote": "Get a Quote",
+    "ctaTitle": "Interested in this service?",
+    "ctaSubtitle": "Contact us to bring your project to life."
+  },
+  "projectDetail": {
+    "backToProjects": "Back to Projects",
+    "about": "About the Project",
+    "technologies": "Technologies Used",
+    "challenges": "Challenges Faced",
+    "solutions": "Solutions Applied",
+    "gallery": "Gallery",
+    "viewLive": "View Live",
+    "viewImage": "View",
+    "ctaTitle": "Thinking of a similar project?",
+    "ctaSubtitle": "Let's bring your dream project to life together."
   }
 }

@@ -3,11 +3,26 @@ import path from 'path';
 
 const DB_PATH = path.join(process.cwd(), 'data.json');
 
+export interface FAQ {
+    question: string;
+    answer: string;
+}
+
+export interface Pricing {
+    startingFrom: string;
+    currency: string;
+}
+
 export interface Service {
     id: string;
     title: string;
     description: string;
     icon: string;
+    fullDescription?: string;
+    features?: string[];
+    gallery?: string[];
+    faq?: FAQ[];
+    pricing?: Pricing;
 }
 
 export interface Project {
@@ -16,6 +31,11 @@ export interface Project {
     description: string;
     imageUrl: string;
     link: string;
+    fullDescription?: string;
+    technologies?: string[];
+    challenges?: string;
+    solutions?: string;
+    gallery?: string[];
 }
 
 export interface Message {

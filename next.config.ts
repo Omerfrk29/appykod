@@ -1,14 +1,21 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   output: 'standalone',
   reactCompiler: true,
   images: {
-    domains: ['images.unsplash.com', 'via.placeholder.com'],
-  },
-  typescript: {
-    ignoreBuildErrors: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+        pathname: '/**',
+      },
+    ],
   },
 };
 

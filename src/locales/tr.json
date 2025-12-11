@@ -2,7 +2,7 @@
   "nav": {
     "home": "Ana Sayfa",
     "services": "Hizmetler",
-    "projects": "Projeler",
+    "projects": "İşlerimiz",
     "contact": "İletişim"
   },
   "hero": {
@@ -40,9 +40,10 @@
     }
   },
   "projects": {
-    "title": "Öne Çıkan Projeler",
+    "title": "İşlerimiz",
     "subtitle": "Son çalışmalarımızdan bir seçki",
-    "viewProject": "Projeyi Görüntüle"
+    "viewProject": "Projeyi Görüntüle",
+    "viewDetails": "Detayları Gör"
   },
   "testimonials": {
     "title": "Müşteri Hikayeleri",
@@ -83,5 +84,28 @@
   "common": {
     "loading": "Yükleniyor...",
     "error": "Bir hata oluştu"
+  },
+  "serviceDetail": {
+    "backToServices": "Hizmetlere Dön",
+    "features": "Özellikler",
+    "gallery": "Galeri",
+    "faq": "Sıkça Sorulan Sorular",
+    "pricing": "Fiyatlandırma",
+    "startingFrom": "Başlangıç",
+    "getQuote": "Teklif Al",
+    "ctaTitle": "Bu hizmeti almak ister misiniz?",
+    "ctaSubtitle": "Projenizi hayata geçirmek için bizimle iletişime geçin."
+  },
+  "projectDetail": {
+    "backToProjects": "İşlerimize Dön",
+    "about": "Proje Hakkında",
+    "technologies": "Kullanılan Teknolojiler",
+    "challenges": "Karşılaşılan Zorluklar",
+    "solutions": "Uygulanan Çözümler",
+    "gallery": "Galeri",
+    "viewLive": "Canlı Görüntüle",
+    "viewImage": "Görüntüle",
+    "ctaTitle": "Benzer bir proje mi düşünüyorsunuz?",
+    "ctaSubtitle": "Hayalinizdeki projeyi birlikte hayata geçirelim."
   }
 }

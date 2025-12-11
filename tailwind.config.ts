@@ -53,8 +53,8 @@ const config: Config = {
                 },
             },
             fontFamily: {
-                sans: ['"Anek Latin"', 'sans-serif'],
-                logo: ['"Special Gothic Expanded One"', 'cursive'],
+                sans: ['var(--font-anek-latin)', '"Anek Latin"', 'sans-serif'],
+                logo: ['var(--font-logo)', '"Special Gothic Expanded One"', 'cursive'],
             },
             letterSpacing: {
                 tightest: '-0.075em',

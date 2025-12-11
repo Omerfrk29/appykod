@@ -1,13 +1,54 @@
 import type { Metadata } from "next";
+import { Anek_Latin, Special_Gothic_Expanded_One } from "next/font/google";
 import "./globals.css";
-
-export const metadata: Metadata = {
-  title: "Appykod - Modern Coding Solutions",
-  description: "Professional coding and software development services.",
-};
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { MotionProvider } from "@/components/MotionProvider";
+
+// Google Font - Anek Latin (Ana font)
+const anekLatin = Anek_Latin({
+  subsets: ["latin", "latin-ext"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-anek-latin",
+});
+
+// Google Font - Special Gothic Expanded One (Logo font)
+const specialGothic = Special_Gothic_Expanded_One({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-logo",
+});
+
+export const metadata: Metadata = {
+  title: {
+    default: "Appykod - Modern Yazılım Çözümleri",
+    template: "%s | Appykod",
+  },
+  description: "Profesyonel web ve mobil uygulama geliştirme hizmetleri. React, Next.js, TypeScript ile modern çözümler.",
+  keywords: ["web geliştirme", "mobil uygulama", "yazılım", "react", "nextjs", "typescript", "appykod"],
+  authors: [{ name: "Appykod" }],
+  creator: "Appykod",
+  openGraph: {
+    type: "website",
+    locale: "tr_TR",
+    url: "https://appykod.com",
+    siteName: "Appykod",
+    title: "Appykod - Modern Yazılım Çözümleri",
+    description: "Profesyonel web ve mobil uygulama geliştirme hizmetleri.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Appykod - Modern Yazılım Çözümleri",
+    description: "Profesyonel web ve mobil uygulama geliştirme hizmetleri.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 export default function RootLayout({
   children,
@@ -15,13 +56,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Anek+Latin:wght@100..800&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet" />
-      </head>
-      <body className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    <html lang="tr" suppressHydrationWarning className={`${anekLatin.variable} ${specialGothic.variable}`}>
+      <body className="font-sans bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -29,7 +65,9 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <LanguageProvider>
-            {children}
+            <MotionProvider>
+              {children}
+            </MotionProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>

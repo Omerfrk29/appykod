@@ -1,8 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { Project } from '@/lib/db';
 import { motion } from 'framer-motion';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Projects({ projects }: { projects: Project[] }) {
@@ -123,16 +124,23 @@ export default function Projects({ projects }: { projects: Project[] }) {
                   />
                   
                   {/* Hover Content */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                    <motion.a
-                      href={project.link}
-                      initial={{ scale: 0.8, opacity: 0 }}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                  <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <Link
+                      href={`/projects/${project.id}`}
                       className="inline-flex items-center px-6 py-3 border border-white/30 text-base font-medium rounded-full text-white bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all shadow-lg"
                     >
-                      {t('projects.viewProject')} <ExternalLink size={18} className="ml-2" />
-                    </motion.a>
+                      {t('projects.viewDetails')} <ArrowRight size={18} className="ml-2" />
+                    </Link>
+                    {project.link && project.link !== '#' && (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center px-4 py-3 border border-white/30 text-base font-medium rounded-full text-white bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all shadow-lg"
+                      >
+                        <ExternalLink size={18} />
+                      </a>
+                    )}
                   </div>
                   
                   {/* Floating Badge */}
@@ -168,3 +176,5 @@ export default function Projects({ projects }: { projects: Project[] }) {
     </section>
   );
 }
+
+
