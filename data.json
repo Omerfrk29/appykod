@@ -2,18 +2,48 @@
   "services": [
     {
       "id": "web-development",
-      "title": "Web Geliştirme",
-      "description": "Modern, responsive ve SEO uyumlu web siteleri.",
+      "title": {
+        "tr": "Web Geliştirme",
+        "en": "Web Development"
+      },
+      "description": {
+        "tr": "Modern, responsive ve SEO uyumlu web siteleri.",
+        "en": "Modern, responsive and SEO-friendly websites."
+      },
       "icon": "globe",
-      "fullDescription": "İşletmeniz için en son teknolojilerle modern, hızlı ve kullanıcı dostu web siteleri geliştiriyoruz. Next.js, React ve TypeScript kullanarak SEO uyumlu, mobil öncelikli tasarımlar oluşturuyoruz.\n\nWeb sitelerimiz; yüksek performans, güvenlik ve ölçeklenebilirlik odaklıdır. E-ticaret, kurumsal web siteleri, blog platformları ve daha fazlası için özel çözümler sunuyoruz.",
+      "fullDescription": {
+        "tr": "İşletmeniz için en son teknolojilerle modern, hızlı ve kullanıcı dostu web siteleri geliştiriyoruz. Next.js, React ve TypeScript kullanarak SEO uyumlu, mobil öncelikli tasarımlar oluşturuyoruz.\n\nWeb sitelerimiz; yüksek performans, güvenlik ve ölçeklenebilirlik odaklıdır. E-ticaret, kurumsal web siteleri, blog platformları ve daha fazlası için özel çözümler sunuyoruz.",
+        "en": "We develop modern, fast, and user-friendly websites for your business using the latest technologies. We create SEO-friendly, mobile-first designs using Next.js, React, and TypeScript.\n\nOur websites are focused on high performance, security, and scalability. We offer custom solutions for e-commerce, corporate websites, blog platforms, and more."
+      },
       "features": [
-        "Responsive ve mobil öncelikli tasarım",
-        "SEO optimizasyonu",
-        "Hızlı sayfa yükleme süreleri",
-        "Güvenli SSL sertifikası",
-        "İçerik yönetim sistemi (CMS) entegrasyonu",
-        "Analitik ve performans takibi",
-        "7/24 teknik destek"
+        {
+          "tr": "Responsive ve mobil öncelikli tasarım",
+          "en": "Responsive and mobile-first design"
+        },
+        {
+          "tr": "SEO optimizasyonu",
+          "en": "SEO optimization"
+        },
+        {
+          "tr": "Hızlı sayfa yükleme süreleri",
+          "en": "Fast page load times"
+        },
+        {
+          "tr": "Güvenli SSL sertifikası",
+          "en": "Secure SSL certificate"
+        },
+        {
+          "tr": "İçerik yönetim sistemi (CMS) entegrasyonu",
+          "en": "Content Management System (CMS) integration"
+        },
+        {
+          "tr": "Analitik ve performans takibi",
+          "en": "Analytics and performance tracking"
+        },
+        {
+          "tr": "7/24 teknik destek",
+          "en": "24/7 technical support"
+        }
       ],
       "gallery": [
         "https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80",
@@ -22,16 +52,34 @@
       ],
       "faq": [
         {
-          "question": "Web sitesi ne kadar sürede hazır olur?",
-          "answer": "Projenin kapsamına bağlı olarak 2-8 hafta arasında değişir. Basit kurumsal siteler 2-3 haftada, karmaşık e-ticaret platformları 6-8 haftada tamamlanır."
+          "question": {
+            "tr": "Web sitesi ne kadar sürede hazır olur?",
+            "en": "How long does it take to build a website?"
+          },
+          "answer": {
+            "tr": "Projenin kapsamına bağlı olarak 2-8 hafta arasında değişir. Basit kurumsal siteler 2-3 haftada, karmaşık e-ticaret platformları 6-8 haftada tamamlanır.",
+            "en": "It varies from 2-8 weeks depending on the project scope. Simple corporate sites are completed in 2-3 weeks, while complex e-commerce platforms take 6-8 weeks."
+          }
         },
         {
-          "question": "Hangi teknolojileri kullanıyorsunuz?",
-          "answer": "Next.js, React, TypeScript, Tailwind CSS, Node.js ve modern veritabanı çözümleri kullanıyoruz. Her proje için en uygun teknolojiyi seçiyoruz."
+          "question": {
+            "tr": "Hangi teknolojileri kullanıyorsunuz?",
+            "en": "What technologies do you use?"
+          },
+          "answer": {
+            "tr": "Next.js, React, TypeScript, Tailwind CSS, Node.js ve modern veritabanı çözümleri kullanıyoruz. Her proje için en uygun teknolojiyi seçiyoruz.",
+            "en": "We use Next.js, React, TypeScript, Tailwind CSS, Node.js, and modern database solutions. We select the most suitable technology for each project."
+          }
         },
         {
-          "question": "Hosting ve domain dahil mi?",
-          "answer": "İsteğe bağlı olarak hosting ve domain hizmetleri de sunuyoruz. Vercel, AWS veya tercih ettiğiniz platformda barındırma yapabiliriz."
+          "question": {
+            "tr": "Hosting ve domain dahil mi?",
+            "en": "Is hosting and domain included?"
+          },
+          "answer": {
+            "tr": "İsteğe bağlı olarak hosting ve domain hizmetleri de sunuyoruz. Vercel, AWS veya tercih ettiğiniz platformda barındırma yapabiliriz.",
+            "en": "We also offer hosting and domain services optionally. We can host on Vercel, AWS, or your preferred platform."
+          }
         }
       ],
       "pricing": {
@@ -41,18 +89,48 @@
     },
     {
       "id": "mobile-apps",
-      "title": "Mobil Uygulamalar",
-      "description": "iOS ve Android için native ve cross-platform uygulamalar.",
+      "title": {
+        "tr": "Mobil Uygulamalar",
+        "en": "Mobile Apps"
+      },
+      "description": {
+        "tr": "iOS ve Android için native ve cross-platform uygulamalar.",
+        "en": "Native and cross-platform applications for iOS and Android."
+      },
       "icon": "smartphone",
-      "fullDescription": "React Native ve Flutter kullanarak hem iOS hem de Android platformlarında çalışan yüksek performanslı mobil uygulamalar geliştiriyoruz.\n\nTek kod tabanıyla her iki platformda da native performans sunan uygulamalar oluşturuyoruz. Push bildirimleri, offline çalışma, cihaz sensörleri entegrasyonu ve daha fazlası.",
+      "fullDescription": {
+        "tr": "React Native ve Flutter kullanarak hem iOS hem de Android platformlarında çalışan yüksek performanslı mobil uygulamalar geliştiriyoruz.\n\nTek kod tabanıyla her iki platformda da native performans sunan uygulamalar oluşturuyoruz. Push bildirimleri, offline çalışma, cihaz sensörleri entegrasyonu ve daha fazlası.",
+        "en": "We develop high-performance mobile applications that work on both iOS and Android platforms using React Native and Flutter.\n\nWe create applications that deliver native performance on both platforms with a single codebase. Push notifications, offline functionality, device sensor integration, and more."
+      },
       "features": [
-        "Cross-platform geliştirme (iOS & Android)",
-        "Native performans",
-        "Push bildirimleri",
-        "Offline çalışma desteği",
-        "App Store ve Play Store yayınlama",
-        "Kullanıcı analitikleri",
-        "Sürekli güncellemeler ve bakım"
+        {
+          "tr": "Cross-platform geliştirme (iOS & Android)",
+          "en": "Cross-platform development (iOS & Android)"
+        },
+        {
+          "tr": "Native performans",
+          "en": "Native performance"
+        },
+        {
+          "tr": "Push bildirimleri",
+          "en": "Push notifications"
+        },
+        {
+          "tr": "Offline çalışma desteği",
+          "en": "Offline support"
+        },
+        {
+          "tr": "App Store ve Play Store yayınlama",
+          "en": "App Store and Play Store publishing"
+        },
+        {
+          "tr": "Kullanıcı analitikleri",
+          "en": "User analytics"
+        },
+        {
+          "tr": "Sürekli güncellemeler ve bakım",
+          "en": "Continuous updates and maintenance"
+        }
       ],
       "gallery": [
         "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80",
@@ -61,16 +139,34 @@
       ],
       "faq": [
         {
-          "question": "Uygulama hem iOS hem Android'de çalışır mı?",
-          "answer": "Evet, React Native veya Flutter kullanarak tek bir kod tabanıyla her iki platformda da çalışan uygulamalar geliştiriyoruz."
+          "question": {
+            "tr": "Uygulama hem iOS hem Android'de çalışır mı?",
+            "en": "Does the app work on both iOS and Android?"
+          },
+          "answer": {
+            "tr": "Evet, React Native veya Flutter kullanarak tek bir kod tabanıyla her iki platformda da çalışan uygulamalar geliştiriyoruz.",
+            "en": "Yes, we develop applications that work on both platforms with a single codebase using React Native or Flutter."
+          }
         },
         {
-          "question": "Uygulama mağazalarına yükleme dahil mi?",
-          "answer": "Evet, App Store ve Google Play Store'a yükleme süreçlerini sizin adınıza yönetiyoruz."
+          "question": {
+            "tr": "Uygulama mağazalarına yükleme dahil mi?",
+            "en": "Is app store submission included?"
+          },
+          "answer": {
+            "tr": "Evet, App Store ve Google Play Store'a yükleme süreçlerini sizin adınıza yönetiyoruz.",
+            "en": "Yes, we manage the submission processes to the App Store and Google Play Store on your behalf."
+          }
         },
         {
-          "question": "Uygulama güncellemeleri nasıl yapılır?",
-          "answer": "Bakım paketlerimiz kapsamında düzenli güncellemeler ve yeni özellik eklemeleri yapıyoruz."
+          "question": {
+            "tr": "Uygulama güncellemeleri nasıl yapılır?",
+            "en": "How are app updates handled?"
+          },
+          "answer": {
+            "tr": "Bakım paketlerimiz kapsamında düzenli güncellemeler ve yeni özellik eklemeleri yapıyoruz.",
+            "en": "We provide regular updates and new feature additions as part of our maintenance packages."
+          }
         }
       ],
       "pricing": {
@@ -80,18 +176,48 @@
     },
     {
       "id": "custom-software",
-      "title": "Özel Yazılım",
-      "description": "İşletmenize özel yazılım çözümleri ve sistemler.",
+      "title": {
+        "tr": "Özel Yazılım",
+        "en": "Custom Software"
+      },
+      "description": {
+        "tr": "İşletmenize özel yazılım çözümleri ve sistemler.",
+        "en": "Tailored software solutions and systems for your business."
+      },
       "icon": "code",
-      "fullDescription": "İşletmenizin benzersiz ihtiyaçlarına göre tasarlanmış özel yazılım çözümleri geliştiriyoruz. ERP sistemleri, CRM uygulamaları, otomasyon araçları ve daha fazlası.\n\nMevcut sistemlerinizle entegre çalışan, ölçeklenebilir ve güvenli yazılım çözümleri sunuyoruz. İş süreçlerinizi optimize edin ve verimliliğinizi artırın.",
+      "fullDescription": {
+        "tr": "İşletmenizin benzersiz ihtiyaçlarına göre tasarlanmış özel yazılım çözümleri geliştiriyoruz. ERP sistemleri, CRM uygulamaları, otomasyon araçları ve daha fazlası.\n\nMevcut sistemlerinizle entegre çalışan, ölçeklenebilir ve güvenli yazılım çözümleri sunuyoruz. İş süreçlerinizi optimize edin ve verimliliğinizi artırın.",
+        "en": "We develop custom software solutions designed according to your business's unique needs. ERP systems, CRM applications, automation tools, and more.\n\nWe offer scalable and secure software solutions that work integrated with your existing systems. Optimize your business processes and increase your efficiency."
+      },
       "features": [
-        "İş süreçlerine özel tasarım",
-        "Mevcut sistemlerle entegrasyon",
-        "API geliştirme",
-        "Veritabanı tasarımı ve optimizasyonu",
-        "Bulut tabanlı çözümler",
-        "Güvenlik ve yetkilendirme",
-        "Detaylı dokümantasyon ve eğitim"
+        {
+          "tr": "İş süreçlerine özel tasarım",
+          "en": "Custom design for business processes"
+        },
+        {
+          "tr": "Mevcut sistemlerle entegrasyon",
+          "en": "Integration with existing systems"
+        },
+        {
+          "tr": "API geliştirme",
+          "en": "API development"
+        },
+        {
+          "tr": "Veritabanı tasarımı ve optimizasyonu",
+          "en": "Database design and optimization"
+        },
+        {
+          "tr": "Bulut tabanlı çözümler",
+          "en": "Cloud-based solutions"
+        },
+        {
+          "tr": "Güvenlik ve yetkilendirme",
+          "en": "Security and authorization"
+        },
+        {
+          "tr": "Detaylı dokümantasyon ve eğitim",
+          "en": "Detailed documentation and training"
+        }
       ],
       "gallery": [
         "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
@@ -100,16 +226,34 @@
       ],
       "faq": [
         {
-          "question": "Mevcut sistemlerimizle entegre olabilir mi?",
-          "answer": "Evet, mevcut ERP, CRM veya diğer sistemlerinizle API üzerinden entegrasyon sağlıyoruz."
+          "question": {
+            "tr": "Mevcut sistemlerimizle entegre olabilir mi?",
+            "en": "Can it integrate with our existing systems?"
+          },
+          "answer": {
+            "tr": "Evet, mevcut ERP, CRM veya diğer sistemlerinizle API üzerinden entegrasyon sağlıyoruz.",
+            "en": "Yes, we provide integration with your existing ERP, CRM, or other systems via API."
+          }
         },
         {
-          "question": "Kaynak kodları bize ait olacak mı?",
-          "answer": "Evet, proje tamamlandığında tüm kaynak kodları ve dokümantasyon size teslim edilir."
+          "question": {
+            "tr": "Kaynak kodları bize ait olacak mı?",
+            "en": "Will we own the source code?"
+          },
+          "answer": {
+            "tr": "Evet, proje tamamlandığında tüm kaynak kodları ve dokümantasyon size teslim edilir.",
+            "en": "Yes, upon project completion, all source code and documentation will be delivered to you."
+          }
         },
         {
-          "question": "Eğitim ve destek dahil mi?",
-          "answer": "Evet, kullanıcı eğitimi ve belirli bir süre teknik destek tüm projelerimize dahildir."
+          "question": {
+            "tr": "Eğitim ve destek dahil mi?",
+            "en": "Is training and support included?"
+          },
+          "answer": {
+            "tr": "Evet, kullanıcı eğitimi ve belirli bir süre teknik destek tüm projelerimize dahildir.",
+            "en": "Yes, user training and technical support for a certain period are included in all our projects."
+          }
         }
       ],
       "pricing": {
@@ -121,14 +265,36 @@
   "projects": [
     {
       "id": "ecommerce-platform",
-      "title": "E-Ticaret Platformu",
-      "description": "Tam özellikli online mağaza ve ödeme entegrasyonu.",
+      "title": {
+        "tr": "E-Ticaret Platformu",
+        "en": "E-Commerce Platform"
+      },
+      "description": {
+        "tr": "Tam özellikli online mağaza ve ödeme entegrasyonu.",
+        "en": "Full-featured online store with payment integration."
+      },
       "imageUrl": "https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80",
       "link": "https://example.com",
-      "fullDescription": "Türkiye'nin önde gelen tekstil markalarından biri için geliştirdiğimiz bu e-ticaret platformu, ayda 100.000'den fazla ziyaretçiye hizmet vermektedir.\n\nPlatform, gelişmiş filtreleme, gerçek zamanlı stok takibi, çoklu ödeme seçenekleri ve kargo entegrasyonları ile donatılmıştır. Mobil uyumlu tasarımı sayesinde satışların %60'ı mobil cihazlardan gerçekleşmektedir.",
-      "technologies": ["Next.js", "TypeScript", "PostgreSQL", "Stripe", "Redis", "AWS"],
-      "challenges": "Yüksek trafik dönemlerinde (kampanya günleri) performans sorunları ve stok senkronizasyonu en büyük zorluklardı. Ayrıca mevcut ERP sistemiyle entegrasyon karmaşık bir süreçti.",
-      "solutions": "Redis tabanlı önbellekleme ve CDN kullanarak performansı optimize ettik. Gerçek zamanlı stok senkronizasyonu için WebSocket bağlantıları kurduk. ERP entegrasyonu için özel API gateway geliştirdik.",
+      "fullDescription": {
+        "tr": "Türkiye'nin önde gelen tekstil markalarından biri için geliştirdiğimiz bu e-ticaret platformu, ayda 100.000'den fazla ziyaretçiye hizmet vermektedir.\n\nPlatform, gelişmiş filtreleme, gerçek zamanlı stok takibi, çoklu ödeme seçenekleri ve kargo entegrasyonları ile donatılmıştır. Mobil uyumlu tasarımı sayesinde satışların %60'ı mobil cihazlardan gerçekleşmektedir.",
+        "en": "This e-commerce platform developed for one of Turkey's leading textile brands serves over 100,000 visitors per month.\n\nThe platform is equipped with advanced filtering, real-time stock tracking, multiple payment options, and shipping integrations. Thanks to its mobile-friendly design, 60% of sales come from mobile devices."
+      },
+      "technologies": [
+        "Next.js",
+        "TypeScript",
+        "PostgreSQL",
+        "Stripe",
+        "Redis",
+        "AWS"
+      ],
+      "challenges": {
+        "tr": "Yüksek trafik dönemlerinde (kampanya günleri) performans sorunları ve stok senkronizasyonu en büyük zorluklardı. Ayrıca mevcut ERP sistemiyle entegrasyon karmaşık bir süreçti.",
+        "en": "Performance issues during high traffic periods (campaign days) and stock synchronization were the biggest challenges. Integration with the existing ERP system was also a complex process."
+      },
+      "solutions": {
+        "tr": "Redis tabanlı önbellekleme ve CDN kullanarak performansı optimize ettik. Gerçek zamanlı stok senkronizasyonu için WebSocket bağlantıları kurduk. ERP entegrasyonu için özel API gateway geliştirdik.",
+        "en": "We optimized performance using Redis-based caching and CDN. We established WebSocket connections for real-time stock synchronization. We developed a custom API gateway for ERP integration."
+      },
       "gallery": [
         "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80",
         "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&q=80",
@@ -137,14 +303,36 @@
     },
     {
       "id": "finance-dashboard",
-      "title": "Finans Dashboard",
-      "description": "Gerçek zamanlı analitik ve raporlama araçları.",
+      "title": {
+        "tr": "Finans Dashboard",
+        "en": "Finance Dashboard"
+      },
+      "description": {
+        "tr": "Gerçek zamanlı analitik ve raporlama araçları.",
+        "en": "Real-time analytics and reporting tools."
+      },
       "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
       "link": "https://example.com",
-      "fullDescription": "Bir fintech şirketi için geliştirdiğimiz bu dashboard, finansal verilerin gerçek zamanlı takibini ve analizini sağlamaktadır.\n\nKullanıcılar gelir-gider takibi, nakit akışı analizi, bütçe planlaması ve tahminleme araçlarına tek bir platformdan erişebilmektedir. Otomatik rapor oluşturma ve e-posta bildirimleri ile iş süreçleri otomatize edilmiştir.",
-      "technologies": ["React", "D3.js", "Node.js", "MongoDB", "Socket.io", "Docker"],
-      "challenges": "Büyük veri setlerinin gerçek zamanlı görselleştirilmesi ve farklı veri kaynaklarından gelen verilerin birleştirilmesi ana zorluklardı.",
-      "solutions": "D3.js ile optimize edilmiş grafikler ve veri sanallaştırma (virtualization) teknikleri kullandık. Mikroservis mimarisi ile farklı veri kaynaklarını tek bir API'de topladık.",
+      "fullDescription": {
+        "tr": "Bir fintech şirketi için geliştirdiğimiz bu dashboard, finansal verilerin gerçek zamanlı takibini ve analizini sağlamaktadır.\n\nKullanıcılar gelir-gider takibi, nakit akışı analizi, bütçe planlaması ve tahminleme araçlarına tek bir platformdan erişebilmektedir. Otomatik rapor oluşturma ve e-posta bildirimleri ile iş süreçleri otomatize edilmiştir.",
+        "en": "This dashboard developed for a fintech company provides real-time tracking and analysis of financial data.\n\nUsers can access income-expense tracking, cash flow analysis, budget planning, and forecasting tools from a single platform. Automatic report generation and email notifications have automated business processes."
+      },
+      "technologies": [
+        "React",
+        "D3.js",
+        "Node.js",
+        "MongoDB",
+        "Socket.io",
+        "Docker"
+      ],
+      "challenges": {
+        "tr": "Büyük veri setlerinin gerçek zamanlı görselleştirilmesi ve farklı veri kaynaklarından gelen verilerin birleştirilmesi ana zorluklardı.",
+        "en": "Real-time visualization of large data sets and combining data from different data sources were the main challenges."
+      },
+      "solutions": {
+        "tr": "D3.js ile optimize edilmiş grafikler ve veri sanallaştırma (virtualization) teknikleri kullandık. Mikroservis mimarisi ile farklı veri kaynaklarını tek bir API'de topladık.",
+        "en": "We used D3.js optimized charts and data virtualization techniques. We aggregated different data sources into a single API using microservice architecture."
+      },
       "gallery": [
         "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
         "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80",
@@ -153,14 +341,36 @@
     },
     {
       "id": "social-app",
-      "title": "Sosyal Medya Uygulaması",
-      "description": "Topluluk platformu ve mesajlaşma özellikleri.",
+      "title": {
+        "tr": "Sosyal Medya Uygulaması",
+        "en": "Social Media App"
+      },
+      "description": {
+        "tr": "Topluluk platformu ve mesajlaşma özellikleri.",
+        "en": "Community platform with messaging features."
+      },
       "imageUrl": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80",
       "link": "https://example.com",
-      "fullDescription": "Hobi grupları için geliştirdiğimiz bu sosyal medya uygulaması, kullanıcıların ilgi alanlarına göre gruplar oluşturmasını ve etkileşim kurmasını sağlamaktadır.\n\nGerçek zamanlı mesajlaşma, etkinlik oluşturma, fotoğraf/video paylaşımı ve bildirim sistemi ile kullanıcı deneyimini zenginleştirdik. App Store ve Play Store'da 4.8 yıldız puanına sahiptir.",
-      "technologies": ["React Native", "Firebase", "Node.js", "GraphQL", "AWS S3", "Push Notifications"],
-      "challenges": "Gerçek zamanlı mesajlaşmada düşük gecikme süresi sağlamak ve medya dosyalarının hızlı yüklenmesi en büyük zorluklardı.",
-      "solutions": "Firebase Realtime Database ve Cloud Functions kullanarak anlık mesajlaşma altyapısı kurduk. Medya dosyaları için CDN ve progressive loading uyguladık.",
+      "fullDescription": {
+        "tr": "Hobi grupları için geliştirdiğimiz bu sosyal medya uygulaması, kullanıcıların ilgi alanlarına göre gruplar oluşturmasını ve etkileşim kurmasını sağlamaktadır.\n\nGerçek zamanlı mesajlaşma, etkinlik oluşturma, fotoğraf/video paylaşımı ve bildirim sistemi ile kullanıcı deneyimini zenginleştirdik. App Store ve Play Store'da 4.8 yıldız puanına sahiptir.",
+        "en": "This social media application developed for hobby groups enables users to create groups based on their interests and interact.\n\nWe enriched the user experience with real-time messaging, event creation, photo/video sharing, and notification system. It has a 4.8 star rating on the App Store and Play Store."
+      },
+      "technologies": [
+        "React Native",
+        "Firebase",
+        "Node.js",
+        "GraphQL",
+        "AWS S3",
+        "Push Notifications"
+      ],
+      "challenges": {
+        "tr": "Gerçek zamanlı mesajlaşmada düşük gecikme süresi sağlamak ve medya dosyalarının hızlı yüklenmesi en büyük zorluklardı.",
+        "en": "Ensuring low latency in real-time messaging and fast loading of media files were the biggest challenges."
+      },
+      "solutions": {
+        "tr": "Firebase Realtime Database ve Cloud Functions kullanarak anlık mesajlaşma altyapısı kurduk. Medya dosyaları için CDN ve progressive loading uyguladık.",
+        "en": "We built instant messaging infrastructure using Firebase Realtime Database and Cloud Functions. We implemented CDN and progressive loading for media files."
+      },
       "gallery": [
         "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&q=80",
         "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80",
@@ -176,5 +386,25 @@
       "email": "test@example.com",
       "content": "This is a test message from the browser subagent."
     }
-  ]
+  ],
+  "settings": {
+    "siteName": {
+      "tr": "Appykod",
+      "en": "Appykod"
+    },
+    "siteDescription": {
+      "tr": "Dijital çözümler",
+      "en": "Digital solutions"
+    },
+    "logo": "/logos/Appy_white.svg",
+    "contact": {
+      "phone": "+90 532 610 2957",
+      "email": "info@appykod.com",
+      "address": {
+        "tr": "",
+        "en": "Istanbul, Turkey"
+      }
+    },
+    "social": {}
+  }
 }

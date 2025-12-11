@@ -68,9 +68,9 @@ export default function Footer() {
             </p>
 
             <p className="text-sm text-gray-400 dark:text-gray-500 flex items-center gap-1">
-              Made with
+              {t('footer.madeWith')}
               <Heart size={14} className="text-danger fill-danger animate-pulse" />
-              in Turkey
+              {t('footer.inTurkey')}
             </p>
           </div>
         </div>

@@ -4,32 +4,17 @@ import Image from 'next/image';
 import { Star, Quote } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
-const testimonials = [
-  {
-    id: 1,
-    name: 'Sarah Johnson',
-    role: 'CEO, TechStart',
-    content: 'Appykod transformed our vision into reality. Their attention to detail and technical expertise is unmatched. Highly recommended!',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80',
-  },
-  {
-    id: 2,
-    name: 'Michael Chen',
-    role: 'Founder, GrowthIO',
-    content: 'The team delivered our project on time and within budget. The animations and dark mode implementation blew us away.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80',
-  },
-  {
-    id: 3,
-    name: 'Emily Davis',
-    role: 'Marketing Director, CreativeMinds',
-    content: 'Professional, responsive, and incredibly talented. Our new website has significantly increased our conversion rates.',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&q=80',
-  },
+const testimonialImages = [
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80',
+  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&q=80',
 ];
 
 export default function Testimonials() {
-  const { t } = useLanguage();
+  const { t, getValue } = useLanguage();
+  
+  // Get testimonials from translation files
+  const testimonials = (getValue('testimonials.items') as Array<{ name: string; role: string; content: string }>) || [];
   
   const gradients = [
     'bg-gradient-to-br from-primary/10 to-info/10',
@@ -52,9 +37,9 @@ export default function Testimonials() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
+          {testimonials.map((testimonial: any, index: number) => (
             <div
-              key={testimonial.id}
+              key={index}
               className="animate-fade-in-up"
               style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'backwards' }}
             >
@@ -89,7 +74,7 @@ export default function Testimonials() {
                 <div className="flex items-center space-x-4 relative z-10">
                   <div className="relative w-12 h-12 hover:scale-110 hover:rotate-3 transition-transform duration-200">
                     <Image
-                      src={testimonial.image}
+                      src={testimonialImages[index % testimonialImages.length]}
                       alt={testimonial.name}
                       fill
                       sizes="48px"

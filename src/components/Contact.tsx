@@ -117,6 +117,15 @@ export default function Contact() {
             <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br from-danger/20 to-warning/20 rounded-full blur-3xl" />
 
             <form className="space-y-4 md:space-y-5 relative z-10" onSubmit={handleSubmit}>
+              {/* Honeypot (botlar doldurur) */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden="true"
+              />
               {/* Name Field */}
               <div className={`transition-all duration-300 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: '100ms' }}>
                 <label

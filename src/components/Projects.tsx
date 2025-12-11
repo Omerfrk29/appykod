@@ -1,44 +1,49 @@
 'use client';
 
 import Link from 'next/link';
-import { Project } from '@/lib/db';
+import { Project, LocalizedText } from '@/lib/db';
 import { motion } from 'framer-motion';
 import { ExternalLink, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+// Helper to get localized text
+function getLocalizedText(text: LocalizedText | string | undefined, lang: 'tr' | 'en'): string {
+  if (!text) return '';
+  if (typeof text === 'string') return text;
+  return text[lang] || text.tr || '';
+}
+
 export default function Projects({ projects }: { projects: Project[] }) {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
   // Fallback data
   const displayProjects =
     projects.length > 0
-      ? projects
+      ? projects.map(p => ({
+          ...p,
+          displayTitle: getLocalizedText(p.title, language),
+          displayDescription: getLocalizedText(p.description, language),
+        }))
       : [
           {
             id: '1',
-            title: 'E-Commerce Platform',
-            description:
-              'A full-featured online store with payment integration.',
-            imageUrl:
-              'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80',
+            displayTitle: 'E-Commerce Platform',
+            displayDescription: 'A full-featured online store with payment integration.',
+            imageUrl: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80',
             link: '#',
           },
           {
             id: '2',
-            title: 'Finance Dashboard',
-            description:
-              'Real-time analytics and reporting tool for fintech.',
-            imageUrl:
-              'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+            displayTitle: 'Finance Dashboard',
+            displayDescription: 'Real-time analytics and reporting tool for fintech.',
+            imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
             link: '#',
           },
           {
             id: '3',
-            title: 'Social App',
-            description:
-              'Community platform with messaging and feed features.',
-            imageUrl:
-              'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80',
+            displayTitle: 'Social App',
+            displayDescription: 'Community platform with messaging and feed features.',
+            imageUrl: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80',
             link: '#',
           },
         ];
@@ -110,7 +115,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={project.imageUrl}
-                      alt={project.title}
+                      alt={project.displayTitle}
                       className="w-full h-full object-cover"
                     />
                   </motion.div>
@@ -162,10 +167,10 @@ export default function Projects({ projects }: { projects: Project[] }) {
                     whileHover={{ x: 5 }}
                     transition={{ type: 'spring', stiffness: 300 }}
                   >
-                    {project.title}
+                    {project.displayTitle}
                   </motion.h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    {project.description}
+                    {project.displayDescription}
                   </p>
                 </div>
               </motion.div>
@@ -176,5 +181,3 @@ export default function Projects({ projects }: { projects: Project[] }) {
     </section>
   );
 }
-
-

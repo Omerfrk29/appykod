@@ -39,6 +39,16 @@ a {
   text-decoration: none;
 }
 
+/* Yazılar için normal cursor */
+h1, h2, h3, h4, h5, h6, p, span, li, td, th, label {
+  cursor: default;
+}
+
+/* Linkler ve butonlar için pointer cursor */
+a, button, [role="button"], input[type="submit"], input[type="button"], [onclick] {
+  cursor: pointer;
+}
+
 @layer utilities {
   /* Logo Color Cycle Animation */
   @keyframes color-cycle {
@@ -108,12 +118,21 @@ a {
 
   /* Hero Shimmer Effect */
   @keyframes shimmer-hero {
-    0%, 40% { background-position: 100% 0; }
+    0%, 30% { background-position: 100% 0; }
     100% { background-position: -100% 0; }
   }
   .animate-shimmer-hero {
     background-size: 200% 100%;
-    animation: shimmer-hero 5s linear infinite;
+    animation: shimmer-hero 4s linear infinite;
+  }
+
+  /* Shine Sweep Effect - Realistic glass reflection */
+  @keyframes shine-sweep {
+    0% { background-position: 150% 0; }
+    100% { background-position: -50% 0; }
+  }
+  .animate-shine-sweep {
+    animation: shine-sweep 3s ease-in-out infinite;
   }
 
   /* Button Shine Effect */

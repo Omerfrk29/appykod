@@ -15,7 +15,25 @@
   },
   "services": {
     "title": "Our Services",
-    "subtitle": "Comprehensive solutions for your digital needs"
+    "subtitle": "Comprehensive solutions for your digital needs",
+    "learnMore": "Learn More",
+    "items": {
+      "web-development": {
+        "title": "Web Development",
+        "description": "Modern, responsive and SEO-friendly websites.",
+        "fullDescription": "We develop modern, fast, and user-friendly websites for your business using the latest technologies. We create SEO-friendly, mobile-first designs using Next.js, React, and TypeScript.\n\nOur websites are focused on high performance, security, and scalability. We offer custom solutions for e-commerce, corporate websites, blog platforms, and more."
+      },
+      "mobile-apps": {
+        "title": "Mobile Apps",
+        "description": "Native and cross-platform applications for iOS and Android.",
+        "fullDescription": "We develop high-performance mobile applications that work on both iOS and Android platforms using React Native and Flutter.\n\nWe create applications that deliver native performance on both platforms with a single codebase. Push notifications, offline functionality, device sensor integration, and more."
+      },
+      "custom-software": {
+        "title": "Custom Software",
+        "description": "Tailored software solutions and systems for your business.",
+        "fullDescription": "We develop custom software solutions designed according to your business's unique needs. ERP systems, CRM applications, automation tools, and more.\n\nWe offer scalable and secure software solutions that work integrated with your existing systems. Optimize your business processes and increase your efficiency."
+      }
+    }
   },
   "process": {
     "title": "Our Process",
@@ -47,7 +65,24 @@
   },
   "testimonials": {
     "title": "Client Stories",
-    "subtitle": "Don't just take our word for it"
+    "subtitle": "Don't just take our word for it",
+    "items": [
+      {
+        "name": "Sarah Johnson",
+        "role": "CEO, TechStart",
+        "content": "Appykod transformed our vision into reality. Their attention to detail and technical expertise is unmatched. Highly recommended!"
+      },
+      {
+        "name": "Michael Chen",
+        "role": "Founder, GrowthIO",
+        "content": "The team delivered our project on time and within budget. The animations and dark mode implementation blew us away."
+      },
+      {
+        "name": "Emily Davis",
+        "role": "Marketing Director, CreativeMinds",
+        "content": "Professional, responsive, and incredibly talented. Our new website has significantly increased our conversion rates."
+      }
+    ]
   },
   "cta": {
     "title": "Ready to start your next project?",
@@ -76,7 +111,9 @@
   },
   "footer": {
     "tagline": "Building digital experiences that matter.",
-    "copyright": "All rights reserved."
+    "copyright": "All rights reserved.",
+    "madeWith": "Made with",
+    "inTurkey": "in Turkey"
   },
   "techstack": {
     "subtitle": "Powered by modern technologies"
@@ -94,7 +131,51 @@
     "startingFrom": "Starting from",
     "getQuote": "Get a Quote",
     "ctaTitle": "Interested in this service?",
-    "ctaSubtitle": "Contact us to bring your project to life."
+    "ctaSubtitle": "Contact us to bring your project to life.",
+    "faqs": {
+      "web-development": [
+        {
+          "question": "How long does it take to build a website?",
+          "answer": "It varies from 2-8 weeks depending on the project scope. Simple corporate sites are completed in 2-3 weeks, while complex e-commerce platforms take 6-8 weeks."
+        },
+        {
+          "question": "What technologies do you use?",
+          "answer": "We use Next.js, React, TypeScript, Tailwind CSS, Node.js, and modern database solutions. We select the most suitable technology for each project."
+        },
+        {
+          "question": "Is hosting and domain included?",
+          "answer": "We also offer hosting and domain services optionally. We can host on Vercel, AWS, or your preferred platform."
+        }
+      ],
+      "mobile-apps": [
+        {
+          "question": "Does the app work on both iOS and Android?",
+          "answer": "Yes, we develop applications that work on both platforms with a single codebase using React Native or Flutter."
+        },
+        {
+          "question": "Is app store submission included?",
+          "answer": "Yes, we manage the submission processes to the App Store and Google Play Store on your behalf."
+        },
+        {
+          "question": "How are app updates handled?",
+          "answer": "We provide regular updates and new feature additions as part of our maintenance packages."
+        }
+      ],
+      "custom-software": [
+        {
+          "question": "Can it integrate with our existing systems?",
+          "answer": "Yes, we provide integration with your existing ERP, CRM, or other systems via API."
+        },
+        {
+          "question": "Will we own the source code?",
+          "answer": "Yes, upon project completion, all source code and documentation will be delivered to you."
+        },
+        {
+          "question": "Is training and support included?",
+          "answer": "Yes, user training and technical support for a certain period are included in all our projects."
+        }
+      ]
+    }
   },
   "projectDetail": {
     "backToProjects": "Back to Projects",
@@ -107,5 +188,21 @@
     "viewImage": "View",
     "ctaTitle": "Thinking of a similar project?",
     "ctaSubtitle": "Let's bring your dream project to life together."
+  },
+  "admin": {
+    "login": "Admin Login",
+    "username": "Username",
+    "password": "Password",
+    "loginButton": "Login",
+    "panel": "Admin Panel",
+    "services": "Services",
+    "projects": "Projects",
+    "messages": "Messages",
+    "logout": "Logout",
+    "addNew": "Add New",
+    "areYouSure": "Are you sure?",
+    "title": "Title:",
+    "description": "Description:",
+    "invalidCredentials": "Invalid credentials"
   }
 }

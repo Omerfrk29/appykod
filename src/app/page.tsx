@@ -64,8 +64,8 @@ const Contact = dynamic(() => import('@/components/Contact'), {
   ),
 });
 
-export default function Home() {
-  const db = getDB();
+export default async function Home() {
+  const db = await getDB();
 
   return (
     <>

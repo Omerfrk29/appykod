@@ -223,7 +223,7 @@ export default function Hero() {
               <span className="absolute inset-0 rounded-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine-button" />
               <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_20px_rgba(94,111,234,0.4),0_0_40px_rgba(0,206,209,0.3)]" />
               <span className="relative z-10 flex items-center gap-2">
-                {t('hero.ctaPrimary') || 'Start a Project'}
+                {t('hero.ctaPrimary')}
                 <span className="animate-arrow-bounce">
                   <ArrowRight className="w-5 h-5" />
                 </span>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useSyncExternalStore, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import trTranslations from '@/locales/tr.json';
 import enTranslations from '@/locales/en.json';
 
@@ -15,12 +15,10 @@ interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  getValue: (key: string) => unknown;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
-
-// Custom store için listeners
-const listeners = new Set<() => void>();
 
 // localStorage'dan dil tercihini okuma fonksiyonu
 function getLanguageFromStorage(): Language {
@@ -34,42 +32,30 @@ function getLanguageFromStorage(): Language {
   return 'tr';
 }
 
-// Custom store subscribe fonksiyonu
-function subscribe(callback: () => void) {
-  listeners.add(callback);
-  // localStorage değişikliklerini de dinle (diğer tab'lar için)
-  if (typeof window !== 'undefined') {
-    window.addEventListener('storage', callback);
-  }
-  return () => {
-    listeners.delete(callback);
-    if (typeof window !== 'undefined') {
-      window.removeEventListener('storage', callback);
-    }
-  };
-}
-
-// Store'u güncellemek için fonksiyon
-function notifyListeners() {
-  listeners.forEach((listener) => listener());
-}
-
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  // useSyncExternalStore kullanarak localStorage'dan dil tercihini senkronize et
-  // Bu, hydration hatasını önler ve React'in önerdiği yaklaşımdır
-  const language = useSyncExternalStore(
-    subscribe,
-    getLanguageFromStorage,
-    () => 'tr' // Sunucu tarafında her zaman varsayılan dil
-  ) as Language;
+  // İlk render'da sunucu ile aynı değeri kullan (hydration hatasını önlemek için)
+  const [language, setLanguageState] = useState<Language>('tr');
+
+  // Mount olduktan sonra localStorage'dan okunan değere geç
+  useEffect(() => {
+    setLanguageState(getLanguageFromStorage());
+
+    // localStorage değişikliklerini dinle (diğer tab'lar için)
+    const handleStorageChange = () => {
+      setLanguageState(getLanguageFromStorage());
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   const translations = translationsMap[language] || translationsMap.tr;
 
   const setLanguage = useCallback((lang: Language) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('language', lang);
-      // Custom store listeners'ları bilgilendir
-      notifyListeners();
+      setLanguageState(lang);
     }
   }, []);
 
@@ -88,8 +74,23 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     return typeof value === 'string' ? value : key;
   };
 
+  const getValue = (key: string): unknown => {
+    const keys = key.split('.');
+    let value: unknown = translations;
+    
+    for (const k of keys) {
+      if (value && typeof value === 'object' && k in value) {
+        value = (value as Record<string, unknown>)[k];
+      } else {
+        return undefined;
+      }
+    }
+    
+    return value;
+  };
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, getValue }}>
       {children}
     </LanguageContext.Provider>
   );
