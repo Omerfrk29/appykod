@@ -7,12 +7,17 @@ import Logo from './Logo';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeLink, setActiveLink] = useState('/');
   const { t } = useLanguage();
+
+  const { scrollY } = useScroll();
+  const navOpacity = useTransform(scrollY, [0, 100], [1, 0.98]);
+  const navScale = useTransform(scrollY, [0, 100], [1, 0.995]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,13 +46,22 @@ export default function Navbar() {
   };
 
   return (
-    <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
+    <motion.nav
+      style={{ opacity: navOpacity, scale: navScale }}
+      className={`fixed w-full z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-white/80 dark:bg-gray-950/80 backdrop-blur-md shadow-lg py-2'
+          ? 'bg-white/85 dark:bg-gray-950/85 backdrop-blur-xl shadow-2xl py-2'
           : 'bg-transparent py-4'
       }`}
     >
+      {/* Animated gradient border at bottom when scrolled */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: scrolled ? 1 : 0 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+        className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary via-info via-danger to-success origin-left"
+        style={{ backgroundSize: '200% 100%' }}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <motion.div
@@ -56,14 +70,19 @@ export default function Navbar() {
             transition={{ duration: 0.5 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            className="relative group"
           >
             <Link href="/" className="flex items-center space-x-2">
               <Logo />
             </Link>
+            {/* Logo glow on hover */}
+            <motion.div
+              className="absolute -inset-2 bg-gradient-to-r from-primary/20 to-info/20 rounded-full opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 -z-10"
+            />
           </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             {[
               { href: '/', labelKey: 'nav.home' },
               { href: '#services', labelKey: 'nav.services' },
@@ -74,17 +93,30 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="relative"
               >
                 <Link
                   href={item.href}
-                  onClick={(e) => handleSmoothScroll(e, item.href)}
-                  className="relative text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium transition-colors group"
+                  onClick={(e) => {
+                    handleSmoothScroll(e, item.href);
+                    setActiveLink(item.href);
+                  }}
+                  className="relative text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-bold transition-colors duration-300 py-2 px-1 text-sm lg:text-base"
                 >
                   {t(item.labelKey)}
+                  {/* Animated underline with gradient */}
                   <motion.span
-                    className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary via-info to-danger group-hover:w-full transition-all duration-300"
-                    initial={{ width: 0 }}
-                    whileHover={{ width: '100%' }}
+                    className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-primary via-info to-danger rounded-full"
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    whileHover={{ scaleX: 1, opacity: 1 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    style={{ originX: 0 }}
+                  />
+                  {/* Hover glow effect */}
+                  <motion.span
+                    className="absolute inset-0 -z-10 bg-primary/5 dark:bg-primary/10 rounded-lg opacity-0"
+                    whileHover={{ opacity: 1, scale: 1.1 }}
+                    transition={{ duration: 0.2 }}
                   />
                 </Link>
               </motion.div>
@@ -143,43 +175,49 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white dark:bg-gray-900 border-t dark:border-gray-800"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="md:hidden bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-t border-gray-100 dark:border-gray-800 shadow-xl"
           >
-            <div className="px-4 pt-2 pb-4 space-y-2">
-              <Link
-                href="/"
-                onClick={() => setIsOpen(false)}
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary transition-all duration-200"
-              >
-                {t('nav.home')}
-              </Link>
-              <Link
-                href="#services"
-                onClick={(e) => {
-                  handleSmoothScroll(e, '#services');
-                  setIsOpen(false);
-                }}
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary transition-all duration-200"
-              >
-                {t('nav.services')}
-              </Link>
-              <Link
-                href="#contact"
-                onClick={(e) => {
-                  handleSmoothScroll(e, '#contact');
-                  setIsOpen(false);
-                }}
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary transition-all duration-200"
-              >
-                {t('nav.contact')}
-              </Link>
+            <div className="px-4 pt-4 pb-6 space-y-2">
+              {[
+                { href: '/', label: t('nav.home') },
+                { href: '#services', label: t('nav.services') },
+                { href: '#contact', label: t('nav.contact') },
+              ].map((item, index) => (
+                <motion.div
+                  key={item.href}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                >
+                  <Link
+                    href={item.href}
+                    onClick={(e) => {
+                      if (item.href.startsWith('#')) {
+                        handleSmoothScroll(e, item.href);
+                      }
+                      setIsOpen(false);
+                    }}
+                    className="block px-4 py-3 rounded-xl text-base font-semibold text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-primary/10 hover:to-info/10 hover:text-primary transition-all duration-300 relative overflow-hidden group"
+                  >
+                    <span className="relative z-10">{item.label}</span>
+                    {/* Mobile link gradient indicator */}
+                    <motion.span
+                      className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-info rounded-r-full opacity-0 group-hover:opacity-100"
+                      initial={{ scaleY: 0 }}
+                      whileHover={{ scaleY: 1 }}
+                      transition={{ duration: 0.2 }}
+                    />
+                  </Link>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </motion.nav>
   );
 }
