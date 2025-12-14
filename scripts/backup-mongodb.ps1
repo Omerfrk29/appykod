@@ -10,18 +10,18 @@ $BackupName = "mongodb_backup_$Timestamp"
 $DBName = "appykod"
 $ContainerName = "appykod-mongodb"
 
-Write-Host "=== MongoDB Yedekleme Başlatılıyor ===" -ForegroundColor Green
+Write-Host "=== MongoDB Yedekleme Baslatiyor ===" -ForegroundColor Green
 
-# Backup dizinini oluştur
+# Backup dizinini olustur
 if (-not (Test-Path $BackupDir)) {
     New-Item -ItemType Directory -Path $BackupDir | Out-Null
 }
 
-# Docker container'ın çalışıp çalışmadığını kontrol et
+# Docker container'in calisip calismadigini kontrol et
 $containerRunning = docker ps --format "{{.Names}}" | Select-String -Pattern $ContainerName
 if (-not $containerRunning) {
-    Write-Host "Hata: $ContainerName container'ı çalışmıyor!" -ForegroundColor Red
-    Write-Host "Container'ı başlatmak için: docker-compose up -d mongodb"
+    Write-Host "Hata: $ContainerName container'i calismiyor!" -ForegroundColor Red
+    Write-Host "Container'i baslatmak icin: docker-compose up -d mongodb"
     exit 1
 }
 
@@ -34,37 +34,51 @@ docker exec $ContainerName mongodump `
     --quiet
 
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "Hata: MongoDB dump alınamadı!" -ForegroundColor Red
+    Write-Host "Hata: MongoDB dump alinamadi!" -ForegroundColor Red
     exit 1
 }
 
-# Yedeği container'dan host'a kopyala
+# Yedegi container'dan host'a kopyala
 docker cp "${ContainerName}:/tmp/$BackupName" "$BackupDir\"
 
-# Container içindeki geçici dosyayı temizle
+# Container icindeki gecici dosyayi temizle
 docker exec $ContainerName rm -rf "/tmp/$BackupName"
 
-# Yedeği arşivle
-$archivePath = "$BackupDir\${BackupName}.tar.gz"
-$tempPath = "$BackupDir\$BackupName"
+# Yedegi arsivle
+$archivePath = Join-Path $BackupDir "${BackupName}.tar.gz"
+$tempPath = Join-Path $BackupDir $BackupName
 
-# tar.exe kullanarak arşivle (Git Bash veya WSL'de tar varsa)
-# Windows'ta tar.exe genellikle mevcuttur (Windows 10+)
-tar -czf $archivePath -C $BackupDir $BackupName
+# tar.exe kullanarak arsivle (Windows 10+)
+# Mutlak path kullan
+$fullTempPath = (Resolve-Path $tempPath).Path
+$fullArchivePath = (Resolve-Path $BackupDir).Path
+$fullArchivePath = Join-Path $fullArchivePath "${BackupName}.tar.gz"
 
-# Geçici klasörü sil
-Remove-Item -Recurse -Force $tempPath
+# tar komutunu calistir
+$tarResult = & tar -czf $fullArchivePath -C (Split-Path $fullTempPath) (Split-Path $fullTempPath -Leaf) 2>&1
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Hata: Arsivleme basarisiz! $tarResult" -ForegroundColor Red
+    Write-Host "Alternatif: 7-Zip veya WinRAR kullanarak manuel olarak arsivleyin: $tempPath" -ForegroundColor Yellow
+    exit 1
+}
+
+# Gecici klasoru sil
+Remove-Item -Recurse -Force $tempPath -ErrorAction SilentlyContinue
 
 $backupSize = (Get-Item $archivePath).Length / 1MB
 $backupSizeFormatted = "{0:N2} MB" -f $backupSize
 
-Write-Host "✓ Yedekleme tamamlandı!" -ForegroundColor Green
-Write-Host "Yedek dosyası: $archivePath" -ForegroundColor Green
+Write-Host "Yedekleme tamamlandi!" -ForegroundColor Green
+Write-Host "Yedek dosyasi: $archivePath" -ForegroundColor Green
 Write-Host "Boyut: $backupSizeFormatted" -ForegroundColor Green
 
-# Son 5 yedeği göster
-Write-Host "`nSon 5 yedek:" -ForegroundColor Yellow
-Get-ChildItem "$BackupDir\*.tar.gz" | Sort-Object LastWriteTime -Descending | Select-Object -First 5 | ForEach-Object {
-    $size = $_.Length / 1MB
-    Write-Host "$($_.Name) ($("{0:N2} MB" -f $size))"
+# Son 5 yedegi goster
+Write-Host ""
+Write-Host "Son 5 yedek:" -ForegroundColor Yellow
+$backups = Get-ChildItem "$BackupDir\*.tar.gz" | Sort-Object LastWriteTime -Descending | Select-Object -First 5
+foreach ($backup in $backups) {
+    $size = $backup.Length / 1MB
+    $sizeFormatted = "{0:N2} MB" -f $size
+    Write-Host "$($backup.Name) - $sizeFormatted"
 }

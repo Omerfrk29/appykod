@@ -40,12 +40,30 @@ if ! docker ps | grep -q "$CONTAINER_NAME"; then
 fi
 
 echo -e "${YELLOW}Yedek dosyası açılıyor...${NC}"
+
+# Backup dosyasının mutlak path'ini al
+if [ ! -f "$BACKUP_FILE" ]; then
+    # Relatif path ise, mevcut dizinden dene
+    if [ -f "./$BACKUP_FILE" ]; then
+        BACKUP_FILE="./$BACKUP_FILE"
+    else
+        echo -e "${RED}Hata: Yedek dosyası bulunamadı: $BACKUP_FILE${NC}"
+        echo -e "${YELLOW}Mevcut dizindeki yedek dosyaları:${NC}"
+        ls -lh ./backups/*.tar.gz 2>/dev/null || echo "Yedek dosyası bulunamadı"
+        exit 1
+    fi
+fi
+
 TEMP_DIR=$(mktemp -d)
 tar -xzf "$BACKUP_FILE" -C "$TEMP_DIR"
+
+# Yedek klasörünü bul
 BACKUP_DIR=$(find "$TEMP_DIR" -type d -name "appykod" | head -1 | xargs dirname)
 
 if [ -z "$BACKUP_DIR" ]; then
     echo -e "${RED}Hata: Yedek dosyası geçersiz format!${NC}"
+    echo -e "${YELLOW}Yedek dosyası içeriği:${NC}"
+    ls -la "$TEMP_DIR"
     rm -rf "$TEMP_DIR"
     exit 1
 fi
