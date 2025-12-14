@@ -3,11 +3,11 @@ import { z } from 'zod';
 import {
   clearAdminCookie,
   createAdminSessionToken,
-  getAdminEnv,
+  getAdminFromDB,
   setAdminCookie,
   verifyAdminSessionToken,
-  verifyPassword,
 } from '@/lib/auth';
+import * as adminService from '@/lib/services/adminService';
 import { rateLimit } from '@/lib/rateLimit';
 
 const loginSchema = z.object({
@@ -22,11 +22,11 @@ export async function GET(request: Request) {
   if (!token) return NextResponse.json({ authenticated: false }, { status: 200 });
 
   try {
-    const { sessionSecret } = getAdminEnv();
+    const { sessionSecret } = await getAdminFromDB();
     const payload = verifyAdminSessionToken(sessionSecret, token);
     return NextResponse.json({ authenticated: Boolean(payload) }, { status: 200 });
   } catch {
-    // env missing => treat as not authenticated
+    // Database or env missing => treat as not authenticated
     return NextResponse.json({ authenticated: false }, { status: 200 });
   }
 }
@@ -52,25 +52,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 });
   }
 
-  let env;
-  try {
-    env = getAdminEnv();
-  } catch {
-    return NextResponse.json({ error: 'Server not configured' }, { status: 500 });
-  }
-
   const { username, password } = parsed.data;
-  const okUser = username === env.user;
-  const okPass = verifyPassword(password, env.passwordHash);
 
-  if (!okUser || !okPass) {
-    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-  }
-
-  const token = createAdminSessionToken(env.sessionSecret);
+  // Verify credentials from database
+  try {
+    const isValid = await adminService.verifyAdmin(username, password);
+    if (isValid) {
+      const { sessionSecret } = await getAdminFromDB();
+      const token = createAdminSessionToken(sessionSecret);
   const response = NextResponse.json({ success: true });
   setAdminCookie(response, token);
   return response;
+    }
+  } catch (error) {
+    console.error('Auth error:', error);
+    return NextResponse.json({ error: 'Server not configured' }, { status: 500 });
+  }
+
+  return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
 }
 
 export async function DELETE() {

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
+import * as adminService from '@/lib/services/adminService';
 
 const COOKIE_NAME = 'auth_token';
 
@@ -22,6 +23,10 @@ function hmacSha256(secret: string, data: string): string {
   return b64urlEncode(crypto.createHmac('sha256', secret).update(data).digest());
 }
 
+/**
+ * @deprecated Use getAdminFromDB instead
+ * Fallback to environment variables if database is not available
+ */
 export function getAdminEnv() {
   const user = process.env.ADMIN_USER;
   const passwordHash = process.env.ADMIN_PASSWORD_HASH;
@@ -34,6 +39,25 @@ export function getAdminEnv() {
   }
 
   return { user, passwordHash, sessionSecret };
+}
+
+/**
+ * Get admin credentials from database
+ */
+export async function getAdminFromDB() {
+  const admin = await adminService.getAdmin();
+  const sessionSecret = await adminService.getSessionSecret();
+
+  if (!admin) {
+    // Fallback to env vars for backward compatibility
+    return getAdminEnv();
+  }
+
+  return {
+    user: admin.username,
+    passwordHash: admin.passwordHash,
+    sessionSecret,
+  };
 }
 
 type ScryptHash = {
@@ -145,15 +169,27 @@ export function clearAdminCookie(response: NextResponse) {
   });
 }
 
-export function isAdminRequest(req: Request): boolean {
+export async function isAdminRequest(req: Request): Promise<boolean> {
   const token = req.headers.get('cookie')?.match(/(?:^|;\s*)auth_token=([^;]+)/)?.[1];
   if (!token) return false;
+  
+  try {
+    const { sessionSecret } = await getAdminFromDB();
+    return Boolean(verifyAdminSessionToken(sessionSecret, token));
+  } catch {
+    // Fallback to env vars
+    try {
   const { sessionSecret } = getAdminEnv();
   return Boolean(verifyAdminSessionToken(sessionSecret, token));
+    } catch {
+      return false;
+    }
+  }
 }
 
-export function requireAdmin(req: Request): NextResponse | null {
-  if (isAdminRequest(req)) return null;
+export async function requireAdmin(req: Request): Promise<NextResponse | null> {
+  const isAdmin = await isAdminRequest(req);
+  if (isAdmin) return null;
   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 }
 

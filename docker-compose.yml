@@ -1,4 +1,24 @@
 services:
+  mongodb:
+    image: mongo:7.0
+    container_name: appykod-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=appykod
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - web-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/appykod --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
   web:
     build:
       context: .
@@ -7,6 +27,8 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017
+      - MONGODB_DB_NAME=appykod
       - VIRTUAL_HOST=appykod.com,www.appykod.com
       - LETSENCRYPT_HOST=appykod.com,www.appykod.com
       - LETSENCRYPT_EMAIL=admin@appykod.com
@@ -15,8 +37,17 @@ services:
       - "3000"
     volumes:
       - ./data.json:/app/data.json
+    depends_on:
+      mongodb:
+        condition: service_healthy
     networks:
       - web-network
+
+volumes:
+  mongodb_data:
+    driver: local
+  mongodb_config:
+    driver: local
 
 networks:
   web-network:

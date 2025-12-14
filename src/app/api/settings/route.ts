@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { getDB, saveDB } from '@/lib/db';
 import { requireAdmin } from '@/lib/auth';
+import * as settingsService from '@/lib/services/settingsService';
 
 const localizedTextSchema = z.object({
   tr: z.string().max(1000),
@@ -12,58 +12,66 @@ const updateSettingsSchema = z.object({
   siteName: localizedTextSchema.optional(),
   siteDescription: localizedTextSchema.optional(),
   logo: z.string().max(500).optional(),
-  contact: z.object({
-    phone: z.string().max(50).optional(),
+  contact: z
+    .object({
     email: z.string().email().max(100).optional(),
     address: localizedTextSchema.optional(),
-  }).optional(),
-  social: z.object({
+    })
+    .optional(),
+  social: z
+    .object({
     twitter: z.string().max(200).optional(),
     linkedin: z.string().max(200).optional(),
     instagram: z.string().max(200).optional(),
     github: z.string().max(200).optional(),
-  }).optional(),
+    })
+    .optional(),
 });
 
 export async function GET() {
-  const db = await getDB();
-  return NextResponse.json(db.settings || {});
+  try {
+    const settings = await settingsService.getSettings();
+    return NextResponse.json({ success: true, data: settings });
+  } catch (error) {
+    console.error('Error fetching settings:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch settings' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(request: Request) {
-  const authRes = requireAdmin(request);
+  const authRes = await requireAdmin(request);
   if (authRes) return authRes;
 
   let body: unknown;
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+    return NextResponse.json(
+      { success: false, error: 'Invalid JSON' },
+      { status: 400 }
+    );
   }
 
   const parsed = updateSettingsSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid payload', details: parsed.error.errors }, { status: 400 });
+    return NextResponse.json(
+      { success: false, error: 'Invalid payload', details: parsed.error.errors },
+      { status: 400 }
+    );
   }
 
-  const db = await getDB();
-  
-  // Deep merge settings
-  db.settings = {
-    ...db.settings,
-    ...parsed.data,
-    contact: {
-      ...db.settings?.contact,
-      ...parsed.data.contact,
-    },
-    social: {
-      ...db.settings?.social,
-      ...parsed.data.social,
-    },
-  } as typeof db.settings;
-
-  await saveDB(db);
-
-  return NextResponse.json(db.settings);
+  try {
+    const settings = await settingsService.updateSettings(parsed.data);
+    return NextResponse.json({ success: true, data: settings });
+  } catch (error) {
+    console.error('Error updating settings:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to update settings' },
+      { status: 500 }
+    );
+  }
 }
 

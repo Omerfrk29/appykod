@@ -120,13 +120,13 @@ export default function ImageUploader({ value, onChange, multiple = false, label
           {images.map((url, index) => (
             <div
               key={index}
-              className="relative group aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden"
+              className="relative group bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden"
             >
               {url.startsWith('/') || url.startsWith('http') ? (
                 <img
                   src={url}
                   alt={`Image ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  className="w-full object-cover max-w-full max-h-full"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">

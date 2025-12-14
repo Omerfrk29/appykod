@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { getDB, saveDB } from '@/lib/db';
 import { requireAdmin } from '@/lib/auth';
+import * as projectService from '@/lib/services/projectService';
+import { urlOrPathSchema, gallerySchema } from '@/lib/validations';
 
 const localizedTextSchema = z.object({
   tr: z.string().min(1).max(10000),
@@ -16,13 +17,13 @@ const localizedTextOptionalSchema = z.object({
 const updateProjectSchema = z.object({
   title: localizedTextSchema.optional(),
   description: localizedTextSchema.optional(),
-  imageUrl: z.string().url().optional(),
+  imageUrl: urlOrPathSchema.optional(),
   link: z.string().max(2000).optional(),
   fullDescription: localizedTextOptionalSchema.optional(),
   technologies: z.array(z.string().min(1).max(100)).max(100).optional(),
   challenges: localizedTextOptionalSchema.optional(),
   solutions: localizedTextOptionalSchema.optional(),
-  gallery: z.array(z.string().url()).max(50).optional(),
+  gallery: gallerySchema,
 });
 
 export async function GET(
@@ -30,22 +31,30 @@ export async function GET(
     { params }: { params: Promise<{ id: string }> }
 ) {
     const { id } = await params;
-    const db = await getDB();
 
-    const project = db.projects.find(p => p.id === id);
-
+  try {
+    const project = await projectService.getProjectById(id);
     if (!project) {
-        return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: 'Project not found' },
+        { status: 404 }
+      );
     }
-
-    return NextResponse.json(project);
+    return NextResponse.json({ success: true, data: project });
+  } catch (error) {
+    console.error('Error fetching project:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch project' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const authRes = requireAdmin(request);
+  const authRes = await requireAdmin(request);
     if (authRes) return authRes;
 
     const { id } = await params;
@@ -54,44 +63,61 @@ export async function PUT(
     try {
         body = await request.json();
     } catch {
-        return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+    return NextResponse.json(
+      { success: false, error: 'Invalid JSON' },
+      { status: 400 }
+    );
     }
 
     const parsed = updateProjectSchema.safeParse(body);
     if (!parsed.success) {
-        return NextResponse.json({ error: 'Invalid payload', details: parsed.error.errors }, { status: 400 });
+    return NextResponse.json(
+      { success: false, error: 'Invalid payload', details: parsed.error.errors },
+      { status: 400 }
+    );
     }
 
-    const db = await getDB();
-    const projectIndex = db.projects.findIndex(p => p.id === id);
-
-    if (projectIndex === -1) {
-        return NextResponse.json({ error: 'Project not found' }, { status: 404 });
+  try {
+    const updatedProject = await projectService.updateProject(id, parsed.data);
+    if (!updatedProject) {
+      return NextResponse.json(
+        { success: false, error: 'Project not found' },
+        { status: 404 }
+      );
     }
-
-    // Update project with new data
-    db.projects[projectIndex] = {
-        ...db.projects[projectIndex],
-        ...parsed.data,
-    };
-
-    await saveDB(db);
-
-    return NextResponse.json(db.projects[projectIndex]);
+    return NextResponse.json({ success: true, data: updatedProject });
+  } catch (error) {
+    console.error('Error updating project:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to update project' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function DELETE(
     request: Request, 
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const authRes = requireAdmin(request);
+  const authRes = await requireAdmin(request);
     if (authRes) return authRes;
 
     const { id } = await params;
-    const db = await getDB();
 
-    db.projects = db.projects.filter(p => p.id !== id);
-    await saveDB(db);
-
+  try {
+    const deleted = await projectService.deleteProject(id);
+    if (!deleted) {
+      return NextResponse.json(
+        { success: false, error: 'Project not found' },
+        { status: 404 }
+      );
+    }
     return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to delete project' },
+      { status: 500 }
+    );
+  }
 }

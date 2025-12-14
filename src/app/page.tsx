@@ -5,7 +5,7 @@ import TechStack from '@/components/TechStack';
 import Services from '@/components/Services';
 import Projects from '@/components/Projects';
 import Footer from '@/components/Footer';
-import { getDB } from '@/lib/db';
+import type { Service, Project } from '@/lib/db';
 
 // Lazy load heavy components that are below the fold
 const Process = dynamic(() => import('@/components/Process'), {
@@ -64,8 +64,53 @@ const Contact = dynamic(() => import('@/components/Contact'), {
   ),
 });
 
+async function fetchServices(): Promise<Service[]> {
+  try {
+    // Use absolute URL for server-side fetch
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` 
+      : 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/services`, {
+      cache: 'no-store', // Always fetch fresh data
+    });
+    if (!res.ok) {
+      console.error('Failed to fetch services:', res.statusText);
+      return [];
+    }
+    const data = await res.json();
+    return data.success && data.data ? data.data : [];
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    return [];
+  }
+}
+
+async function fetchProjects(): Promise<Project[]> {
+  try {
+    // Use absolute URL for server-side fetch
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` 
+      : 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/projects`, {
+      cache: 'no-store', // Always fetch fresh data
+    });
+    if (!res.ok) {
+      console.error('Failed to fetch projects:', res.statusText);
+      return [];
+    }
+    const data = await res.json();
+    return data.success && data.data ? data.data : [];
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    return [];
+  }
+}
+
 export default async function Home() {
-  const db = await getDB();
+  const [services, projects] = await Promise.all([
+    fetchServices(),
+    fetchProjects(),
+  ]);
 
   return (
     <>
@@ -73,8 +118,8 @@ export default async function Home() {
       <main>
         <Hero />
         <TechStack />
-        <Services services={db.services} />
-        <Projects projects={db.projects} />
+        <Services services={services} />
+        <Projects projects={projects} />
         <Process />
         <Testimonials />
         <CTA />

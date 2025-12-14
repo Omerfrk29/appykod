@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Save, Loader2 } from 'lucide-react';
 import ImageUploader from './ImageUploader';
 import type { SiteSettings, LocalizedText } from '@/lib/db';
+import { settingsApi } from '@/lib/api/client';
 
 type Lang = 'tr' | 'en';
 
@@ -16,7 +17,6 @@ export default function SettingsPanel() {
   const [siteName, setSiteName] = useState<LocalizedText>({ tr: '', en: '' });
   const [siteDescription, setSiteDescription] = useState<LocalizedText>({ tr: '', en: '' });
   const [logo, setLogo] = useState('');
-  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState<LocalizedText>({ tr: '', en: '' });
   const [twitter, setTwitter] = useState('');
@@ -30,14 +30,12 @@ export default function SettingsPanel() {
 
   async function fetchSettings() {
     try {
-      const res = await fetch('/api/settings');
-      const data = await res.json();
-      
-      if (data) {
+      const response = await settingsApi.get();
+      if (response.success && response.data) {
+        const data = response.data;
         setSiteName(data.siteName || { tr: '', en: '' });
         setSiteDescription(data.siteDescription || { tr: '', en: '' });
         setLogo(data.logo || '');
-        setPhone(data.contact?.phone || '');
         setEmail(data.contact?.email || '');
         setAddress(data.contact?.address || { tr: '', en: '' });
         setTwitter(data.social?.twitter || '');
@@ -62,7 +60,6 @@ export default function SettingsPanel() {
         siteDescription,
         logo,
         contact: {
-          phone,
           email,
           address,
         },
@@ -74,15 +71,13 @@ export default function SettingsPanel() {
         },
       };
 
-      const res = await fetch('/api/settings', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(settings),
-      });
+      const response = await settingsApi.update(settings);
 
-      if (res.ok) {
+      if (response.success) {
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
+      } else {
+        console.error('Failed to save settings:', response.error);
       }
     } catch (error) {
       console.error('Failed to save settings:', error);
@@ -175,19 +170,6 @@ export default function SettingsPanel() {
         </h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Telefon
-            </label>
-            <input
-              type="text"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary outline-none"
-              placeholder="+90 555 123 4567"
-            />
-          </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               E-posta

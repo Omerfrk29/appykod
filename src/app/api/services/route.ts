@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { getDB, saveDB, Service } from '@/lib/db';
 import { requireAdmin } from '@/lib/auth';
-import { v4 as uuidv4 } from 'uuid';
+import * as serviceService from '@/lib/services/serviceService';
+import { gallerySchema } from '@/lib/validations';
 
 const localizedTextSchema = z.object({
   tr: z.string().min(1).max(10000),
@@ -25,7 +25,7 @@ const createServiceSchema = z.object({
   icon: z.string().min(1).max(100).optional().default('code'),
   fullDescription: localizedTextOptionalSchema.optional(),
   features: z.array(localizedTextSchema).max(100).optional(),
-  gallery: z.array(z.string().url()).max(50).optional(),
+  gallery: gallerySchema,
   faq: z.array(faqSchema).max(100).optional(),
   pricing: z
     .object({
@@ -36,35 +36,51 @@ const createServiceSchema = z.object({
 });
 
 export async function GET() {
-  const db = await getDB();
-  return NextResponse.json(db.services);
+  try {
+    const services = await serviceService.getAllServices();
+    return NextResponse.json({ success: true, data: services });
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch services' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: Request) {
-  const authRes = requireAdmin(request);
+  const authRes = await requireAdmin(request);
   if (authRes) return authRes;
 
   let body: unknown;
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
+    return NextResponse.json(
+      { success: false, error: 'Invalid JSON' },
+      { status: 400 }
+    );
   }
 
   const parsed = createServiceSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid payload', details: parsed.error.errors }, { status: 400 });
+    return NextResponse.json(
+      { success: false, error: 'Invalid payload', details: parsed.error.errors },
+      { status: 400 }
+    );
   }
 
-  const db = await getDB();
-  const newService: Service = {
-    id: uuidv4(),
+  try {
+    const newService = await serviceService.createService({
     ...parsed.data,
     icon: parsed.data.icon || 'code',
-  };
-
-  db.services.push(newService);
-  await saveDB(db);
-
-  return NextResponse.json(newService);
+    });
+    return NextResponse.json({ success: true, data: newService }, { status: 201 });
+  } catch (error) {
+    console.error('Error creating service:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to create service' },
+      { status: 500 }
+    );
+  }
 }

@@ -52,12 +52,19 @@ export interface Message {
     read?: boolean;
 }
 
+export interface Testimonial {
+    id: string;
+    name: LocalizedText;
+    role: LocalizedText;
+    content: LocalizedText;
+    imageUrl?: string;
+}
+
 export interface SiteSettings {
     siteName: LocalizedText;
     siteDescription: LocalizedText;
     logo: string;
     contact: {
-        phone: string;
         email: string;
         address: LocalizedText;
     };
@@ -81,7 +88,6 @@ const defaultSettings: SiteSettings = {
     siteDescription: { tr: 'Dijital çözümler', en: 'Digital solutions' },
     logo: '/logos/Appy_white.svg',
     contact: {
-        phone: '+90 555 123 4567',
         email: 'info@appykod.com',
         address: { tr: 'İstanbul, Türkiye', en: 'Istanbul, Turkey' }
     },

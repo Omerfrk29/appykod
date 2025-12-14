@@ -17,7 +17,7 @@ async function ensureUploadDir() {
 }
 
 export async function POST(request: Request) {
-  const authRes = requireAdmin(request);
+  const authRes = await requireAdmin(request);
   if (authRes) return authRes;
 
   try {
@@ -67,7 +67,7 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const authRes = requireAdmin(request);
+  const authRes = await requireAdmin(request);
   if (authRes) return authRes;
 
   try {

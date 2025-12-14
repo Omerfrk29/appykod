@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Send, CheckCircle, AlertCircle, Phone, Mail, Loader2 } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle, Mail, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Contact() {
@@ -73,21 +73,6 @@ export default function Contact() {
             
             {/* Contact Info Cards */}
             <div className="space-y-3 md:space-y-4">
-              <a
-                href="tel:+905326102957"
-                className="flex items-center gap-3 md:gap-4 p-4 md:p-5 bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl hover:scale-[1.02] hover:translate-x-2 transition-all duration-300 group relative overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-info/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-primary to-info rounded-2xl flex items-center justify-center relative group-hover:rotate-6 transition-transform duration-300 shadow-[0_0_20px_rgba(94,111,234,0.3)]">
-                  <Phone className="w-6 h-6 text-white" />
-                </div>
-                <div className="relative z-10">
-                  <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{t('contact.info.phone')}</p>
-                  <p className="text-lg font-bold text-gray-900 dark:text-white">+90 (532) 610 2957</p>
-                </div>
-                <span className="absolute right-5 text-gray-300 dark:text-gray-600 opacity-0 group-hover:opacity-100 animate-arrow-bounce transition-opacity duration-300">→</span>
-              </a>
-
               <a
                 href="mailto:appykod@gmail.com"
                 className="flex items-center gap-3 md:gap-4 p-4 md:p-5 bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl hover:scale-[1.02] hover:translate-x-2 transition-all duration-300 group relative overflow-hidden"
