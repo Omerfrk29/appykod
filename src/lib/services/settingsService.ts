@@ -40,13 +40,17 @@ export async function getSettings(): Promise<SiteSettings> {
 }
 
 export async function updateSettings(
-  updateData: Partial<SiteSettings>
+  updateData: Partial<SiteSettings> & {
+    contact?: Partial<SiteSettings['contact']>;
+    social?: Partial<SiteSettings['social']>;
+  }
 ): Promise<SiteSettings> {
   await connectDB();
   // Use findOneAndUpdate with upsert to ensure only one settings document exists
+  // MongoDB $set will merge nested objects, so partial nested updates work correctly
   const settings = await SettingsModel.findOneAndUpdate(
     {},
-    { $set: updateData },
+    { $set: updateData as any },
     { new: true, upsert: true, runValidators: true }
   ).lean();
   return {
