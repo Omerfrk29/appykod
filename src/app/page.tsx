@@ -69,9 +69,14 @@ const Contact = dynamic(() => import('@/components/Contact'), {
 async function fetchServices(): Promise<Service[]> {
   try {
     // Directly use MongoDB service instead of API fetch
-    return await serviceService.getAllServices();
+    const services = await serviceService.getAllServices();
+    console.log(`[page.tsx] Fetched ${services.length} services from MongoDB`);
+    return services;
   } catch (error) {
-    console.error('Error fetching services:', error);
+    console.error('[page.tsx] Error fetching services:', error);
+    if (error instanceof Error) {
+      console.error('[page.tsx] Error details:', error.message, error.stack);
+    }
     return [];
   }
 }
@@ -79,9 +84,14 @@ async function fetchServices(): Promise<Service[]> {
 async function fetchProjects(): Promise<Project[]> {
   try {
     // Directly use MongoDB service instead of API fetch
-    return await projectService.getAllProjects();
+    const projects = await projectService.getAllProjects();
+    console.log(`[page.tsx] Fetched ${projects.length} projects from MongoDB`);
+    return projects;
   } catch (error) {
-    console.error('Error fetching projects:', error);
+    console.error('[page.tsx] Error fetching projects:', error);
+    if (error instanceof Error) {
+      console.error('[page.tsx] Error details:', error.message, error.stack);
+    }
     return [];
   }
 }
