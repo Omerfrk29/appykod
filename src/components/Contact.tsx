@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, CheckCircle, AlertCircle, Mail, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { analytics } from '@/lib/analytics';
 
 export default function Contact() {
   const { t } = useLanguage();
@@ -39,11 +40,14 @@ export default function Contact() {
       if (res.ok) {
         setStatus('success');
         (e.target as HTMLFormElement).reset();
+        analytics.contactFormSubmit(true);
       } else {
         setStatus('error');
+        analytics.contactFormSubmit(false);
       }
     } catch {
       setStatus('error');
+      analytics.contactFormSubmit(false);
     }
   }
 

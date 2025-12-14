@@ -8,6 +8,7 @@ import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { handleSmoothScroll } from '@/lib/utils';
+import { analytics } from '@/lib/analytics';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,7 +70,10 @@ export default function Navbar() {
               >
                 <Link
                   href={item.href}
-                  onClick={(e) => handleSmoothScroll(e, item.href)}
+                  onClick={(e) => {
+                    handleSmoothScroll(e, item.href);
+                    analytics.navClick(item.labelKey);
+                  }}
                   className="relative text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-bold transition-colors duration-300 py-2 px-1 text-sm lg:text-base group"
                 >
                   {t(item.labelKey)}
@@ -122,7 +126,10 @@ export default function Navbar() {
             >
               <Link
                 href={item.href}
-                onClick={(e) => handleSmoothScroll(e, item.href, 80, () => setIsOpen(false))}
+                onClick={(e) => {
+                  handleSmoothScroll(e, item.href, 80, () => setIsOpen(false));
+                  analytics.navClick(item.labelKey);
+                }}
                 className="block px-4 py-3 rounded-xl text-base font-semibold text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-primary/10 hover:to-info/10 hover:text-primary transition-all duration-300 relative overflow-hidden group"
               >
                 <span className="relative z-10">{t(item.labelKey)}</span>

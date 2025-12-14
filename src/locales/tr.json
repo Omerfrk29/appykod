@@ -204,5 +204,14 @@
     "title": "Başlık:",
     "description": "Açıklama:",
     "invalidCredentials": "Geçersiz kimlik bilgileri"
+  },
+  "cookies": {
+    "title": "Çerez Kullanımı",
+    "message": "Bu web sitesi, deneyiminizi iyileştirmek için çerezler kullanmaktadır. Devam ederek çerez kullanımını kabul etmiş olursunuz.",
+    "accept": "Kabul Et",
+    "decline": "Reddet",
+    "learnMore": "Daha Fazla Bilgi",
+    "analytics": "Analitik çerezler, web sitesinin nasıl kullanıldığını anlamamıza yardımcı olur.",
+    "necessary": "Gerekli çerezler, web sitesinin temel işlevlerinin çalışması için gereklidir."
   }
 }

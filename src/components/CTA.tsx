@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { handleSmoothScroll } from '@/lib/utils';
+import { analytics } from '@/lib/analytics';
 
 export default function CTA() {
   const { t } = useLanguage();
@@ -27,7 +28,10 @@ export default function CTA() {
             <div className="animate-fade-in-up" style={{ animationDelay: '400ms' }}>
               <Link
                 href="#contact"
-                onClick={(e) => handleSmoothScroll(e, '#contact')}
+                onClick={(e) => {
+                  handleSmoothScroll(e, '#contact');
+                  analytics.ctaClick('contact-cta');
+                }}
                 className="relative inline-flex items-center justify-center px-10 py-4 bg-white text-primary font-bold text-lg rounded-full shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-1 active:scale-95 transition-all duration-300 overflow-hidden group border-0 outline-none no-underline focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2"
               >
                 {/* Animated Gradient Background */}

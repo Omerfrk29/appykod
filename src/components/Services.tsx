@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Service, LocalizedText } from '@/lib/db';
 import { Code, Smartphone, Globe, Database, Cloud, Shield, Zap, Layout, Server, Cpu, Wifi, Monitor } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { analytics } from '@/lib/analytics';
 
 const iconMap: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties; className?: string }>> = {
   code: Code,
@@ -68,6 +69,7 @@ export default function Services({ services }: { services: Service[] }) {
               <Link
                 key={service.id}
                 href={`/services/${service.id}`}
+                onClick={() => analytics.serviceClick(service.id, service.displayTitle)}
                 className="animate-fade-in-up block"
                 style={{ animationDelay: `${index * 150}ms`, animationFillMode: 'backwards' }}
               >

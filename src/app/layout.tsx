@@ -6,6 +6,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { MotionProvider } from "@/components/MotionProvider";
+import CookieConsent from "@/components/CookieConsent";
+import PageViewTracker from "@/components/PageViewTracker";
 
 // Google Font - Anek Latin (Ana font)
 const anekLatin = Anek_Latin({
@@ -59,18 +61,7 @@ export default function RootLayout({
   return (
     <html lang="tr" suppressHydrationWarning className={`${anekLatin.variable} ${specialGothic.variable}`}>
       <body className="font-sans bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300" suppressHydrationWarning>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-EE10SR94QF"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-EE10SR94QF');
-          `}
-        </Script>
+        {/* Google Analytics will be loaded conditionally based on cookie consent */}
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -79,7 +70,9 @@ export default function RootLayout({
         >
           <LanguageProvider>
             <MotionProvider>
+              <PageViewTracker />
               {children}
+              <CookieConsent />
             </MotionProvider>
           </LanguageProvider>
         </ThemeProvider>

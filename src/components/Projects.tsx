@@ -5,6 +5,7 @@ import { Project, LocalizedText } from '@/lib/db';
 import { motion } from 'framer-motion';
 import { ExternalLink, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { analytics } from '@/lib/analytics';
 
 // Helper to get localized text
 function getLocalizedText(text: LocalizedText | string | undefined, lang: 'tr' | 'en'): string {
@@ -132,6 +133,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
                   <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                     <Link
                       href={`/projects/${project.id}`}
+                      onClick={() => analytics.projectClick(project.id, project.displayTitle)}
                       className="inline-flex items-center px-6 py-3 border border-white/30 text-base font-medium rounded-full text-white bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all shadow-lg"
                     >
                       {t('projects.viewDetails')} <ArrowRight size={18} className="ml-2" />
@@ -141,6 +143,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => analytics.externalLinkClick(project.link || '', project.displayTitle)}
                         className="inline-flex items-center px-4 py-3 border border-white/30 text-base font-medium rounded-full text-white bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all shadow-lg"
                       >
                         <ExternalLink size={18} />

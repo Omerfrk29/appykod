@@ -5,6 +5,7 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { handleSmoothScroll } from '@/lib/utils';
 import { useAnimationOnView } from '@/hooks/useAnimationOnView';
+import { analytics } from '@/lib/analytics';
 
 // Sparkle Component - Optimized
 function SparkleEffect({ isPaused }: { isPaused: boolean }) {
@@ -213,7 +214,10 @@ export default function Hero() {
           <div className="transform hover:scale-105 active:scale-95 transition-transform duration-200">
             <Link
               href="#contact"
-              onClick={(e) => handleSmoothScroll(e, '#contact')}
+              onClick={(e) => {
+                handleSmoothScroll(e, '#contact');
+                analytics.ctaClick('hero-primary');
+              }}
               className="relative inline-flex items-center justify-center px-10 py-4 border-0 outline-none text-base font-bold rounded-full text-white md:py-5 md:text-lg md:px-12 shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden group no-underline focus:outline-none focus:ring-4 focus:ring-primary/30"
             >
               <div
@@ -235,7 +239,10 @@ export default function Hero() {
           <div className="transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 transition-transform duration-200">
             <Link
               href="#projects"
-              onClick={(e) => handleSmoothScroll(e, '#projects')}
+              onClick={(e) => {
+                handleSmoothScroll(e, '#projects');
+                analytics.ctaClick('hero-secondary');
+              }}
               className="relative inline-flex items-center justify-center px-10 py-4 border-2 border-transparent text-base font-bold rounded-full text-gray-700 dark:text-gray-200 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md md:py-5 md:text-lg md:px-12 shadow-lg hover:shadow-xl transition-shadow duration-300 group overflow-hidden"
             >
               <span
