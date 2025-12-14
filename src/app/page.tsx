@@ -1,4 +1,4 @@
-import dynamic from 'next/dynamic';
+import dynamicImport from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import TechStack from '@/components/TechStack';
@@ -14,7 +14,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 // Lazy load heavy components that are below the fold
-const Process = dynamic(() => import('@/components/Process'), {
+const Process = dynamicImport(() => import('@/components/Process'), {
   loading: () => (
     <div className="py-16 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 animate-pulse">
@@ -29,7 +29,7 @@ const Process = dynamic(() => import('@/components/Process'), {
   ),
 });
 
-const Testimonials = dynamic(() => import('@/components/Testimonials'), {
+const Testimonials = dynamicImport(() => import('@/components/Testimonials'), {
   loading: () => (
     <div className="py-24 bg-white dark:bg-gray-950">
       <div className="max-w-7xl mx-auto px-4 animate-pulse">
@@ -44,7 +44,7 @@ const Testimonials = dynamic(() => import('@/components/Testimonials'), {
   ),
 });
 
-const CTA = dynamic(() => import('@/components/CTA'), {
+const CTA = dynamicImport(() => import('@/components/CTA'), {
   loading: () => (
     <div className="py-20">
       <div className="max-w-5xl mx-auto px-4">
@@ -54,7 +54,7 @@ const CTA = dynamic(() => import('@/components/CTA'), {
   ),
 });
 
-const Contact = dynamic(() => import('@/components/Contact'), {
+const Contact = dynamicImport(() => import('@/components/Contact'), {
   loading: () => (
     <div className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 animate-pulse">
