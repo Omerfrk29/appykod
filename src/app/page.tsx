@@ -6,6 +6,8 @@ import Services from '@/components/Services';
 import Projects from '@/components/Projects';
 import Footer from '@/components/Footer';
 import type { Service, Project } from '@/lib/db';
+import * as serviceService from '@/lib/services/serviceService';
+import * as projectService from '@/lib/services/projectService';
 
 // Lazy load heavy components that are below the fold
 const Process = dynamic(() => import('@/components/Process'), {
@@ -66,19 +68,8 @@ const Contact = dynamic(() => import('@/components/Contact'), {
 
 async function fetchServices(): Promise<Service[]> {
   try {
-    // Use absolute URL for server-side fetch
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}` 
-      : 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/services`, {
-      cache: 'no-store', // Always fetch fresh data
-    });
-    if (!res.ok) {
-      console.error('Failed to fetch services:', res.statusText);
-      return [];
-    }
-    const data = await res.json();
-    return data.success && data.data ? data.data : [];
+    // Directly use MongoDB service instead of API fetch
+    return await serviceService.getAllServices();
   } catch (error) {
     console.error('Error fetching services:', error);
     return [];
@@ -87,19 +78,8 @@ async function fetchServices(): Promise<Service[]> {
 
 async function fetchProjects(): Promise<Project[]> {
   try {
-    // Use absolute URL for server-side fetch
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}` 
-      : 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/projects`, {
-      cache: 'no-store', // Always fetch fresh data
-    });
-    if (!res.ok) {
-      console.error('Failed to fetch projects:', res.statusText);
-      return [];
-    }
-    const data = await res.json();
-    return data.success && data.data ? data.data : [];
+    // Directly use MongoDB service instead of API fetch
+    return await projectService.getAllProjects();
   } catch (error) {
     console.error('Error fetching projects:', error);
     return [];
