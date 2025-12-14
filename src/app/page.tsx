@@ -9,6 +9,10 @@ import type { Service, Project } from '@/lib/db';
 import * as serviceService from '@/lib/services/serviceService';
 import * as projectService from '@/lib/services/projectService';
 
+// Force dynamic rendering to avoid build-time MongoDB connection issues
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // Lazy load heavy components that are below the fold
 const Process = dynamic(() => import('@/components/Process'), {
   loading: () => (
