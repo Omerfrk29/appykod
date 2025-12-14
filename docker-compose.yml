@@ -3,8 +3,10 @@ services:
     image: mongo:7.0
     container_name: appykod-mongodb
     restart: unless-stopped
+    # Production'da MongoDB port'unu sadece internal network'te bırak (güvenlik)
+    # Lokal erişim için: docker exec -it appykod-mongodb mongosh
     ports:
-      - "27017:27017"
+      - "127.0.0.1:27017:27017"  # Sadece localhost'tan erişilebilir
     environment:
       - MONGO_INITDB_DATABASE=appykod
     volumes:
