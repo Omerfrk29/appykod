@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { X, Cookie, Info } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { getCookieConsent, setCookieConsent, hasCookieConsentExpired, initializeGoogleAnalytics, analytics } from '@/lib/analytics';
+import { getCookieConsent, setCookieConsent, hasCookieConsentExpired, updateConsentMode, initializeGoogleAnalytics, analytics } from '@/lib/analytics';
 
 export default function CookieConsent() {
   const { t } = useLanguage();
@@ -20,14 +20,20 @@ export default function CookieConsent() {
       setShowBanner(true);
       // Trigger animation after mount
       setTimeout(() => setIsVisible(true), 100);
-    } else if (consent === 'accepted') {
-      // Initialize GA if consent was previously given
-      initializeGoogleAnalytics();
+    } else {
+      // Update consent mode based on previous choice
+      // Script should already be loaded via layout.tsx
+      updateConsentMode(consent === 'accepted');
+      if (consent === 'accepted') {
+        // Initialize GA config if consent was previously given
+        initializeGoogleAnalytics();
+      }
     }
   }, []);
 
   const handleAccept = () => {
     setCookieConsent('accepted');
+    // updateConsentMode is already called in setCookieConsent
     analytics.cookieConsent(true);
     setIsVisible(false);
     setTimeout(() => setShowBanner(false), 300);
@@ -35,6 +41,7 @@ export default function CookieConsent() {
 
   const handleDecline = () => {
     setCookieConsent('declined');
+    // updateConsentMode is already called in setCookieConsent
     analytics.cookieConsent(false);
     setIsVisible(false);
     setTimeout(() => setShowBanner(false), 300);

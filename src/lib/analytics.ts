@@ -16,6 +16,46 @@ const COOKIE_CONSENT_EXPIRY_DAYS = 365;
 export type CookieConsent = 'accepted' | 'declined' | null;
 
 /**
+ * Get default consent state based on user's region
+ * Returns 'denied' for EU countries (GDPR compliant), 'denied' for others (default safe)
+ * Can be customized to return 'granted' for non-EU regions if needed
+ */
+export function getDefaultConsentByRegion(): { ad_storage: 'granted' | 'denied'; analytics_storage: 'granted' | 'denied' } {
+  if (typeof window === 'undefined') {
+    return { ad_storage: 'denied', analytics_storage: 'denied' };
+  }
+
+  // Try to detect region from browser language or timezone
+  // This is a simple heuristic - for production, consider using IP geolocation
+  const navigatorWithLang = navigator as Navigator & { userLanguage?: string };
+  const browserLang = navigator.language || navigatorWithLang.userLanguage || '';
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+  
+  // Check if browser language suggests EU region
+  const isEULike = browserLang.toUpperCase().includes('EU') || 
+                   timezone.includes('Europe') ||
+                   browserLang.startsWith('de') || // German
+                   browserLang.startsWith('fr') || // French
+                   browserLang.startsWith('it') || // Italian
+                   browserLang.startsWith('es') || // Spanish
+                   browserLang.startsWith('nl') || // Dutch
+                   browserLang.startsWith('pl') || // Polish
+                   browserLang.startsWith('pt') || // Portuguese
+                   browserLang.startsWith('ro');   // Romanian
+
+  // For GDPR compliance, default to 'denied' for all regions
+  // Change to 'granted' for non-EU if you want to allow by default
+  if (isEULike) {
+    return { ad_storage: 'denied', analytics_storage: 'denied' };
+  }
+
+  // Default to 'denied' for all regions (GDPR compliant)
+  // Uncomment below to allow by default for non-EU regions:
+  // return { ad_storage: 'granted', analytics_storage: 'granted' };
+  return { ad_storage: 'denied', analytics_storage: 'denied' };
+}
+
+/**
  * Get cookie consent status from localStorage
  */
 export function getCookieConsent(): CookieConsent {
@@ -41,11 +81,12 @@ export function setCookieConsent(consent: 'accepted' | 'declined'): void {
   expiryDate.setDate(expiryDate.getDate() + COOKIE_CONSENT_EXPIRY_DAYS);
   localStorage.setItem(`${COOKIE_CONSENT_KEY}-expiry`, expiryDate.toISOString());
   
-  // Initialize or update GA based on consent
+  // Update consent mode (script should already be loaded)
+  updateConsentMode(consent === 'accepted');
+  
+  // Initialize GA config if consent is given
   if (consent === 'accepted') {
     initializeGoogleAnalytics();
-  } else {
-    disableGoogleAnalytics();
   }
 }
 
@@ -63,16 +104,11 @@ export function hasCookieConsentExpired(): boolean {
 }
 
 /**
- * Initialize Google Analytics if consent is given
+ * Initialize Consent Mode with region-based default state (GDPR compliant)
+ * This should be called before GA script loads
  */
-export function initializeGoogleAnalytics(): void {
+export function initializeConsentMode(): void {
   if (typeof window === 'undefined') return;
-  
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
-  if (!gaId) {
-    console.warn('[Analytics] NEXT_PUBLIC_GA_ID is not set');
-    return;
-  }
   
   // Initialize dataLayer if not exists
   window.dataLayer = window.dataLayer || [];
@@ -84,47 +120,85 @@ export function initializeGoogleAnalytics(): void {
   
   window.gtag = gtag;
   
-  // Configure GA
-  gtag('js', new Date());
-  gtag('config', gaId, {
-    anonymize_ip: true,
-    cookie_flags: 'SameSite=None;Secure',
-  });
+  // Get default consent state based on region
+  const defaultConsent = getDefaultConsentByRegion();
   
-  // Load GA script if not already loaded
-  if (!document.querySelector(`script[src*="googletagmanager.com/gtag/js"]`)) {
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-    document.head.appendChild(script);
+  // Set default consent state (region-based)
+  gtag('consent', 'default', {
+    ad_storage: defaultConsent.ad_storage,
+    analytics_storage: defaultConsent.analytics_storage,
+    wait_for_update: 2000,
+  });
+}
+
+/**
+ * Update consent mode based on user choice
+ * @param accepted - Whether user accepted consent
+ * @param enableAdsDataRedaction - Whether to enable ads_data_redaction (removes GCLID/DCLID from URLs)
+ */
+export function updateConsentMode(accepted: boolean, enableAdsDataRedaction: boolean = true): void {
+  if (typeof window === 'undefined' || !window.gtag) return;
+  
+  if (accepted) {
+    window.gtag('consent', 'update', {
+      ad_storage: 'granted',
+      analytics_storage: 'granted',
+    });
+  } else {
+    const updateParams: {
+      ad_storage: 'denied';
+      analytics_storage: 'denied';
+      ads_data_redaction?: 'true';
+    } = {
+      ad_storage: 'denied',
+      analytics_storage: 'denied',
+    };
+    
+    // Enable ads_data_redaction to remove GCLID/DCLID from URLs when consent is denied
+    if (enableAdsDataRedaction) {
+      updateParams.ads_data_redaction = 'true';
+    }
+    
+    window.gtag('consent', 'update', updateParams);
   }
 }
 
 /**
- * Disable Google Analytics
+ * Initialize Google Analytics configuration
+ * Note: Script should already be loaded via layout.tsx
  */
-export function disableGoogleAnalytics(): void {
+export function initializeGoogleAnalytics(): void {
   if (typeof window === 'undefined') return;
   
-  // Clear dataLayer
-  if (window.dataLayer) {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  if (!gaId) {
+    console.warn('[Analytics] NEXT_PUBLIC_GA_ID is not set');
+    return;
+  }
+  
+  // Ensure dataLayer and gtag are initialized
+  if (!window.dataLayer) {
     window.dataLayer = [];
   }
   
-  // Remove GA cookies
-  const cookies = document.cookie.split(';');
-  cookies.forEach(cookie => {
-    const eqPos = cookie.indexOf('=');
-    const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
-    if (name.startsWith('_ga') || name.startsWith('_gid')) {
-      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-      document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${window.location.hostname}`;
+  if (!window.gtag) {
+    function gtag(...args: unknown[]): void {
+      window.dataLayer.push(args);
     }
+    window.gtag = gtag;
+  }
+  
+  // Configure GA
+  window.gtag('js', new Date());
+  window.gtag('config', gaId, {
+    anonymize_ip: true,
+    cookie_flags: 'SameSite=None;Secure',
   });
 }
 
 /**
  * Track a custom event
+ * Note: With consent mode, events are tracked even if consent is denied (as cookieless pings)
  */
 export function trackEvent(
   eventName: string,
@@ -132,36 +206,35 @@ export function trackEvent(
 ): void {
   if (typeof window === 'undefined') return;
   
-  const consent = getCookieConsent();
-  if (consent !== 'accepted') {
-    console.log('[Analytics] Event not tracked - no consent:', eventName);
-    return;
-  }
-  
   if (!window.gtag) {
     console.warn('[Analytics] gtag is not initialized');
     return;
   }
   
+  // With consent mode, we can track events even without consent
+  // GA will send cookieless pings if consent is denied
   window.gtag('event', eventName, eventParams);
 }
 
 /**
  * Track page view
+ * Note: With consent mode, page views are tracked even if consent is denied (as cookieless pings)
  */
 export function trackPageView(url: string): void {
   if (typeof window === 'undefined') return;
-  
-  const consent = getCookieConsent();
-  if (consent !== 'accepted') {
-    return;
-  }
   
   if (!window.gtag) {
     return;
   }
   
-  window.gtag('config', process.env.NEXT_PUBLIC_GA_ID || '', {
+  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  if (!gaId) {
+    return;
+  }
+  
+  // With consent mode, we can track page views even without consent
+  // GA will send cookieless pings if consent is denied
+  window.gtag('config', gaId, {
     page_path: url,
   });
 }
