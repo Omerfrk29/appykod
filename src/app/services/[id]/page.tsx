@@ -38,15 +38,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ServiceDetailPage({ params }: Props) {
+  let service;
   try {
     const { id } = await params;
-    const service = await serviceService.getServiceById(id);
-    if (!service) {
-      notFound();
-    }
-    return <ServiceDetailClient service={service} />;
+    service = await serviceService.getServiceById(id);
   } catch (error) {
     console.error('[ServiceDetailPage] Error fetching service:', error);
     notFound();
   }
+
+  if (!service) {
+    notFound();
+  }
+
+  return <ServiceDetailClient service={service} />;
 }

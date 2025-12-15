@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getLocalizedText } from '@/lib/db';
-import type { Project } from '@/lib/db';
 import ProjectDetailClient from './ProjectDetailClient';
 import * as projectService from '@/lib/services/projectService';
 
@@ -39,15 +38,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProjectDetailPage({ params }: Props) {
+  let project;
   try {
     const { id } = await params;
-    const project = await projectService.getProjectById(id);
-    if (!project) {
-      notFound();
-    }
-    return <ProjectDetailClient project={project} />;
+    project = await projectService.getProjectById(id);
   } catch (error) {
     console.error('[ProjectDetailPage] Error fetching project:', error);
     notFound();
   }
+
+  if (!project) {
+    notFound();
+  }
+
+  return <ProjectDetailClient project={project} />;
 }
