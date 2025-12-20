@@ -6,12 +6,12 @@
     "contact": "İletişim"
   },
   "hero": {
-    "title": "Dijital Mükemmellik",
-    "titlePrefix": "Biz",
-    "titleSuffix": "İnşa Ediyoruz",
-    "subtitle": "Fikirleri güçlü, ölçeklenebilir ve güzel yazılım çözümlerine dönüştürüyoruz. Modern web geliştirmede ortağınız.",
+    "title": "Dijital Geleceği",
+    "titlePrefix": "",
+    "titleSuffix": "Tasarlıyoruz",
+    "subtitle": "Fikirlerinizi güçlü, ölçeklenebilir ve estetik yazılım çözümlerine dönüştürüyoruz. Modern web geliştirmede güvenilir ortağınız.",
     "ctaPrimary": "Projeye Başla",
-    "ctaSecondary": "Portföyü Görüntüle"
+    "ctaSecondary": "Portföyümüzü İncele"
   },
   "services": {
     "title": "Hizmetlerimiz",
@@ -21,39 +21,39 @@
       "web-development": {
         "title": "Web Geliştirme",
         "description": "Modern, responsive ve SEO uyumlu web siteleri.",
-        "fullDescription": "İşletmeniz için en son teknolojilerle modern, hızlı ve kullanıcı dostu web siteleri geliştiriyoruz. Next.js, React ve TypeScript kullanarak SEO uyumlu, mobil öncelikli tasarımlar oluşturuyoruz.\n\nWeb sitelerimiz; yüksek performans, güvenlik ve ölçeklenebilirlik odaklıdır. E-ticaret, kurumsal web siteleri, blog platformları ve daha fazlası için özel çözümler sunuyoruz."
+        "fullDescription": "İşletmeniz için en güncel teknolojilerle modern, hızlı ve kullanıcı dostu web siteleri geliştiriyoruz. Next.js, React ve TypeScript kullanarak SEO uyumlu, mobil öncelikli tasarımlar hazırlıyoruz.\n\nGeliştirdiğimiz web siteleri yüksek performans, güvenlik ve ölçeklenebilirlik odaklıdır. E-ticaret platformları, kurumsal web siteleri, blog platformları ve daha fazlası için özel çözümler sunuyoruz."
       },
       "mobile-apps": {
         "title": "Mobil Uygulamalar",
         "description": "iOS ve Android için native ve cross-platform uygulamalar.",
-        "fullDescription": "React Native ve Flutter kullanarak hem iOS hem de Android platformlarında çalışan yüksek performanslı mobil uygulamalar geliştiriyoruz.\n\nTek kod tabanıyla her iki platformda da native performans sunan uygulamalar oluşturuyoruz. Push bildirimleri, offline çalışma, cihaz sensörleri entegrasyonu ve daha fazlası."
+        "fullDescription": "React Native ve Flutter kullanarak hem iOS hem de Android platformlarında çalışan yüksek performanslı mobil uygulamalar geliştiriyoruz.\n\nTek bir kod tabanıyla her iki platformda da yerel performans sunan uygulamalar oluşturuyoruz. Anlık bildirimler, çevrimdışı çalışma, cihaz sensörleri entegrasyonu ve daha fazlasını içerir."
       },
       "custom-software": {
         "title": "Özel Yazılım",
         "description": "İşletmenize özel yazılım çözümleri ve sistemler.",
-        "fullDescription": "İşletmenizin benzersiz ihtiyaçlarına göre tasarlanmış özel yazılım çözümleri geliştiriyoruz. ERP sistemleri, CRM uygulamaları, otomasyon araçları ve daha fazlası.\n\nMevcut sistemlerinizle entegre çalışan, ölçeklenebilir ve güvenli yazılım çözümleri sunuyoruz. İş süreçlerinizi optimize edin ve verimliliğinizi artırın."
+        "fullDescription": "İşletmenizin benzersiz ihtiyaçlarına göre tasarlanmış özel yazılım çözümleri geliştiriyoruz. ERP sistemleri, CRM uygulamaları, otomasyon araçları ve daha fazlası.\n\nMevcut sistemlerinizle uyumlu çalışan, ölçeklenebilir ve güvenli yazılım çözümleri sunuyoruz. İş süreçlerinizi optimize ederek verimliliğinizi artırmanıza yardımcı oluyoruz."
       }
     }
   },
   "process": {
-    "title": "Sürecimiz",
-    "subtitle": "Konseptten gerçeğe dört basit adımda",
+    "title": "Çalışma Sürecimiz",
+    "subtitle": "Fikirden hayata dört adımda",
     "steps": {
       "discovery": {
-        "title": "Keşif",
-        "description": "Gereksinimlerinizi ve iş hedeflerinizi derinlemesine inceliyoruz."
+        "title": "Keşif ve Analiz",
+        "description": "Gereksinimlerinizi ve iş hedeflerinizi detaylı şekilde analiz ediyoruz."
       },
       "design": {
         "title": "Tasarım",
-        "description": "Sezgisel ve güzel kullanıcı deneyimleri tasarlıyoruz."
+        "description": "Sezgisel ve estetik kullanıcı deneyimleri tasarlıyoruz."
       },
       "development": {
         "title": "Geliştirme",
-        "description": "En son teknolojileri kullanarak sağlam çözümler inşa ediyoruz."
+        "description": "En güncel teknolojileri kullanarak sağlam çözümler geliştiriyoruz."
       },
       "launch": {
-        "title": "Yayınlama",
-        "description": "Dağıtım, optimizasyon ve büyümenize destek sağlıyoruz."
+        "title": "Yayınlama ve Destek",
+        "description": "Yayınlama, optimizasyon ve büyümenize sürekli destek sağlıyoruz."
       }
     }
   },
@@ -64,18 +64,18 @@
     "viewDetails": "Detayları Gör"
   },
   "testimonials": {
-    "title": "Müşteri Hikayeleri",
-    "subtitle": "Sadece bizim sözümüze güvenmeyin",
+    "title": "Müşteri Deneyimleri",
+    "subtitle": "Sadece bizim söylediklerimize değil, müşterilerimizin deneyimlerine de bakın",
     "items": [
       {
         "name": "Sarah Johnson",
         "role": "CEO, TechStart",
-        "content": "Appykod vizyonumuzu gerçeğe dönüştürdü. Detaylara gösterdikleri özen ve teknik uzmanlıkları eşsiz. Kesinlikle tavsiye ederim!"
+        "content": "Appykod vizyonumuzu hayata geçirdi. Detaylara gösterdikleri özen ve teknik uzmanlıkları benzersiz. Kesinlikle öneririm!"
       },
       {
         "name": "Michael Chen",
         "role": "Kurucu, GrowthIO",
-        "content": "Ekip projemizi zamanında ve bütçe dahilinde teslim etti. Animasyonlar ve karanlık mod uygulaması bizi büyüledi."
+        "content": "Ekip projemizi zamanında ve bütçe dahilinde tamamladı. Animasyonlar ve karanlık mod uygulaması bizi çok etkiledi."
       },
       {
         "name": "Emily Davis",
@@ -86,12 +86,12 @@
   },
   "cta": {
     "title": "Bir sonraki projenize başlamaya hazır mısınız?",
-    "subtitle": "Fikirlerinizi gerçeğe dönüştürelim. Ekibimiz birlikte harika bir şeyler inşa etmeye hazır.",
+    "subtitle": "Fikirlerinizi hayata geçirelim. Ekibimiz birlikte harika projeler gerçekleştirmeye hazır.",
     "button": "İletişime Geç"
   },
   "contact": {
     "title": "Birlikte Çalışalım",
-    "subtitle": "Aklınızda bir proje mi var? Bunu duymayı çok isteriz. Bize bir mesaj gönderin, en kısa sürede size dönüş yapalım.",
+    "subtitle": "Aklınızda bir proje mi var? Detaylarını öğrenmek isteriz. Bize mesaj gönderin, en kısa sürede size dönüş yapalım.",
     "info": {
       "phone": "Telefon",
       "email": "E-posta"
@@ -102,7 +102,7 @@
       "message": "Mesaj",
       "namePlaceholder": "Adınız Soyadınız",
       "emailPlaceholder": "ornek@email.com",
-      "messagePlaceholder": "Projeniz hakkında bize bilgi verin...",
+      "messagePlaceholder": "Projeniz hakkında detaylı bilgi verin...",
       "send": "Mesaj Gönder",
       "sending": "Gönderiliyor...",
       "success": "Gönderildi!",
@@ -110,17 +110,17 @@
     }
   },
   "footer": {
-    "tagline": "Önemli dijital deneyimler inşa ediyoruz.",
+    "tagline": "Değer yaratan dijital deneyimler tasarlıyoruz.",
     "copyright": "Tüm hakları saklıdır.",
     "madeWith": "ile yapıldı",
     "inTurkey": "Türkiye'de"
   },
   "techstack": {
-    "subtitle": "Modern teknolojilerle desteklenmektedir"
+    "subtitle": "Modern teknolojilerle güçlendirilmiştir"
   },
   "common": {
     "loading": "Yükleniyor...",
-    "error": "Bir hata oluştu"
+    "error": "Bir sorun oluştu"
   },
   "serviceDetail": {
     "backToServices": "Hizmetlere Dön",
@@ -130,21 +130,21 @@
     "pricing": "Fiyatlandırma",
     "startingFrom": "Başlangıç",
     "getQuote": "Teklif Al",
-    "ctaTitle": "Bu hizmeti almak ister misiniz?",
+    "ctaTitle": "Bu hizmetten yararlanmak ister misiniz?",
     "ctaSubtitle": "Projenizi hayata geçirmek için bizimle iletişime geçin.",
     "faqs": {
       "web-development": [
         {
           "question": "Web sitesi ne kadar sürede hazır olur?",
-          "answer": "Projenin kapsamına bağlı olarak 2-8 hafta arasında değişir. Basit kurumsal siteler 2-3 haftada, karmaşık e-ticaret platformları 6-8 haftada tamamlanır."
+          "answer": "Projenin kapsamına bağlı olarak 2-8 hafta arasında değişir. Basit kurumsal siteler 2-3 haftada, karmaşık e-ticaret platformları ise 6-8 haftada tamamlanır."
         },
         {
           "question": "Hangi teknolojileri kullanıyorsunuz?",
           "answer": "Next.js, React, TypeScript, Tailwind CSS, Node.js ve modern veritabanı çözümleri kullanıyoruz. Her proje için en uygun teknolojiyi seçiyoruz."
         },
         {
-          "question": "Hosting ve domain dahil mi?",
-          "answer": "İsteğe bağlı olarak hosting ve domain hizmetleri de sunuyoruz. Vercel, AWS veya tercih ettiğiniz platformda barındırma yapabiliriz."
+          "question": "Barındırma ve alan adı hizmeti dahil mi?",
+          "answer": "İsteğe bağlı olarak barındırma ve alan adı hizmetleri de sunuyoruz. Vercel, AWS veya tercih ettiğiniz platformda barındırma yapabiliriz."
         }
       ],
       "mobile-apps": [
@@ -153,18 +153,18 @@
           "answer": "Evet, React Native veya Flutter kullanarak tek bir kod tabanıyla her iki platformda da çalışan uygulamalar geliştiriyoruz."
         },
         {
-          "question": "Uygulama mağazalarına yükleme dahil mi?",
-          "answer": "Evet, App Store ve Google Play Store'a yükleme süreçlerini sizin adınıza yönetiyoruz."
+          "question": "Uygulama mağazalarına yayınlama dahil mi?",
+          "answer": "Evet, App Store ve Google Play Store'a yayınlama süreçlerini sizin adınıza yönetiyoruz."
         },
         {
           "question": "Uygulama güncellemeleri nasıl yapılır?",
-          "answer": "Bakım paketlerimiz kapsamında düzenli güncellemeler ve yeni özellik eklemeleri yapıyoruz."
+          "answer": "Bakım paketlerimiz kapsamında düzenli güncellemeler ve yeni özellik eklemeleri gerçekleştiriyoruz."
         }
       ],
       "custom-software": [
         {
           "question": "Mevcut sistemlerimizle entegre olabilir mi?",
-          "answer": "Evet, mevcut ERP, CRM veya diğer sistemlerinizle API üzerinden entegrasyon sağlıyoruz."
+          "answer": "Evet, mevcut ERP, CRM veya diğer sistemlerinizle API üzerinden entegrasyon gerçekleştiriyoruz."
         },
         {
           "question": "Kaynak kodları bize ait olacak mı?",
@@ -186,8 +186,8 @@
     "gallery": "Galeri",
     "viewLive": "Canlı Görüntüle",
     "viewImage": "Görüntüle",
-    "ctaTitle": "Benzer bir proje mi düşünüyorsunuz?",
-    "ctaSubtitle": "Hayalinizdeki projeyi birlikte hayata geçirelim."
+    "ctaTitle": "Benzer bir proje mi planlıyorsunuz?",
+    "ctaSubtitle": "Hayalinizdeki projeyi birlikte gerçekleştirelim."
   },
   "admin": {
     "login": "Admin Girişi",
@@ -203,15 +203,15 @@
     "areYouSure": "Emin misiniz?",
     "title": "Başlık:",
     "description": "Açıklama:",
-    "invalidCredentials": "Geçersiz kimlik bilgileri"
+    "invalidCredentials": "Kullanıcı adı veya şifre hatalı"
   },
   "cookies": {
     "title": "Çerez Kullanımı",
-    "message": "Bu web sitesi, deneyiminizi iyileştirmek için çerezler kullanmaktadır. Devam ederek çerez kullanımını kabul etmiş olursunuz.",
+    "message": "Bu web sitesi, deneyiminizi geliştirmek için çerezler kullanmaktadır. Sitede gezinmeye devam ederek çerez kullanımını kabul etmiş olursunuz.",
     "accept": "Kabul Et",
     "decline": "Reddet",
     "learnMore": "Daha Fazla Bilgi",
     "analytics": "Analitik çerezler, web sitesinin nasıl kullanıldığını anlamamıza yardımcı olur.",
-    "necessary": "Gerekli çerezler, web sitesinin temel işlevlerinin çalışması için gereklidir."
+    "necessary": "Gerekli çerezler, web sitesinin temel işlevlerinin çalışması için zorunludur."
   }
 }

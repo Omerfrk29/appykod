@@ -124,7 +124,7 @@ export default function ServiceModal({ isOpen, onClose, onSave, service }: Servi
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            {service ? 'Hizmeti Düzenle' : 'Yeni Hizmet'}
+            {service ? 'Hizmeti Düzenle' : 'Yeni Hizmet Ekle'}
           </h2>
           <button
             onClick={onClose}
@@ -244,7 +244,7 @@ export default function ServiceModal({ isOpen, onClose, onSave, service }: Servi
                       value={feature[activeLang]}
                       onChange={(e) => updateFeature(index, activeLang, e.target.value)}
                       className="flex-1 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary outline-none"
-                      placeholder={`Özellik ${index + 1}`}
+                      placeholder={`Özellik ${index + 1} - Örnek: Hızlı yükleme süresi`}
                     />
                     <button
                       type="button"
@@ -317,7 +317,7 @@ export default function ServiceModal({ isOpen, onClose, onSave, service }: Servi
                         value={item.question[activeLang]}
                         onChange={(e) => updateFaq(index, 'question', activeLang, e.target.value)}
                         className="flex-1 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary outline-none"
-                        placeholder="Soru"
+                        placeholder="Sıkça sorulan soru"
                       />
                       <button
                         type="button"
@@ -332,7 +332,7 @@ export default function ServiceModal({ isOpen, onClose, onSave, service }: Servi
                       onChange={(e) => updateFaq(index, 'answer', activeLang, e.target.value)}
                       rows={2}
                       className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary outline-none resize-none"
-                      placeholder="Cevap"
+                      placeholder="Sorunun cevabı"
                     />
                   </div>
                 ))}

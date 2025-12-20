@@ -22,7 +22,7 @@ export default function AdminDashboard() {
       if (response.success && response.data) {
         setStats(response.data);
       } else {
-        setError('İstatistikler yüklenirken bir hata oluştu');
+        setError('İstatistikler yüklenirken bir sorun oluştu');
       }
     } catch (err) {
       setError('İstatistikler yüklenirken bir hata oluştu');
@@ -130,7 +130,7 @@ export default function AdminDashboard() {
           </p>
           {stats?.messages.unread && stats.messages.unread > 0 && (
             <p className="text-sm text-red-500 mt-2">
-              Dikkat gerektiriyor
+              Dikkat gerekiyor
             </p>
                         )}
                       </div>

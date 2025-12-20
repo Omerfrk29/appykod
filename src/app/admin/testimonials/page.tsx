@@ -41,7 +41,7 @@ export default function TestimonialsPage() {
       if (response.success && response.data) {
         setTestimonials(response.data);
       } else {
-        setError('Yorumlar yüklenirken bir hata oluştu');
+        setError('Yorumlar yüklenirken bir sorun oluştu');
       }
     } catch (err) {
       setError('Yorumlar yüklenirken bir hata oluştu');
@@ -52,7 +52,7 @@ export default function TestimonialsPage() {
   }
 
   async function handleDeleteTestimonial(id: string) {
-    if (!confirm('Bu yorumu silmek istediğinizden emin misiniz?')) return;
+    if (!confirm('Bu yorumu silmek istediğinize emin misiniz?')) return;
     setLoading(true);
     setError(null);
     try {
@@ -60,10 +60,10 @@ export default function TestimonialsPage() {
       if (response.success) {
         await fetchTestimonials();
       } else {
-        setError(response.error || 'Yorum silinirken bir hata oluştu');
+        setError(response.error || 'Yorum silinirken bir sorun oluştu');
       }
     } catch (err) {
-      setError('Yorum silinirken bir hata oluştu');
+      setError('Yorum silinirken bir sorun oluştu');
       console.error('Error deleting testimonial:', err);
     } finally {
       setLoading(false);
@@ -85,10 +85,10 @@ export default function TestimonialsPage() {
         setEditingTestimonial(null);
         await fetchTestimonials();
       } else {
-        setError(response.error || 'Yorum kaydedilirken bir hata oluştu');
+        setError(response.error || 'Yorum kaydedilirken bir sorun oluştu');
       }
     } catch (err) {
-      setError('Yorum kaydedilirken bir hata oluştu');
+      setError('Yorum kaydedilirken bir sorun oluştu');
       console.error('Error saving testimonial:', err);
     } finally {
       setLoading(false);

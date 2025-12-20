@@ -72,7 +72,7 @@ export default function TestimonialModal({ isOpen, onClose, onSave, testimonial 
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            {testimonial ? 'Yorumu Düzenle' : 'Yeni Yorum'}
+            {testimonial ? 'Yorumu Düzenle' : 'Yeni Yorum Ekle'}
           </h2>
           <button
             onClick={onClose}
@@ -122,7 +122,7 @@ export default function TestimonialModal({ isOpen, onClose, onSave, testimonial 
                   value={name[activeLang]}
                   onChange={(e) => setName({ ...name, [activeLang]: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary outline-none"
-                  placeholder="Örn: Ahmet Yılmaz"
+                  placeholder="Örnek: Ahmet Yılmaz"
                   required
                 />
               </div>
@@ -136,7 +136,7 @@ export default function TestimonialModal({ isOpen, onClose, onSave, testimonial 
                   value={role[activeLang]}
                   onChange={(e) => setRole({ ...role, [activeLang]: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary outline-none"
-                  placeholder="Örn: CEO, ABC Şirketi"
+                  placeholder="Örnek: CEO, ABC Şirketi"
                   required
                 />
               </div>
@@ -152,7 +152,7 @@ export default function TestimonialModal({ isOpen, onClose, onSave, testimonial 
                 onChange={(e) => setContent({ ...content, [activeLang]: e.target.value })}
                 rows={4}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary outline-none resize-none"
-                placeholder="Müşterinin yorumu..."
+                placeholder="Müşteri yorumunu buraya yazın..."
                 required
               />
             </div>
@@ -162,10 +162,10 @@ export default function TestimonialModal({ isOpen, onClose, onSave, testimonial 
               value={imageUrl ? [imageUrl] : []}
               onChange={(val) => setImageUrl(Array.isArray(val) ? val[0] || '' : val)}
               multiple={false}
-              label="Profil Fotoğrafı (Opsiyonel)"
+              label="Profil Fotoğrafı (İsteğe Bağlı)"
             />
             <p className="text-sm text-gray-500 dark:text-gray-400 -mt-4">
-              Fotoğraf yüklemezseniz varsayılan bir fotoğraf kullanılır.
+              Fotoğraf yüklemezseniz varsayılan bir görsel kullanılır.
             </p>
           </div>
 

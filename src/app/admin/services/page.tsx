@@ -34,7 +34,7 @@ export default function ServicesPage() {
       if (response.success && response.data) {
         setServices(response.data);
       } else {
-        setError('Hizmetler yüklenirken bir hata oluştu');
+        setError('Hizmetler yüklenirken bir sorun oluştu');
       }
     } catch (err) {
       setError('Hizmetler yüklenirken bir hata oluştu');
@@ -45,7 +45,7 @@ export default function ServicesPage() {
   }
 
   async function handleDeleteService(id: string) {
-    if (!confirm('Bu hizmeti silmek istediğinizden emin misiniz?')) return;
+    if (!confirm('Bu hizmeti silmek istediğinize emin misiniz?')) return;
     setLoading(true);
     setError(null);
     try {
@@ -53,10 +53,10 @@ export default function ServicesPage() {
       if (response.success) {
         await fetchServices();
       } else {
-        setError(response.error || 'Hizmet silinirken bir hata oluştu');
+        setError(response.error || 'Hizmet silinirken bir sorun oluştu');
       }
     } catch (err) {
-      setError('Hizmet silinirken bir hata oluştu');
+      setError('Hizmet silinirken bir sorun oluştu');
       console.error('Error deleting service:', err);
     } finally {
       setLoading(false);
@@ -78,10 +78,10 @@ export default function ServicesPage() {
         setEditingService(null);
         await fetchServices();
       } else {
-        setError(response.error || 'Hizmet kaydedilirken bir hata oluştu');
+        setError(response.error || 'Hizmet kaydedilirken bir sorun oluştu');
       }
     } catch (err) {
-      setError('Hizmet kaydedilirken bir hata oluştu');
+      setError('Hizmet kaydedilirken bir sorun oluştu');
       console.error('Error saving service:', err);
     } finally {
       setLoading(false);
@@ -160,7 +160,7 @@ export default function ServicesPage() {
                 </p>
                 {s.pricing?.startingFrom && (
                   <span className="inline-block mt-2 px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
-                    {s.pricing.currency}{s.pricing.startingFrom}'dan başlayan
+                    {s.pricing.currency}{s.pricing.startingFrom}'dan başlayan fiyatlarla
                   </span>
                 )}
               </div>

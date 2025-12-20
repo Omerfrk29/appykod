@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     default: "Appykod - Modern Yazılım Çözümleri",
     template: "%s | Appykod",
   },
-  description: "Profesyonel web ve mobil uygulama geliştirme hizmetleri. React, Next.js, TypeScript ile modern çözümler.",
+  description: "Profesyonel web ve mobil uygulama geliştirme hizmetleri. React, Next.js ve TypeScript ile modern yazılım çözümleri.",
   keywords: ["web geliştirme", "mobil uygulama", "yazılım", "react", "nextjs", "typescript", "appykod"],
   authors: [{ name: "Appykod" }],
   creator: "Appykod",

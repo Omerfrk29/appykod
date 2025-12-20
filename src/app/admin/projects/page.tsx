@@ -34,7 +34,7 @@ export default function ProjectsPage() {
       if (response.success && response.data) {
         setProjects(response.data);
       } else {
-        setError('Projeler yüklenirken bir hata oluştu');
+        setError('Projeler yüklenirken bir sorun oluştu');
       }
     } catch (err) {
       setError('Projeler yüklenirken bir hata oluştu');
@@ -45,7 +45,7 @@ export default function ProjectsPage() {
   }
 
   async function handleDeleteProject(id: string) {
-    if (!confirm('Bu projeyi silmek istediğinizden emin misiniz?')) return;
+    if (!confirm('Bu projeyi silmek istediğinize emin misiniz?')) return;
     setLoading(true);
     setError(null);
     try {
@@ -53,10 +53,10 @@ export default function ProjectsPage() {
       if (response.success) {
         await fetchProjects();
       } else {
-        setError(response.error || 'Proje silinirken bir hata oluştu');
+        setError(response.error || 'Proje silinirken bir sorun oluştu');
       }
     } catch (err) {
-      setError('Proje silinirken bir hata oluştu');
+      setError('Proje silinirken bir sorun oluştu');
       console.error('Error deleting project:', err);
     } finally {
       setLoading(false);
@@ -78,10 +78,10 @@ export default function ProjectsPage() {
         setEditingProject(null);
         await fetchProjects();
       } else {
-        setError(response.error || 'Proje kaydedilirken bir hata oluştu');
+        setError(response.error || 'Proje kaydedilirken bir sorun oluştu');
       }
     } catch (err) {
-      setError('Proje kaydedilirken bir hata oluştu');
+      setError('Proje kaydedilirken bir sorun oluştu');
       console.error('Error saving project:', err);
     } finally {
       setLoading(false);

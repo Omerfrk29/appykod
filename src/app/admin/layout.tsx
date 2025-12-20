@@ -47,7 +47,7 @@ export default function AdminLayout({
       setIsLoggedIn(true);
       router.refresh();
     } else {
-      alert('Geçersiz kimlik bilgileri');
+      alert('Kullanıcı adı veya şifre hatalı');
     }
   }
 
@@ -85,10 +85,10 @@ export default function AdminLayout({
           </div>
           
           <h1 className="text-3xl font-bold text-center mb-2 text-white">
-            Admin Girişi
+            Yönetim Paneli Girişi
           </h1>
           <p className="text-gray-400 text-center mb-8">
-            Yönetim paneline erişmek için giriş yapın
+            Yönetim paneline erişmek için lütfen giriş yapın
           </p>
           
           <div className="space-y-4">

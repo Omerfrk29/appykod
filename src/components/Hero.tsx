@@ -194,7 +194,7 @@ export default function Hero() {
             </span>
           )}
           <span className="relative inline-block hover:scale-[1.02] transition-transform duration-300">
-            <span className="animate-gradient-text" style={{ marginLeft: '20px', marginRight: '0px' }}>
+            <span className="animate-gradient-text" style={{ marginLeft: '20px', marginRight: '20px' }}>
               {t('hero.title')}
             </span>
           </span>

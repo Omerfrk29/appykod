@@ -105,7 +105,7 @@ export default function ProjectModal({ isOpen, onClose, onSave, project }: Proje
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            {project ? 'Projeyi Düzenle' : 'Yeni Proje'}
+            {project ? 'Projeyi Düzenle' : 'Yeni Proje Ekle'}
           </h2>
           <button
             onClick={onClose}

@@ -106,7 +106,7 @@ export default function ImageUploader({ value, onChange, multiple = false, label
             <Upload className="w-10 h-10 text-gray-400" />
           )}
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            {uploading ? 'Yükleniyor...' : 'Görsel yüklemek için tıklayın veya sürükleyin'}
+            {uploading ? 'Yükleniyor...' : 'Görsel yüklemek için buraya tıklayın veya sürükleyip bırakın'}
           </p>
           <p className="mt-1 text-xs text-gray-400">
             PNG, JPG, GIF, WebP, SVG (max 10MB)

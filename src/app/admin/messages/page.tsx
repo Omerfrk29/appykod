@@ -22,7 +22,7 @@ export default function MessagesPage() {
       if (response.success && response.data) {
         setMessages(response.data);
       } else {
-        setError('Mesajlar yüklenirken bir hata oluştu');
+        setError('Mesajlar yüklenirken bir sorun oluştu');
       }
     } catch (err) {
       setError('Mesajlar yüklenirken bir hata oluştu');
@@ -40,10 +40,10 @@ export default function MessagesPage() {
       if (response.success) {
         await fetchMessages();
       } else {
-        setError(response.error || 'Mesaj işaretlenirken bir hata oluştu');
+        setError(response.error || 'Mesaj işaretlenirken bir sorun oluştu');
       }
     } catch (err) {
-      setError('Mesaj işaretlenirken bir hata oluştu');
+      setError('Mesaj işaretlenirken bir sorun oluştu');
       console.error('Error marking message as read:', err);
     } finally {
       setLoading(false);
@@ -51,7 +51,7 @@ export default function MessagesPage() {
   }
 
   async function handleDeleteMessage(id: string) {
-    if (!confirm('Bu mesajı silmek istediğinizden emin misiniz?')) return;
+    if (!confirm('Bu mesajı silmek istediğinize emin misiniz?')) return;
     setLoading(true);
     setError(null);
     try {
@@ -59,10 +59,10 @@ export default function MessagesPage() {
       if (response.success) {
         await fetchMessages();
       } else {
-        setError(response.error || 'Mesaj silinirken bir hata oluştu');
+        setError(response.error || 'Mesaj silinirken bir sorun oluştu');
       }
     } catch (err) {
-      setError('Mesaj silinirken bir hata oluştu');
+      setError('Mesaj silinirken bir sorun oluştu');
       console.error('Error deleting message:', err);
     } finally {
       setLoading(false);

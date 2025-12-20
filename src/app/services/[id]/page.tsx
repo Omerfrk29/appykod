@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const { id } = await params;
     const service = await serviceService.getServiceById(id);
-    if (!service) return { title: 'Hizmet bulunamadı' };
+    if (!service) return { title: 'Hizmet Bulunamadı' };
 
     const title = getLocalizedText(service.title, 'tr');
     const description = getLocalizedText(service.description, 'tr');
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   } catch (error) {
     console.error('[generateMetadata] Error fetching service:', error);
-    return { title: 'Hizmet bulunamadı' };
+    return { title: 'Hizmet Bulunamadı' };
   }
 }
 

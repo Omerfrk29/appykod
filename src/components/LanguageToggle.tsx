@@ -26,7 +26,7 @@ export function LanguageToggle() {
       onClick={toggleLanguage}
       className="rounded-full p-2 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 flex items-center justify-center gap-1.5 px-3"
       aria-label="Toggle Language"
-      title={language === 'tr' ? 'Switch to English' : 'Türkçe\'ye Geç'}
+      title={language === 'tr' ? 'İngilizce\'ye Geç' : 'Türkçe\'ye Geç'}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
