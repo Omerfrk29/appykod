@@ -17,11 +17,13 @@ services:
     networks:
       - web-network
     healthcheck:
-      test: mongosh --eval "db.adminCommand('ping')" -u ${MONGO_ROOT_USERNAME:-mongo_admin} -p ${MONGO_ROOT_PASSWORD} --quiet || exit 1
+      # İlk başlatmada authentication olmadan ping yap
+      # MongoDB ilk başlatıldığında authentication henüz aktif olmayabilir
+      test: mongosh --eval "db.adminCommand('ping')" --quiet
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 10s
+      start_period: 30s
 
   web:
     build:
