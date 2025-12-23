@@ -35,10 +35,20 @@ services:
       - NODE_ENV=production
       - MONGODB_URI=mongodb://${MONGO_ROOT_USERNAME:-mongo_admin}:${MONGO_ROOT_PASSWORD}@mongodb:27017/${MONGODB_DB_NAME:-appykod}?authSource=admin
       - MONGODB_DB_NAME=appykod
-      - VIRTUAL_HOST=appykod.com,www.appykod.com
-      - LETSENCRYPT_HOST=appykod.com,www.appykod.com
-      - LETSENCRYPT_EMAIL=admin@appykod.com
-      - VIRTUAL_PORT=3000
+    labels:
+      # Traefik labels
+      - "traefik.enable=true"
+      - "traefik.docker.network=birce_birce-network"
+      - "traefik.http.routers.appykod.rule=Host(`appykod.com`) || Host(`www.appykod.com`)"
+      - "traefik.http.routers.appykod.entrypoints=websecure"
+      - "traefik.http.routers.appykod.tls.certresolver=letsencrypt"
+      - "traefik.http.services.appykod.loadbalancer.server.port=3000"
+      # HTTP to HTTPS redirect
+      - "traefik.http.routers.appykod-http.rule=Host(`appykod.com`) || Host(`www.appykod.com`)"
+      - "traefik.http.routers.appykod-http.entrypoints=web"
+      - "traefik.http.routers.appykod-http.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
     expose:
       - "3000"
     volumes:
