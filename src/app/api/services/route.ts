@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { requireAdmin } from '@/lib/auth';
+import { checkRateLimit } from '@/lib/rateLimit';
+import { requireCsrfToken } from '@/lib/csrf';
+import { handleApiError, ValidationError, InternalServerError } from '@/lib/errors';
 import * as serviceService from '@/lib/services/serviceService';
 import { gallerySchema } from '@/lib/validations';
 
@@ -35,52 +38,42 @@ const createServiceSchema = z.object({
     .optional(),
 });
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    // Rate limiting: 100 requests per minute per IP
+    await checkRateLimit(request, 'services:get', { windowMs: 60_000, max: 100 });
+
     const services = await serviceService.getAllServices();
     return NextResponse.json({ success: true, data: services });
   } catch (error) {
-    console.error('Error fetching services:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch services' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }
 
 export async function POST(request: Request) {
-  const authRes = await requireAdmin(request);
-  if (authRes) return authRes;
-
-  let body: unknown;
   try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json(
-      { success: false, error: 'Invalid JSON' },
-      { status: 400 }
-    );
-  }
+    await requireCsrfToken(request);
+    const authRes = await requireAdmin(request);
+    if (authRes) return authRes;
 
-  const parsed = createServiceSchema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json(
-      { success: false, error: 'Invalid payload', details: parsed.error.errors },
-      { status: 400 }
-    );
-  }
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      throw new ValidationError('Invalid JSON');
+    }
 
-  try {
+    const parsed = createServiceSchema.safeParse(body);
+    if (!parsed.success) {
+      throw new ValidationError('Invalid payload', parsed.error.errors);
+    }
+
     const newService = await serviceService.createService({
-    ...parsed.data,
-    icon: parsed.data.icon || 'code',
+      ...parsed.data,
+      icon: parsed.data.icon || 'code',
     });
     return NextResponse.json({ success: true, data: newService }, { status: 201 });
   } catch (error) {
-    console.error('Error creating service:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to create service' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }

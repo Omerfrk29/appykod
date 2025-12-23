@@ -1,51 +1,44 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
+import { checkRateLimit } from '@/lib/rateLimit';
+import { requireCsrfToken } from '@/lib/csrf';
+import { handleApiError, ValidationError } from '@/lib/errors';
 import * as testimonialService from '@/lib/services/testimonialService';
 import { createTestimonialSchema } from '@/lib/validations';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    // Rate limiting: 100 requests per minute per IP
+    await checkRateLimit(request, 'testimonials:get', { windowMs: 60_000, max: 100 });
+
     const testimonials = await testimonialService.getAllTestimonials();
     return NextResponse.json({ success: true, data: testimonials });
   } catch (error) {
-    console.error('Error fetching testimonials:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch testimonials' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }
 
 export async function POST(request: Request) {
-  const authRes = await requireAdmin(request);
-  if (authRes) return authRes;
-
-  let body: unknown;
   try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json(
-      { success: false, error: 'Invalid JSON' },
-      { status: 400 }
-    );
-  }
+    await requireCsrfToken(request);
+    const authRes = await requireAdmin(request);
+    if (authRes) return authRes;
 
-  const parsed = createTestimonialSchema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json(
-      { success: false, error: 'Invalid payload', details: parsed.error.errors },
-      { status: 400 }
-    );
-  }
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      throw new ValidationError('Invalid JSON');
+    }
 
-  try {
+    const parsed = createTestimonialSchema.safeParse(body);
+    if (!parsed.success) {
+      throw new ValidationError('Invalid payload', parsed.error.errors);
+    }
+
     const newTestimonial = await testimonialService.createTestimonial(parsed.data);
     return NextResponse.json({ success: true, data: newTestimonial }, { status: 201 });
   } catch (error) {
-    console.error('Error creating testimonial:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to create testimonial' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }

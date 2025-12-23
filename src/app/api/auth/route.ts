@@ -8,7 +8,9 @@ import {
   verifyAdminSessionToken,
 } from '@/lib/auth';
 import * as adminService from '@/lib/services/adminService';
-import { rateLimit } from '@/lib/rateLimit';
+import { checkRateLimit } from '@/lib/rateLimit';
+import { generateCsrfToken, clearCsrfToken } from '@/lib/csrf';
+import { handleApiError, ValidationError, UnauthorizedError } from '@/lib/errors';
 
 const loginSchema = z.object({
   username: z.string().min(1).max(100),
@@ -32,48 +34,44 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const rl = rateLimit(request, 'auth:login', { windowMs: 60_000, max: 10 });
-  if (!rl.ok) {
-    return NextResponse.json(
-      { error: 'Too many requests' },
-      { status: 429, headers: { 'Retry-After': String(rl.retryAfterSeconds) } }
-    );
-  }
-
-  let body: unknown;
   try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 });
-  }
+    await checkRateLimit(request, 'auth:login', { windowMs: 60_000, max: 10 });
 
-  const parsed = loginSchema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json({ error: 'Invalid credentials' }, { status: 400 });
-  }
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      throw new ValidationError('Invalid JSON');
+    }
 
-  const { username, password } = parsed.data;
+    const parsed = loginSchema.safeParse(body);
+    if (!parsed.success) {
+      throw new ValidationError('Invalid credentials');
+    }
 
-  // Verify credentials from database
-  try {
+    const { username, password } = parsed.data;
+
+    // Verify credentials from database
     const isValid = await adminService.verifyAdmin(username, password);
     if (isValid) {
       const { sessionSecret } = await getAdminFromDB();
       const token = createAdminSessionToken(sessionSecret);
-  const response = NextResponse.json({ success: true });
-  setAdminCookie(response, token);
-  return response;
+      const response = NextResponse.json({ success: true });
+      setAdminCookie(response, token);
+      // Generate CSRF token for authenticated sessions
+      await generateCsrfToken(response, request);
+      return response;
     }
-  } catch (error) {
-    console.error('Auth error:', error);
-    return NextResponse.json({ error: 'Server not configured' }, { status: 500 });
-  }
 
-  return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+    throw new UnauthorizedError('Invalid credentials');
+  } catch (error) {
+    return handleApiError(error);
+  }
 }
 
 export async function DELETE() {
   const response = NextResponse.json({ success: true });
   clearAdminCookie(response);
+  clearCsrfToken(response);
   return response;
 }

@@ -1,12 +1,41 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
+import { requireCsrfToken } from '@/lib/csrf';
+import { handleApiError, ValidationError } from '@/lib/errors';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+// SVG removed due to XSS risk - can contain JavaScript
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+
+// Magic numbers for file type validation
+const FILE_SIGNATURES: Record<string, (buffer: Buffer) => boolean> = {
+  'image/jpeg': (buf) => buf.length >= 3 && buf[0] === 0xFF && buf[1] === 0xD8 && buf[2] === 0xFF,
+  'image/png': (buf) => buf.length >= 8 && buf.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A])),
+  'image/gif': (buf) => {
+    if (buf.length < 6) return false;
+    const gif87a = Buffer.from([0x47, 0x49, 0x46, 0x38, 0x37, 0x61]);
+    const gif89a = Buffer.from([0x47, 0x49, 0x46, 0x38, 0x39, 0x61]);
+    return buf.subarray(0, 6).equals(gif87a) || buf.subarray(0, 6).equals(gif89a);
+  },
+  'image/webp': (buf) => {
+    // WebP: RIFF (4 bytes) + file size (4 bytes) + WEBP (4 bytes)
+    if (buf.length < 12) return false;
+    const riff = buf.subarray(0, 4).toString('ascii');
+    const webp = buf.subarray(8, 12).toString('ascii');
+    return riff === 'RIFF' && webp === 'WEBP';
+  },
+};
+
+function validateFileContent(buffer: Buffer, expectedType: string): boolean {
+  const validator = FILE_SIGNATURES[expectedType];
+  if (!validator) return false;
+  return validator(buffer);
+}
 
 async function ensureUploadDir() {
   try {
@@ -17,43 +46,50 @@ async function ensureUploadDir() {
 }
 
 export async function POST(request: Request) {
-  const authRes = await requireAdmin(request);
-  if (authRes) return authRes;
-
   try {
+    await requireCsrfToken(request);
+    const authRes = await requireAdmin(request);
+    if (authRes) return authRes;
+
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
 
     if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+      throw new ValidationError('No file provided');
     }
 
     // Validate file type
     if (!ALLOWED_TYPES.includes(file.type)) {
-      return NextResponse.json(
-        { error: 'Invalid file type. Allowed: JPEG, PNG, GIF, WebP, SVG' },
-        { status: 400 }
-      );
+      throw new ValidationError('Invalid file type. Allowed: JPEG, PNG, GIF, WebP');
     }
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
-      return NextResponse.json(
-        { error: 'File too large. Maximum size is 10MB' },
-        { status: 400 }
-      );
+      throw new ValidationError('File too large. Maximum size is 10MB');
     }
 
     await ensureUploadDir();
 
-    // Generate unique filename
-    const ext = file.name.split('.').pop() || 'jpg';
+    // Read file content
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    // Validate file content (magic number check)
+    if (!validateFileContent(buffer, file.type)) {
+      throw new ValidationError('File content does not match declared type');
+    }
+
+    // Validate file extension
+    const ext = file.name.split('.').pop()?.toLowerCase() || '';
+    if (!ALLOWED_EXTENSIONS.includes(`.${ext}`)) {
+      throw new ValidationError('Invalid file extension');
+    }
+
+    // Generate unique filename with validated extension
     const filename = `${uuidv4()}.${ext}`;
     const filepath = path.join(UPLOAD_DIR, filename);
 
     // Write file
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
     await writeFile(filepath, buffer);
 
     // Return public URL
@@ -61,20 +97,27 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ url, filename });
   } catch (error) {
-    console.error('Upload error:', error);
-    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+    return handleApiError(error);
   }
 }
 
 export async function DELETE(request: Request) {
-  const authRes = await requireAdmin(request);
-  if (authRes) return authRes;
-
   try {
-    const { filename } = await request.json();
+    await requireCsrfToken(request);
+    const authRes = await requireAdmin(request);
+    if (authRes) return authRes;
+
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      throw new ValidationError('Invalid JSON');
+    }
+
+    const { filename } = body as { filename?: string };
 
     if (!filename || typeof filename !== 'string') {
-      return NextResponse.json({ error: 'Filename required' }, { status: 400 });
+      throw new ValidationError('Filename required');
     }
 
     // Security: prevent directory traversal
@@ -86,8 +129,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Delete error:', error);
-    return NextResponse.json({ error: 'Delete failed' }, { status: 500 });
+    return handleApiError(error);
   }
 }
 

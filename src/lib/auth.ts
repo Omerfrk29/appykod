@@ -152,7 +152,7 @@ export function verifyAdminSessionToken(
 export function setAdminCookie(response: NextResponse, token: string) {
   response.cookies.set(COOKIE_NAME, token, {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict', // Changed from 'lax' to 'strict' for better security
     secure: process.env.NODE_ENV === 'production',
     path: '/',
     maxAge: 60 * 60 * 24 * 7, // 7 days
@@ -162,7 +162,7 @@ export function setAdminCookie(response: NextResponse, token: string) {
 export function clearAdminCookie(response: NextResponse) {
   response.cookies.set(COOKIE_NAME, '', {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict', // Changed from 'lax' to 'strict' for better security
     secure: process.env.NODE_ENV === 'production',
     path: '/',
     maxAge: 0,

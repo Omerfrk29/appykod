@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { requireAdmin } from '@/lib/auth';
+import { checkRateLimit } from '@/lib/rateLimit';
+import { requireCsrfToken } from '@/lib/csrf';
+import { handleApiError, ValidationError, NotFoundError } from '@/lib/errors';
 import * as serviceService from '@/lib/services/serviceService';
 import { gallerySchema } from '@/lib/validations';
 
@@ -39,23 +42,18 @@ export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const { id } = await params;
-
   try {
+    // Rate limiting: 100 requests per minute per IP
+    await checkRateLimit(request, 'service:get', { windowMs: 60_000, max: 100 });
+
+    const { id } = await params;
     const service = await serviceService.getServiceById(id);
     if (!service) {
-      return NextResponse.json(
-        { success: false, error: 'Service not found' },
-        { status: 404 }
-      );
+      throw new NotFoundError('Service not found');
     }
     return NextResponse.json({ success: true, data: service });
   } catch (error) {
-    console.error('Error fetching service:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch service' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }
 
@@ -63,7 +61,9 @@ export async function PUT(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
-  const authRes = await requireAdmin(request);
+  try {
+    await requireCsrfToken(request);
+    const authRes = await requireAdmin(request);
     if (authRes) return authRes;
 
     const { id } = await params;
@@ -72,35 +72,21 @@ export async function PUT(
     try {
         body = await request.json();
     } catch {
-    return NextResponse.json(
-      { success: false, error: 'Invalid JSON' },
-      { status: 400 }
-    );
+      throw new ValidationError('Invalid JSON');
     }
 
     const parsed = updateServiceSchema.safeParse(body);
     if (!parsed.success) {
-    return NextResponse.json(
-      { success: false, error: 'Invalid payload', details: parsed.error.errors },
-      { status: 400 }
-    );
+      throw new ValidationError('Invalid payload', parsed.error.errors);
     }
 
-  try {
     const updatedService = await serviceService.updateService(id, parsed.data);
     if (!updatedService) {
-      return NextResponse.json(
-        { success: false, error: 'Service not found' },
-        { status: 404 }
-      );
+      throw new NotFoundError('Service not found');
     }
     return NextResponse.json({ success: true, data: updatedService });
   } catch (error) {
-    console.error('Error updating service:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to update service' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }
 
@@ -108,25 +94,18 @@ export async function DELETE(
     request: Request, 
     { params }: { params: Promise<{ id: string }> }
 ) {
-  const authRes = await requireAdmin(request);
+  try {
+    await requireCsrfToken(request);
+    const authRes = await requireAdmin(request);
     if (authRes) return authRes;
 
     const { id } = await params;
-
-  try {
     const deleted = await serviceService.deleteService(id);
     if (!deleted) {
-      return NextResponse.json(
-        { success: false, error: 'Service not found' },
-        { status: 404 }
-      );
+      throw new NotFoundError('Service not found');
     }
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error deleting service:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to delete service' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }

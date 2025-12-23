@@ -15,6 +15,14 @@ Bu dokümantasyon, projeyi MongoDB ile çalışacak şekilde kurmak için gerekl
 
 Docker kullanarak MongoDB'yi hızlıca başlatmak için:
 
+**ÖNEMLİ:** MongoDB authentication için environment variable'ları ayarlayın:
+
+```bash
+# .env dosyasına ekleyin:
+MONGO_ROOT_USERNAME=mongo_admin
+MONGO_ROOT_PASSWORD=your-strong-password-change-this
+```
+
 ```bash
 # Development için MongoDB ve Mongo Express'i başlat
 docker-compose -f docker-compose.dev.yml up -d
@@ -30,7 +38,7 @@ docker-compose -f docker-compose.dev.yml down -v
 ```
 
 Bu komut:
-- MongoDB'yi `localhost:27017` portunda başlatır
+- MongoDB'yi `localhost:27017` portunda başlatır (authentication ile)
 - Mongo Express web UI'ını `localhost:8081` portunda başlatır (opsiyonel)
 - Verileri kalıcı volume'larda saklar
 
@@ -38,6 +46,15 @@ Bu komut:
 - URL: http://localhost:8081
 - Kullanıcı adı: `admin`
 - Şifre: `admin`
+
+**MongoDB'ye doğrudan bağlanma:**
+```bash
+# Docker container içinden
+docker exec -it appykod-mongodb mongosh -u mongo_admin -p your-strong-password
+
+# Veya dışarıdan
+mongosh "mongodb://mongo_admin:your-strong-password@localhost:27017/appykod?authSource=admin"
+```
 
 #### Yerel MongoDB (Development)
 
@@ -80,14 +97,20 @@ cp .env.example .env.local
 
 ```env
 # MongoDB Configuration
-# Docker kullanıyorsanız:
-MONGODB_URI=mongodb://localhost:27017
+# Docker kullanıyorsanız (authentication ile):
+MONGODB_URI=mongodb://mongo_admin:your-strong-password@localhost:27017/appykod?authSource=admin
+# veya authentication olmadan (sadece development):
+# MONGODB_URI=mongodb://localhost:27017/appykod
 # veya MongoDB Atlas için:
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/appykod
 
 MONGODB_DB_NAME=appykod
 
-# Admin Authentication
+# MongoDB Root Credentials (Docker için)
+MONGO_ROOT_USERNAME=mongo_admin
+MONGO_ROOT_PASSWORD=your-strong-password-change-this
+
+# Admin Authentication (Uygulama admin paneli için)
 ADMIN_USER=admin
 ADMIN_PASSWORD_HASH=scrypt:16384:8:1:base64salt:base64hash
 ADMIN_SESSION_SECRET=your-secret-session-key-change-this-in-production

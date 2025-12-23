@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { requireAdmin } from '@/lib/auth';
+import { checkRateLimit } from '@/lib/rateLimit';
+import { requireCsrfToken } from '@/lib/csrf';
+import { handleApiError, ValidationError } from '@/lib/errors';
 import * as settingsService from '@/lib/services/settingsService';
 import type { SiteSettings } from '@/lib/db';
 
@@ -31,42 +34,36 @@ const updateSettingsSchema = z.object({
     .optional(),
 });
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    // Rate limiting: 60 requests per minute per IP
+    await checkRateLimit(request, 'settings:get', { windowMs: 60_000, max: 60 });
+
     const settings = await settingsService.getSettings();
     return NextResponse.json({ success: true, data: settings });
   } catch (error) {
-    console.error('Error fetching settings:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch settings' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }
 
 export async function PUT(request: Request) {
-  const authRes = await requireAdmin(request);
-  if (authRes) return authRes;
-
-  let body: unknown;
   try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json(
-      { success: false, error: 'Invalid JSON' },
-      { status: 400 }
-    );
-  }
+    await requireCsrfToken(request);
+    const authRes = await requireAdmin(request);
+    if (authRes) return authRes;
 
-  const parsed = updateSettingsSchema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json(
-      { success: false, error: 'Invalid payload', details: parsed.error.errors },
-      { status: 400 }
-    );
-  }
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      throw new ValidationError('Invalid JSON');
+    }
 
-  try {
+    const parsed = updateSettingsSchema.safeParse(body);
+    if (!parsed.success) {
+      throw new ValidationError('Invalid payload', parsed.error.errors);
+    }
+
     // Transform the parsed data to match Partial<SiteSettings> type
     // Handle nested partial updates for contact and social objects
     const updateData: any = { ...parsed.data };
@@ -93,11 +90,7 @@ export async function PUT(request: Request) {
     const settings = await settingsService.updateSettings(updateData as Partial<SiteSettings>);
     return NextResponse.json({ success: true, data: settings });
   } catch (error) {
-    console.error('Error updating settings:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to update settings' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }
 

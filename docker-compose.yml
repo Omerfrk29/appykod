@@ -4,18 +4,20 @@ services:
     container_name: appykod-mongodb
     restart: unless-stopped
     # Production'da MongoDB port'unu sadece internal network'te bırak (güvenlik)
-    # Lokal erişim için: docker exec -it appykod-mongodb mongosh
+    # Lokal erişim için: docker exec -it appykod-mongodb mongosh -u ${MONGO_ROOT_USERNAME} -p ${MONGO_ROOT_PASSWORD}
     ports:
       - "127.0.0.1:27017:27017"  # Sadece localhost'tan erişilebilir
     environment:
       - MONGO_INITDB_DATABASE=appykod
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME:-mongo_admin}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
     volumes:
       - mongodb_data:/data/db
       - mongodb_config:/data/configdb
     networks:
       - web-network
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/appykod --quiet
+      test: mongosh --eval "db.adminCommand('ping')" -u ${MONGO_ROOT_USERNAME:-mongo_admin} -p ${MONGO_ROOT_PASSWORD} --quiet || exit 1
       interval: 10s
       timeout: 5s
       retries: 5
@@ -29,7 +31,7 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=production
-      - MONGODB_URI=mongodb://mongodb:27017
+      - MONGODB_URI=mongodb://${MONGO_ROOT_USERNAME:-mongo_admin}:${MONGO_ROOT_PASSWORD}@mongodb:27017/${MONGODB_DB_NAME:-appykod}?authSource=admin
       - MONGODB_DB_NAME=appykod
       - VIRTUAL_HOST=appykod.com,www.appykod.com
       - LETSENCRYPT_HOST=appykod.com,www.appykod.com

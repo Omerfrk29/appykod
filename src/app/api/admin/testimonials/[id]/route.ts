@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
+import { requireCsrfToken } from '@/lib/csrf';
+import { handleApiError, ValidationError, NotFoundError } from '@/lib/errors';
 import * as testimonialService from '@/lib/services/testimonialService';
 import { updateTestimonialSchema } from '@/lib/validations';
 
@@ -7,44 +9,32 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const authRes = await requireAdmin(request);
-  if (authRes) return authRes;
-
-  const { id } = await params;
-
-  let body: unknown;
   try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json(
-      { success: false, error: 'Invalid JSON' },
-      { status: 400 }
-    );
-  }
+    await requireCsrfToken(request);
+    const authRes = await requireAdmin(request);
+    if (authRes) return authRes;
 
-  const parsed = updateTestimonialSchema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json(
-      { success: false, error: 'Invalid payload', details: parsed.error.errors },
-      { status: 400 }
-    );
-  }
+    const { id } = await params;
 
-  try {
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      throw new ValidationError('Invalid JSON');
+    }
+
+    const parsed = updateTestimonialSchema.safeParse(body);
+    if (!parsed.success) {
+      throw new ValidationError('Invalid payload', parsed.error.errors);
+    }
+
     const updatedTestimonial = await testimonialService.updateTestimonial(id, parsed.data);
     if (!updatedTestimonial) {
-      return NextResponse.json(
-        { success: false, error: 'Testimonial not found' },
-        { status: 404 }
-      );
+      throw new NotFoundError('Testimonial not found');
     }
     return NextResponse.json({ success: true, data: updatedTestimonial });
   } catch (error) {
-    console.error('Error updating testimonial:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to update testimonial' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }
 
@@ -52,25 +42,18 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const authRes = await requireAdmin(request);
-  if (authRes) return authRes;
-
-  const { id } = await params;
-
   try {
+    await requireCsrfToken(request);
+    const authRes = await requireAdmin(request);
+    if (authRes) return authRes;
+
+    const { id } = await params;
     const deleted = await testimonialService.deleteTestimonial(id);
     if (!deleted) {
-      return NextResponse.json(
-        { success: false, error: 'Testimonial not found' },
-        { status: 404 }
-      );
+      throw new NotFoundError('Testimonial not found');
     }
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error deleting testimonial:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to delete testimonial' },
-      { status: 500 }
-    );
+    return handleApiError(error);
   }
 }
