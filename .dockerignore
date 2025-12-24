@@ -3,4 +3,5 @@ node_modules
 .git
 *.md
 .gitignore
+scripts
 

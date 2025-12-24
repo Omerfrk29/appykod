@@ -1,5 +1,5 @@
 import connectDB from '@/lib/db/mongodb';
-import SettingsModel, { ISettings } from '@/lib/db/models/Settings';
+import SettingsModel from '@/lib/db/models/Settings';
 import type { SiteSettings } from '@/lib/db';
 
 const defaultSettings: SiteSettings = {
@@ -27,14 +27,14 @@ export async function getSettings(): Promise<SiteSettings> {
     siteDescription: settings.siteDescription,
     logo: settings.logo,
     contact: {
-      email: settings.contact.email,
-      address: settings.contact.address,
+      email: settings.contact?.email || defaultSettings.contact.email,
+      address: settings.contact?.address || defaultSettings.contact.address,
     },
     social: {
-      twitter: settings.social.twitter,
-      linkedin: settings.social.linkedin,
-      instagram: settings.social.instagram,
-      github: settings.social.github,
+      twitter: settings.social?.twitter,
+      linkedin: settings.social?.linkedin,
+      instagram: settings.social?.instagram,
+      github: settings.social?.github,
     },
   };
 }
@@ -50,7 +50,7 @@ export async function updateSettings(
   // MongoDB $set will merge nested objects, so partial nested updates work correctly
   const settings = await SettingsModel.findOneAndUpdate(
     {},
-    { $set: updateData as any },
+    { $set: updateData as Partial<SiteSettings> },
     { new: true, upsert: true, runValidators: true }
   ).lean();
   return {
@@ -58,14 +58,14 @@ export async function updateSettings(
     siteDescription: settings.siteDescription,
     logo: settings.logo,
     contact: {
-      email: settings.contact.email,
-      address: settings.contact.address,
+      email: settings.contact?.email || defaultSettings.contact.email,
+      address: settings.contact?.address || defaultSettings.contact.address,
     },
     social: {
-      twitter: settings.social.twitter,
-      linkedin: settings.social.linkedin,
-      instagram: settings.social.instagram,
-      github: settings.social.github,
+      twitter: settings.social?.twitter,
+      linkedin: settings.social?.linkedin,
+      instagram: settings.social?.instagram,
+      github: settings.social?.github,
     },
   };
 }

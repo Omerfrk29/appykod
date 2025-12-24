@@ -26,6 +26,7 @@ const BLOCKED_USER_AGENTS = [
 // Şüpheli IP'ler (loglardan görünen IP'ler)
 const SUSPICIOUS_IPS = [
   '2.57.122.173',
+  '213.142.143.105', // kolektifyazilim.com - saldırı kaynağı
   // Diğer şüpheli IP'leri buraya ekleyebilirsiniz
 ];
 
@@ -41,6 +42,19 @@ export async function middleware(request: NextRequest) {
   if (SUSPICIOUS_IPS.includes(ip)) {
     console.warn(`[SECURITY] Blocked suspicious IP: ${ip} from ${pathname}`);
     return new NextResponse('Forbidden', { status: 403 });
+  }
+
+  // KRİTİK: .next/static dizininde script dosyalarına erişimi engelle
+  // Saldırganlar bu dizine script yükleyip RCE yapmaya çalışıyor
+  if (pathname.startsWith('/.next/static/')) {
+    // Sadece güvenli dosya türlerine izin ver (JS, CSS, font, image)
+    const allowedStaticExtensions = ['.js', '.css', '.woff', '.woff2', '.ttf', '.eot', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.ico', '.json', '.map'];
+    const hasAllowedExtension = allowedStaticExtensions.some(ext => pathname.toLowerCase().endsWith(ext));
+    
+    if (!hasAllowedExtension) {
+      console.warn(`[SECURITY] Blocked suspicious file in .next/static: ${pathname} from IP: ${ip}`);
+      return new NextResponse('Forbidden', { status: 403 });
+    }
   }
 
   // Zararlı path pattern'lerini engelle
