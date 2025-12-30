@@ -2,26 +2,20 @@
 
 import Link from 'next/link';
 import { Service, LocalizedText } from '@/lib/db';
-import { Code, Smartphone, Globe, Database, Cloud, Shield, Zap, Layout, Server, Cpu, Wifi, Monitor } from 'lucide-react';
+import { Code, Smartphone, Globe, ArrowUpRight, Sparkles, Layers, Zap } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { analytics } from '@/lib/analytics';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties; className?: string }>> = {
+const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   code: Code,
   smartphone: Smartphone,
   globe: Globe,
-  database: Database,
-  cloud: Cloud,
-  shield: Shield,
+  layers: Layers,
   zap: Zap,
-  layout: Layout,
-  server: Server,
-  cpu: Cpu,
-  wifi: Wifi,
-  monitor: Monitor,
 };
 
-// Helper to get localized text
 function getLocalizedText(text: LocalizedText | string | undefined, lang: 'tr' | 'en'): string {
   if (!text) return '';
   if (typeof text === 'string') return text;
@@ -31,98 +25,78 @@ function getLocalizedText(text: LocalizedText | string | undefined, lang: 'tr' |
 export default function Services({ services }: { services: Service[] }) {
   const { t, language } = useLanguage();
   
-  // Servisleri çoklu dil formatında göster
   const displayServices = services.length > 0 ? services.map(service => ({
     ...service,
     displayTitle: getLocalizedText(service.title, language),
     displayDescription: getLocalizedText(service.description, language),
   })) : [
-    { id: '1', displayTitle: 'Web Development', displayDescription: 'Modern, responsive websites built with the latest technologies.', icon: 'globe' },
-    { id: '2', displayTitle: 'Mobile Apps', displayDescription: 'Native and cross-platform mobile applications for iOS and Android.', icon: 'smartphone' },
-    { id: '3', displayTitle: 'Custom Software', displayDescription: 'Tailored software solutions to meet your specific business needs.', icon: 'code' },
-  ];
-
-  const colorSchemes = [
-    { iconBg: 'bg-primary/15 dark:bg-primary/25', iconColor: 'text-primary', borderGradient: 'from-primary via-info to-danger', glowColor: 'group-hover:shadow-[0_0_50px_rgba(94,111,234,0.6),0_0_100px_rgba(94,111,234,0.3)]', accentColor: 'bg-info/20' },
-    { iconBg: 'bg-success/15 dark:bg-success/25', iconColor: 'text-success', borderGradient: 'from-success via-primary to-info', glowColor: 'group-hover:shadow-[0_0_50px_rgba(71,207,134,0.6),0_0_100px_rgba(71,207,134,0.3)]', accentColor: 'bg-primary/20' },
-    { iconBg: 'bg-danger/15 dark:bg-danger/25', iconColor: 'text-danger', borderGradient: 'from-danger via-warning to-primary', glowColor: 'group-hover:shadow-[0_0_50px_rgba(255,75,123,0.6),0_0_100px_rgba(255,75,123,0.3)]', accentColor: 'bg-warning/20' },
+    { id: '1', displayTitle: 'Web Development', displayDescription: 'Modern, responsive websites built with the latest technologies.', icon: 'globe', className: 'md:col-span-2' },
+    { id: '2', displayTitle: 'Mobile Apps', displayDescription: 'Native and cross-platform mobile applications.', icon: 'smartphone', className: 'md:col-span-1' },
+    { id: '3', displayTitle: 'Custom Software', displayDescription: 'Tailored software solutions for business needs.', icon: 'code', className: 'md:col-span-1' },
+    { id: '4', displayTitle: 'UI/UX Design', displayDescription: 'Intuitive and beautiful user interfaces.', icon: 'layers', className: 'md:col-span-2' },
   ];
 
   return (
-    <section id="services" className="py-12 md:py-16 lg:py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10 md:mb-12 animate-fade-in-up">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-3 md:mb-4">
-            {t('services.title')}
-          </h2>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 dark:text-gray-300 px-4">
-            {t('services.subtitle')}
-          </p>
+    <section id="services" className="py-24 bg-background relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="mb-16 md:flex md:items-end md:justify-between">
+          <div className="max-w-2xl">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-4">
+              {t('services.title')}
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              {t('services.subtitle')}
+            </p>
+          </div>
+          <div className="mt-6 md:mt-0">
+             <Link href="#contact" className="text-sm font-semibold text-primary hover:underline inline-flex items-center">
+                View all capabilities <ArrowUpRight className="ml-1 h-4 w-4" />
+             </Link>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6" style={{ perspective: '1000px' }}>
-          {displayServices.map((service, index) => {
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[300px]">
+          {displayServices.map((service, i) => {
             const Icon = iconMap[service.icon || 'code'] || Code;
-            const colorScheme = colorSchemes[index % colorSchemes.length];
-
+            const isLarge = (service as any).className?.includes('col-span-2');
+            
             return (
-              <Link
+              <motion.div
                 key={service.id}
-                href={`/services/${service.id}`}
-                onClick={() => analytics.serviceClick(service.id, service.displayTitle)}
-                className="animate-fade-in-up block"
-                style={{ animationDelay: `${index * 150}ms`, animationFillMode: 'backwards' }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className={cn(
+                  "group relative overflow-hidden rounded-3xl border border-white/10 bg-secondary/5 dark:bg-zinc-900/50 hover:bg-secondary/10 transition-colors p-8 flex flex-col justify-between",
+                  (service as any).className
+                )}
               >
-                <div
-                  className={`relative group bg-white dark:bg-gray-800 rounded-2xl md:rounded-3xl p-5 md:p-6 lg:p-8 transition-all duration-500 overflow-hidden shadow-xl hover:shadow-2xl h-full border border-gray-100 dark:border-gray-700 ${colorScheme.glowColor} cursor-pointer`}
-                  style={{ transformStyle: 'preserve-3d' }}
-                >
-                  {/* Animated Gradient Border Effect */}
-                  <div
-                    className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-[2px] bg-gradient-to-br ${colorScheme.borderGradient} animate-gradient-x`}
-                    style={{ backgroundSize: '200% 200%' }}
-                  >
-                    <div className="absolute inset-[2px] rounded-3xl bg-white dark:bg-gray-800" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div className="relative z-10">
+                  <div className="w-12 h-12 rounded-2xl bg-background shadow-sm border border-border flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <Icon className="w-6 h-6 text-foreground" />
                   </div>
-
-                  {/* Inner card background */}
-                  <div className="absolute inset-[1px] rounded-3xl bg-white dark:bg-gray-800" />
-
-                  {/* Content */}
-                  <div className="relative z-10">
-                    <div
-                      className={`w-14 h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 relative overflow-hidden ${colorScheme.iconBg} group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300`}
-                    >
-                      <Icon size={28} className={`md:w-8 md:h-8 lg:w-9 lg:h-9 ${colorScheme.iconColor}`} />
-                      {/* Shimmer/Shine sweep effect - only on hover */}
-                      <div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:animate-shine-sweep transition-opacity duration-300"
-                        style={{ 
-                          background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 45%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.25) 55%, transparent 60%)',
-                          backgroundSize: '250% 100%'
-                        }}
-                      />
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-extrabold text-gray-900 dark:text-white mb-2 md:mb-4 transition-all duration-300">
-                      {service.displayTitle}
-                    </h3>
-                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                      {service.displayDescription}
-                    </p>
-
-                    {/* Learn more indicator */}
-                    <div className={`mt-4 md:mt-6 flex items-center text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${colorScheme.iconColor}`}>
-                      <span>{t('services.learnMore')}</span>
-                      <span className="ml-2 animate-arrow-bounce">→</span>
-                    </div>
-                  </div>
-
-                  {/* Floating accent shape */}
-                  <div
-                    className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full opacity-20 group-hover:opacity-40 transition-all duration-500 group-hover:scale-125 ${colorScheme.accentColor}`}
-                  />
+                  <h3 className="text-2xl font-bold text-foreground mb-3">{service.displayTitle}</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {service.displayDescription}
+                  </p>
                 </div>
-              </Link>
+
+                <div className="relative z-10 flex items-center justify-between mt-6 opacity-0 group-hover:opacity-100 transition-opacity translate-y-4 group-hover:translate-y-0 duration-300">
+                  <span className="text-sm font-medium text-foreground">Explore</span>
+                  <ArrowUpRight className="w-5 h-5 text-foreground" />
+                </div>
+                
+                {/* Decorative Elements for Large Cards */}
+                {isLarge && (
+                   <div className="absolute right-0 bottom-0 w-64 h-64 bg-gradient-to-tl from-primary/10 to-transparent rounded-tl-[100px] -mr-10 -mb-10 pointer-events-none" />
+                )}
+              </motion.div>
             );
           })}
         </div>

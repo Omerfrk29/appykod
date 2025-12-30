@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Anek_Latin, Special_Gothic_Expanded_One } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -9,6 +8,7 @@ import { MotionProvider } from "@/components/MotionProvider";
 import CookieConsent from "@/components/CookieConsent";
 import PageViewTracker from "@/components/PageViewTracker";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import CustomCursor from "@/components/CustomCursor";
 
 // Google Font - Anek Latin (Ana font)
 const anekLatin = Anek_Latin({
@@ -28,25 +28,25 @@ const specialGothic = Special_Gothic_Expanded_One({
 
 export const metadata: Metadata = {
   title: {
-    default: "Appykod - Modern Yazılım Çözümleri",
+    default: "Appykod - Creative Digital Agency",
     template: "%s | Appykod",
   },
-  description: "Profesyonel web ve mobil uygulama geliştirme hizmetleri. React, Next.js ve TypeScript ile modern yazılım çözümleri.",
-  keywords: ["web geliştirme", "mobil uygulama", "yazılım", "react", "nextjs", "typescript", "appykod"],
+  description: "We craft award-winning digital experiences. Web, Mobile, and Brand Identity.",
+  keywords: ["web development", "creative agency", "software", "react", "nextjs", "typescript", "appykod"],
   authors: [{ name: "Appykod" }],
   creator: "Appykod",
   openGraph: {
     type: "website",
-    locale: "tr_TR",
+    locale: "en_US",
     url: "https://appykod.com",
     siteName: "Appykod",
-    title: "Appykod - Modern Yazılım Çözümleri",
-    description: "Profesyonel web ve mobil uygulama geliştirme hizmetleri.",
+    title: "Appykod - Creative Digital Agency",
+    description: "We craft award-winning digital experiences. Web, Mobile, and Brand Identity.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Appykod - Modern Yazılım Çözümleri",
-    description: "Profesyonel web ve mobil uygulama geliştirme hizmetleri.",
+    title: "Appykod - Creative Digital Agency",
+    description: "We craft award-winning digital experiences. Web, Mobile, and Brand Identity.",
   },
   robots: {
     index: true,
@@ -60,18 +60,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr" suppressHydrationWarning className={`${anekLatin.variable} ${specialGothic.variable}`}>
-      <body className="font-sans bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300" suppressHydrationWarning>
-        {/* Google Analytics with Consent Mode - loads before page content */}
+    <html lang="en" suppressHydrationWarning className={`${anekLatin.variable} ${specialGothic.variable}`}>
+      <body className="font-sans bg-background text-foreground antialiased" suppressHydrationWarning>
         <GoogleAnalytics />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          enableSystem
+          enableSystem={false} 
           disableTransitionOnChange
         >
           <LanguageProvider>
             <MotionProvider>
+              <CustomCursor />
               <PageViewTracker />
               {children}
               <CookieConsent />
