@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Save, Loader2 } from 'lucide-react';
+import { Save, Loader2, Snowflake } from 'lucide-react';
 import ImageUploader from './ImageUploader';
 import type { SiteSettings, LocalizedText } from '@/lib/db';
 import { settingsApi } from '@/lib/api/client';
@@ -23,6 +23,7 @@ export default function SettingsPanel() {
   const [linkedin, setLinkedin] = useState('');
   const [instagram, setInstagram] = useState('');
   const [github, setGithub] = useState('');
+  const [holidayThemeEnabled, setHolidayThemeEnabled] = useState(false);
 
   useEffect(() => {
     fetchSettings();
@@ -42,6 +43,7 @@ export default function SettingsPanel() {
         setLinkedin(data.social?.linkedin || '');
         setInstagram(data.social?.instagram || '');
         setGithub(data.social?.github || '');
+        setHolidayThemeEnabled(data.holidayTheme?.enabled || false);
       }
     } catch (error) {
       console.error('Failed to fetch settings:', error);
@@ -68,6 +70,9 @@ export default function SettingsPanel() {
           linkedin: linkedin || undefined,
           instagram: instagram || undefined,
           github: github || undefined,
+        },
+        holidayTheme: {
+          enabled: holidayThemeEnabled,
         },
       };
 
@@ -256,6 +261,38 @@ export default function SettingsPanel() {
               placeholder="https://github.com/username"
             />
           </div>
+        </div>
+      </div>
+
+      {/* Holiday Theme */}
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+          <Snowflake className="w-5 h-5 text-info" />
+          Tatil Teması
+        </h3>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Kar Yağışı Efekti
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              Sitede kar yağışı animasyonu gösterir
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setHolidayThemeEnabled(!holidayThemeEnabled)}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+              holidayThemeEnabled ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'
+            }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
+                holidayThemeEnabled ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
         </div>
       </div>
 

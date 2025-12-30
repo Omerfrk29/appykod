@@ -5,9 +5,11 @@ import TechStack from '@/components/TechStack';
 import Services from '@/components/Services';
 import Projects from '@/components/Projects';
 import Footer from '@/components/Footer';
+import SnowEffect from '@/components/SnowEffect';
 import type { Service, Project } from '@/lib/db';
 import * as serviceService from '@/lib/services/serviceService';
 import * as projectService from '@/lib/services/projectService';
+import * as settingsService from '@/lib/services/settingsService';
 
 // Force dynamic rendering to avoid build-time MongoDB connection issues
 export const dynamic = 'force-dynamic';
@@ -101,13 +103,17 @@ async function fetchProjects(): Promise<Project[]> {
 }
 
 export default async function Home() {
-  const [services, projects] = await Promise.all([
+  const [services, projects, settings] = await Promise.all([
     fetchServices(),
     fetchProjects(),
+    settingsService.getSettings(),
   ]);
+
+  const isHolidayThemeEnabled = settings.holidayTheme?.enabled ?? false;
 
   return (
     <>
+      {isHolidayThemeEnabled && <SnowEffect />}
       <Navbar />
       <main>
         <Hero />

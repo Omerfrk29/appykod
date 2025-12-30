@@ -32,6 +32,11 @@ const updateSettingsSchema = z.object({
     })
     .partial()
     .optional(),
+  holidayTheme: z
+    .object({
+      enabled: z.boolean(),
+    })
+    .optional(),
 });
 
 export async function GET(request: Request) {

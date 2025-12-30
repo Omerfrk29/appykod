@@ -19,6 +19,9 @@ export interface ISettings extends Document {
     instagram?: string;
     github?: string;
   };
+  holidayTheme?: {
+    enabled: boolean;
+  };
   sessionSecret?: string;
   createdAt: Date;
   updatedAt: Date;
@@ -46,6 +49,9 @@ const SettingsSchema = new Schema<ISettings>(
       linkedin: { type: String, required: false },
       instagram: { type: String, required: false },
       github: { type: String, required: false },
+    },
+    holidayTheme: {
+      enabled: { type: Boolean, default: false },
     },
     sessionSecret: { type: String, required: false },
   },

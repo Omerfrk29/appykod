@@ -11,6 +11,7 @@ const defaultSettings: SiteSettings = {
     address: { tr: 'İstanbul, Türkiye', en: 'Istanbul, Turkey' },
   },
   social: {},
+  holidayTheme: { enabled: false },
 };
 
 export async function getSettings(): Promise<SiteSettings> {
@@ -35,6 +36,9 @@ export async function getSettings(): Promise<SiteSettings> {
       linkedin: settings.social?.linkedin,
       instagram: settings.social?.instagram,
       github: settings.social?.github,
+    },
+    holidayTheme: {
+      enabled: settings.holidayTheme?.enabled ?? false,
     },
   };
 }
@@ -66,6 +70,9 @@ export async function updateSettings(
       linkedin: settings.social?.linkedin,
       instagram: settings.social?.instagram,
       github: settings.social?.github,
+    },
+    holidayTheme: {
+      enabled: settings.holidayTheme?.enabled ?? false,
     },
   };
 }

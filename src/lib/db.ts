@@ -74,6 +74,9 @@ export interface SiteSettings {
         instagram?: string;
         github?: string;
     };
+    holidayTheme?: {
+        enabled: boolean;
+    };
 }
 
 export interface DBData {

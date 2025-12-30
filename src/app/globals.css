@@ -400,6 +400,29 @@ a, button, [role="button"], input[type="submit"], input[type="button"], [onclick
     animation-play-state: paused !important;
   }
 
+  /* Snowfall Animation - GPU Accelerated */
+  @keyframes snowfall {
+    0% {
+      transform: translate3d(0, -10px, 0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate3d(var(--snow-drift, 20px), 100vh, 0);
+      opacity: 0;
+    }
+  }
+  .animate-snowfall {
+    animation: snowfall linear infinite;
+    will-change: transform;
+    contain: strict;
+  }
+
   /* Reduce Motion Support - Accessibility */
   @media (prefers-reduced-motion: reduce) {
     *,
