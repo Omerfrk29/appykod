@@ -26,13 +26,3 @@ export function useAnimationOnView() {
 
   return { ref, isVisible };
 }
-
-
-
-
-
-
-
-
-
-
