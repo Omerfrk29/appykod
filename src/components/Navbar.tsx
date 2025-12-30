@@ -6,11 +6,16 @@ import { Menu, X } from 'lucide-react';
 import Logo from './Logo';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
+import HolidayNavBadge from './HolidayNavBadge';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { handleSmoothScroll } from '@/lib/utils';
 import { analytics } from '@/lib/analytics';
 
-export default function Navbar() {
+interface NavbarProps {
+  isHolidayTheme?: boolean;
+}
+
+export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { t } = useLanguage();
@@ -49,15 +54,23 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="relative group animate-fade-in-left">
-            <Link 
-              href="/" 
-              className="flex items-center space-x-2 hover:scale-105 active:scale-95 transition-transform duration-200"
-            >
-              <Logo />
-            </Link>
-            {/* Logo glow on hover */}
-            <div className="absolute -inset-2 bg-gradient-to-r from-primary/20 to-info/20 rounded-full opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 -z-10" />
+          <div className="flex items-center gap-4">
+            <div className="relative group animate-fade-in-left">
+              <Link
+                href="/"
+                className="flex items-center space-x-2 hover:scale-105 active:scale-95 transition-transform duration-200"
+              >
+                <Logo />
+              </Link>
+              {/* Logo glow on hover */}
+              <div className="absolute -inset-2 bg-gradient-to-r from-primary/20 to-info/20 rounded-full opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 -z-10" />
+            </div>
+            {/* Holiday Badge */}
+            {isHolidayTheme && (
+              <div className="hidden sm:block animate-fade-in-up">
+                <HolidayNavBadge />
+              </div>
+            )}
           </div>
 
           {/* Desktop Menu */}

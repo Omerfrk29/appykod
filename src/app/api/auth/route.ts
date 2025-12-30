@@ -26,7 +26,21 @@ export async function GET(request: Request) {
   try {
     const { sessionSecret } = await getAdminFromDB();
     const payload = verifyAdminSessionToken(sessionSecret, token);
-    return NextResponse.json({ authenticated: Boolean(payload) }, { status: 200 });
+    const authenticated = Boolean(payload);
+    const response = NextResponse.json({ authenticated }, { status: 200 });
+
+    // Keep CSRF token in sync with long-lived auth sessions.
+    // Auth cookie lasts 7 days, CSRF cookie lasts 24 hours; if CSRF expires we
+    // re-issue it so admin writes don't start failing.
+    if (authenticated) {
+      const csrfMatch = cookieHeader.match(/(?:^|;\s*)csrf_token=([^;]+)/);
+      const csrfToken = csrfMatch?.[1];
+      if (!csrfToken) {
+        await generateCsrfToken(response, request);
+      }
+    }
+
+    return response;
   } catch {
     // Database or env missing => treat as not authenticated
     return NextResponse.json({ authenticated: false }, { status: 200 });

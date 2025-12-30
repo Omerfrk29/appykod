@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { getAdminFromDB } from './auth';
 
-const CSRF_TOKEN_HEADER = 'x-csrf-token';
+const CSRF_TOKEN_HEADER = 'X-CSRF-Token';
 const CSRF_TOKEN_COOKIE = 'csrf_token';
 const CSRF_TOKEN_MAX_AGE = 60 * 60 * 24; // 24 hours
 
@@ -22,7 +22,16 @@ function generateToken(secret: string, sessionId: string): string {
  * Verify a CSRF token
  */
 function verifyToken(secret: string, sessionId: string, token: string): boolean {
-  const parts = token.split(':');
+  // Next.js encodes cookie values (encodeURIComponent). Normalize here so both
+  // raw (e.g. "123:abc") and encoded (e.g. "123%3Aabc") tokens verify.
+  let normalizedToken = token;
+  try {
+    normalizedToken = decodeURIComponent(token);
+  } catch {
+    // ignore malformed percent-encoding, treat as raw token
+  }
+
+  const parts = normalizedToken.split(':');
   if (parts.length !== 2) return false;
 
   const [timestamp, signature] = parts;
@@ -32,10 +41,10 @@ function verifyToken(secret: string, sessionId: string, token: string): boolean 
   const expectedSignature = hmac.digest('base64url');
 
   // Use timing-safe comparison
-  return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(expectedSignature)
-  );
+  const signatureBuf = Buffer.from(signature);
+  const expectedBuf = Buffer.from(expectedSignature);
+  if (signatureBuf.length !== expectedBuf.length) return false;
+  return crypto.timingSafeEqual(signatureBuf, expectedBuf);
 }
 
 /**
@@ -69,7 +78,7 @@ export async function generateCsrfToken(response: NextResponse, request: Request
     const token = generateToken(sessionSecret, sessionId);
 
     response.cookies.set(CSRF_TOKEN_COOKIE, token, {
-      httpOnly: true,
+      httpOnly: false, // Must be false for Double Submit Cookie pattern - JS needs to read it
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
       path: '/',
@@ -84,7 +93,7 @@ export async function generateCsrfToken(response: NextResponse, request: Request
     const token = generateToken(tempSecret, sessionId);
 
     response.cookies.set(CSRF_TOKEN_COOKIE, token, {
-      httpOnly: true,
+      httpOnly: false, // Must be false for Double Submit Cookie pattern - JS needs to read it
       sameSite: 'strict',
       secure: process.env.NODE_ENV === 'production',
       path: '/',
@@ -106,18 +115,30 @@ export async function verifyCsrfToken(request: Request): Promise<boolean> {
   }
 
   // Get token from header
-  const headerToken = request.headers.get(CSRF_TOKEN_HEADER);
-  if (!headerToken) {
+  const headerTokenRaw = request.headers.get(CSRF_TOKEN_HEADER);
+  if (!headerTokenRaw) {
     return false;
+  }
+  let headerToken = headerTokenRaw;
+  try {
+    headerToken = decodeURIComponent(headerTokenRaw);
+  } catch {
+    // ignore malformed percent-encoding
   }
 
   // Get token from cookie
   const cookies = request.headers.get('cookie') || '';
   const cookieMatch = cookies.match(/(?:^|;\s*)csrf_token=([^;]+)/);
-  const cookieToken = cookieMatch?.[1];
+  const cookieTokenRaw = cookieMatch?.[1];
 
-  if (!cookieToken) {
+  if (!cookieTokenRaw) {
     return false;
+  }
+  let cookieToken = cookieTokenRaw;
+  try {
+    cookieToken = decodeURIComponent(cookieTokenRaw);
+  } catch {
+    // ignore malformed percent-encoding
   }
 
   // Tokens must match (Double Submit Cookie pattern)
@@ -162,4 +183,3 @@ export async function requireCsrfToken(request: Request): Promise<void> {
     throw new ForbiddenError('Invalid or missing CSRF token');
   }
 }
-

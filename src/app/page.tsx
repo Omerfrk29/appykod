@@ -6,6 +6,8 @@ import Services from '@/components/Services';
 import Projects from '@/components/Projects';
 import Footer from '@/components/Footer';
 import SnowEffect from '@/components/SnowEffect';
+import HolidayLights from '@/components/HolidayLights';
+import HolidayWelcomeModal from '@/components/HolidayWelcomeModal';
 import type { Service, Project } from '@/lib/db';
 import * as serviceService from '@/lib/services/serviceService';
 import * as projectService from '@/lib/services/projectService';
@@ -113,8 +115,14 @@ export default async function Home() {
 
   return (
     <>
-      {isHolidayThemeEnabled && <SnowEffect />}
-      <Navbar />
+      {isHolidayThemeEnabled && (
+        <>
+          <SnowEffect />
+          <HolidayLights />
+          <HolidayWelcomeModal />
+        </>
+      )}
+      <Navbar isHolidayTheme={isHolidayThemeEnabled} />
       <main>
         <Hero />
         <TechStack />

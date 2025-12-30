@@ -1,5 +1,6 @@
 import type { ApiResponse, Stats } from './types';
 import type { Service, Project, Message, SiteSettings, Testimonial } from '@/lib/db';
+import { getCsrfToken } from './csrf';
 
 const API_BASE = '/api';
 
@@ -20,12 +21,23 @@ async function apiRequest<T>(
   options?: RequestInit
 ): Promise<ApiResponse<T>> {
   try {
+    // Add CSRF token for non-GET requests
+    const csrfToken = getCsrfToken();
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+
+    if (csrfToken && options?.method && !['GET', 'HEAD', 'OPTIONS'].includes(options.method.toUpperCase())) {
+      headers['X-CSRF-Token'] = csrfToken;
+    }
+
     const response = await fetch(`${API_BASE}${endpoint}`, {
       ...options,
       headers: {
-        'Content-Type': 'application/json',
+        ...headers,
         ...options?.headers,
       },
+      credentials: 'include', // Ensure cookies are sent
     });
     return handleResponse<T>(response);
   } catch (error) {
