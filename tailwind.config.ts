@@ -11,50 +11,44 @@ const config: Config = {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: "#5E6FEA",
-                    light: "#8B96F0",
-                    dark: "#4254D6",
-                    50: "#ECEEFF",
-                    100: "#D8DDFF",
-                    200: "#B1BBFF",
-                    300: "#8B96F0",
-                    400: "#5E6FEA",
-                    500: "#4254D6",
-                    600: "#3340A8",
-                    700: "#252F7A",
-                    800: "#181F4C",
-                    900: "#0A0F1E",
+                    DEFAULT: "#252B42", // Dark Navy Background
+                    light: "#3a4161",
+                    dark: "#1a1f33",
+                },
+                secondary: {
+                    DEFAULT: "#FF6B4E", // Coral/Orange Accent
+                    light: "#FF8E76",
+                    dark: "#E8563B",
+                },
+                accent: {
+                    gold: "#FFB067", // Warm Gold
+                    purple: "#8489F0", // Soft Purple
+                    teal: "#52C1B8", // Teal
+                },
+                background: {
+                    dark: "#14161F",
+                    light: "#FFFFFF",
                 },
                 success: {
                     DEFAULT: "#47CF86",
-                    light: "#6EDBA0",
-                    dark: "#2EB36C",
                 },
                 warning: {
                     DEFAULT: "#FB6B4E",
-                    light: "#FC8D76",
-                    dark: "#E94D2D",
                 },
                 danger: {
                     DEFAULT: "#FF4B7B",
-                    light: "#FF7A9E",
-                    dark: "#E62958",
                 },
                 info: {
                     DEFAULT: "#00CED1",
-                    light: "#33D8DA",
-                    dark: "#00A8AA",
-                },
-                accent: {
-                    gold: "#FFD700",
-                    purple: "#9B59B6",
-                    coral: "#FF6B6B",
-                    mint: "#00D9A5",
                 },
             },
             fontFamily: {
-                sans: ['var(--font-anek-latin)', '"Anek Latin"', 'sans-serif'],
+                sans: ['var(--font-inter)', 'var(--font-anek-latin)', 'sans-serif'],
                 logo: ['var(--font-logo)', '"Special Gothic Expanded One"', 'cursive'],
+            },
+            backgroundImage: {
+                'hero-gradient': 'linear-gradient(135deg, #FFB067 0%, #FF6B4E 50%, #8489F0 100%)',
+                'glass': 'rgba(255, 255, 255, 0.1)',
             },
             letterSpacing: {
                 tightest: '-0.075em',
@@ -67,31 +61,9 @@ const config: Config = {
                 relaxed: '1.75',
             },
             animation: {
-                'gradient-x': 'gradient-x 3s ease infinite',
-                'gradient-y': 'gradient-y 3s ease infinite',
-                'gradient-xy': 'gradient-xy 6s ease infinite',
+                'gradient-x': 'gradient-x 5s ease infinite',
                 'float': 'float 6s ease-in-out infinite',
-                'float-slow': 'float-slow 8s ease-in-out infinite',
-                'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
-                'pulse-glow-success': 'pulse-glow-success 2s ease-in-out infinite',
-                'pulse-glow-danger': 'pulse-glow-danger 2s ease-in-out infinite',
-                'pulse-glow-warning': 'pulse-glow-warning 2s ease-in-out infinite',
-                'pulse-glow-info': 'pulse-glow-info 2s ease-in-out infinite',
-                'rotate-slow': 'rotate-slow 20s linear infinite',
-                'scale-pulse': 'scale-pulse 2s ease-in-out infinite',
-                'shimmer': 'shimmer 2s linear infinite',
-                // New animations
-                'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
-                'slide-up-fade': 'slide-up-fade 0.5s ease-out',
-                'slide-down-fade': 'slide-down-fade 0.5s ease-out',
-                'wiggle': 'wiggle 0.5s ease-in-out',
-                'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
-                'text-shimmer': 'text-shimmer 3s ease-in-out infinite',
-                'border-dance': 'border-dance 4s linear infinite',
-                'morph': 'morph 8s ease-in-out infinite',
-                'aurora': 'aurora 15s ease-in-out infinite',
-                'sparkle': 'sparkle 2s ease-in-out infinite',
-                'tilt-shake': 'tilt-shake 0.5s ease-in-out',
+                'pulse-soft': 'pulse-soft 3s ease-in-out infinite',
             },
             keyframes: {
                 'gradient-x': {
@@ -101,6 +73,10 @@ const config: Config = {
                     '50%': {
                         'background-position': '100% 50%',
                     },
+                },
+                'pulse-soft': {
+                    '0%, 100%': { opacity: '1' },
+                    '50%': { opacity: '0.7' },
                 },
                 'gradient-y': {
                     '0%, 100%': {

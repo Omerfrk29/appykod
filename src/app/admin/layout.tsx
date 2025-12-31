@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Lock, Eye, EyeOff } from 'lucide-react';
+import { Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 
 export default function AdminLayout({
@@ -16,6 +16,7 @@ export default function AdminLayout({
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -37,6 +38,7 @@ export default function AdminLayout({
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
+    setIsSubmitting(true);
     const res = await fetch('/api/auth', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -49,6 +51,7 @@ export default function AdminLayout({
     } else {
       alert('Kullanıcı adı veya şifre hatalı');
     }
+    setIsSubmitting(false);
   }
 
   async function handleLogout() {
@@ -62,8 +65,8 @@ export default function AdminLayout({
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-gray-500">Yükleniyor...</div>
+      <div className="min-h-screen flex items-center justify-center bg-[#14161F]">
+        <Loader2 className="animate-spin text-orange-500 w-8 h-8" />
       </div>
     );
   }
@@ -71,41 +74,43 @@ export default function AdminLayout({
   // Login Screen
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyMDIwMjAiIGZpbGwtb3BhY2l0eT0iMC40Ij48cGF0aCBkPSJNMzYgMzRoLTJ2LTRoMnY0em0wLTZ2LTRoLTJ2NGgyem0tNiA2aC00djJoNHYtMnptMCAwdi00aC00djRoNHptMC02aC00di00aDR2NHptMCAwdi00aC00djRoNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20" />
-        
+      <div className="min-h-screen flex items-center justify-center bg-[#14161F] relative overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-orange-500/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
+
         <form
-          className="relative bg-white/10 backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-md border border-white/20"
+          className="relative bg-[#1E2330]/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-md border border-white/5"
           onSubmit={handleLogin}
         >
-          <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/60 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/30">
-              <Lock className="w-8 h-8 text-white" />
+          <div className="flex justify-center mb-8">
+            <div className="w-20 h-20 bg-[#14161F] rounded-2xl flex items-center justify-center border border-white/5 shadow-inner">
+              <Lock className="w-8 h-8 text-orange-500" />
             </div>
           </div>
-          
+
           <h1 className="text-3xl font-bold text-center mb-2 text-white">
-            Yönetim Paneli Girişi
+            Admin Giriş
           </h1>
           <p className="text-gray-400 text-center mb-8">
-            Yönetim paneline erişmek için lütfen giriş yapın
+            Devam etmek için giriş yapın
           </p>
-          
-          <div className="space-y-4">
+
+          <div className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-400 mb-2">
                 Kullanıcı Adı
               </label>
               <input
                 type="text"
-                placeholder="admin"
+                placeholder="yönetici"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 rounded-xl bg-[#14161F] border border-white/5 text-white placeholder-gray-600 focus:border-orange-500/50 outline-none transition-all"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-400 mb-2">
                 Şifre
               </label>
               <div className="relative">
@@ -114,24 +119,25 @@ export default function AdminLayout({
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all pr-12"
+                  className="w-full px-4 py-3 rounded-xl bg-[#14161F] border border-white/5 text-white placeholder-gray-600 focus:border-orange-500/50 outline-none transition-all pr-12"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
             </div>
           </div>
-          
+
           <button
             type="submit"
-            className="w-full mt-8 bg-gradient-to-r from-primary to-primary/80 text-white py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 transform hover:-translate-y-0.5"
+            disabled={isSubmitting}
+            className="w-full mt-8 bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-orange-500/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
-            Giriş Yap
+            {isSubmitting ? <Loader2 className="animate-spin w-5 h-5" /> : 'Giriş Yap'}
           </button>
         </form>
       </div>
@@ -140,10 +146,12 @@ export default function AdminLayout({
 
   // Authenticated Layout
   return (
-    <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen flex bg-[#14161F]">
       <AdminSidebar onLogout={handleLogout} />
-      <main className="flex-1 ml-64">
-      {children}
+      <main className="flex-1 ml-64 p-8 overflow-y-auto h-screen scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-transparent">
+        <div className="max-w-7xl mx-auto">
+          {children}
+        </div>
       </main>
     </div>
   );

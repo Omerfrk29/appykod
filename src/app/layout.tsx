@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anek_Latin, Special_Gothic_Expanded_One } from "next/font/google";
+import { Inter, Special_Gothic_Expanded_One } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
@@ -10,12 +10,11 @@ import CookieConsent from "@/components/CookieConsent";
 import PageViewTracker from "@/components/PageViewTracker";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 
-// Google Font - Anek Latin (Ana font)
-const anekLatin = Anek_Latin({
+// Google Font - Inter (Ana font)
+const inter = Inter({
   subsets: ["latin", "latin-ext"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
+  variable: "--font-inter",
   display: "swap",
-  variable: "--font-anek-latin",
 });
 
 // Google Font - Special Gothic Expanded One (Logo font)
@@ -60,7 +59,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr" suppressHydrationWarning className={`${anekLatin.variable} ${specialGothic.variable}`}>
+    <html lang="tr" suppressHydrationWarning className={`${inter.variable} ${specialGothic.variable}`}>
       <body className="font-sans bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300" suppressHydrationWarning>
         {/* Google Analytics with Consent Mode - loads before page content */}
         <GoogleAnalytics />

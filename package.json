@@ -11,6 +11,7 @@
     "migrate:mongodb": "node scripts/migrate-to-mongodb.mjs"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.8",
     "@types/uuid": "^10.0.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.25",

@@ -1,128 +1,173 @@
 'use client';
 
-import Link from 'next/link';
-import { Service, LocalizedText } from '@/lib/db';
-import { Code, Smartphone, Globe, Database, Cloud, Shield, Zap, Layout, Server, Cpu, Wifi, Monitor } from 'lucide-react';
+import { Layout, Palette, Code, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { analytics } from '@/lib/analytics';
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties; className?: string }>> = {
-  code: Code,
-  smartphone: Smartphone,
-  globe: Globe,
-  database: Database,
-  cloud: Cloud,
-  shield: Shield,
-  zap: Zap,
-  layout: Layout,
-  server: Server,
-  cpu: Cpu,
-  wifi: Wifi,
-  monitor: Monitor,
-};
+const services = [
+  {
+    id: 'uxui',
+    title: 'Flawless',
+    subtitle: 'UX/UI',
+    description:
+      'An exceptional user experience is essential for a product to work. In this regard we strive to deliver outstanding experiences.',
+    icon: Layout,
+    iconBg: 'bg-cyan-100',
+    iconColor: 'text-cyan-600',
+    hoverBg: 'group-hover:bg-cyan-500',
+    featured: false,
+  },
+  {
+    id: 'graphics',
+    title: 'Custom',
+    subtitle: 'Graphics',
+    description:
+      'A unique design must align to the brand\'s personality and stand out in the market through originality, visual balance and awesome information flow.',
+    icon: Palette,
+    iconBg: 'bg-white/20',
+    iconColor: 'text-white',
+    hoverBg: '',
+    featured: true,
+  },
+  {
+    id: 'development',
+    title: 'Best',
+    subtitle: 'Developers',
+    description:
+      'We have the best developers on every project in hand. They are professionals offering code quality and maintenance after the jobs done.',
+    icon: Code,
+    iconBg: 'bg-purple-100',
+    iconColor: 'text-purple-600',
+    hoverBg: 'group-hover:bg-purple-500',
+    featured: false,
+  },
+];
 
-// Helper to get localized text
-function getLocalizedText(text: LocalizedText | string | undefined, lang: 'tr' | 'en'): string {
-  if (!text) return '';
-  if (typeof text === 'string') return text;
-  return text[lang] || text.tr || '';
-}
-
-export default function Services({ services }: { services: Service[] }) {
-  const { t, language } = useLanguage();
-  
-  // Servisleri çoklu dil formatında göster
-  const displayServices = services.length > 0 ? services.map(service => ({
-    ...service,
-    displayTitle: getLocalizedText(service.title, language),
-    displayDescription: getLocalizedText(service.description, language),
-  })) : [
-    { id: '1', displayTitle: 'Web Development', displayDescription: 'Modern, responsive websites built with the latest technologies.', icon: 'globe' },
-    { id: '2', displayTitle: 'Mobile Apps', displayDescription: 'Native and cross-platform mobile applications for iOS and Android.', icon: 'smartphone' },
-    { id: '3', displayTitle: 'Custom Software', displayDescription: 'Tailored software solutions to meet your specific business needs.', icon: 'code' },
-  ];
-
-  const colorSchemes = [
-    { iconBg: 'bg-primary/15 dark:bg-primary/25', iconColor: 'text-primary', borderGradient: 'from-primary via-info to-danger', glowColor: 'group-hover:shadow-[0_0_50px_rgba(94,111,234,0.6),0_0_100px_rgba(94,111,234,0.3)]', accentColor: 'bg-info/20' },
-    { iconBg: 'bg-success/15 dark:bg-success/25', iconColor: 'text-success', borderGradient: 'from-success via-primary to-info', glowColor: 'group-hover:shadow-[0_0_50px_rgba(71,207,134,0.6),0_0_100px_rgba(71,207,134,0.3)]', accentColor: 'bg-primary/20' },
-    { iconBg: 'bg-danger/15 dark:bg-danger/25', iconColor: 'text-danger', borderGradient: 'from-danger via-warning to-primary', glowColor: 'group-hover:shadow-[0_0_50px_rgba(255,75,123,0.6),0_0_100px_rgba(255,75,123,0.3)]', accentColor: 'bg-warning/20' },
-  ];
+export default function Services() {
+  const { t } = useLanguage();
 
   return (
-    <section id="services" className="py-12 md:py-16 lg:py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10 md:mb-12 animate-fade-in-up">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-3 md:mb-4">
-            {t('services.title')}
-          </h2>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 dark:text-gray-300 px-4">
-            {t('services.subtitle')}
-          </p>
+    <section id="services" className="py-24 bg-white relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-16 mb-20">
+          {/* Left Label */}
+          <div className="flex-shrink-0">
+            <h3 className="text-lg font-bold text-gray-400 uppercase tracking-wider">
+              Our
+              <br />
+              Approach
+            </h3>
+          </div>
+
+          {/* Right Title */}
+          <div className="flex-1 max-w-3xl">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+              We Make Every Project Feel
+              <br />
+              Personal because
+              <br />
+              <span className="inline-flex items-center gap-4">
+                <span className="text-secondary relative">
+                  Our Clients Matter.
+                  <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-secondary/30" />
+                </span>
+                <svg
+                  className="w-8 h-8 lg:w-10 lg:h-10 text-cyan-500"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+              </span>
+            </h2>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6" style={{ perspective: '1000px' }}>
-          {displayServices.map((service, index) => {
-            const Icon = iconMap[service.icon || 'code'] || Code;
-            const colorScheme = colorSchemes[index % colorSchemes.length];
+        {/* Service Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+          {services.map((service, index) => {
+            const Icon = service.icon;
+            const isFeatured = service.featured;
 
             return (
-              <Link
+              <div
                 key={service.id}
-                href={`/services/${service.id}`}
-                onClick={() => analytics.serviceClick(service.id, service.displayTitle)}
-                className="animate-fade-in-up block"
-                style={{ animationDelay: `${index * 150}ms`, animationFillMode: 'backwards' }}
+                className={`group relative rounded-[32px] p-8 transition-all duration-500 ${
+                  isFeatured
+                    ? 'bg-secondary hover:bg-secondary-dark text-white shadow-2xl shadow-secondary/20 md:-mt-8 md:mb-8 scale-[1.02]'
+                    : 'bg-white hover:shadow-2xl shadow-lg border border-gray-100 md:mt-8'
+                }`}
               >
-                <div
-                  className={`relative group bg-white dark:bg-gray-800 rounded-2xl md:rounded-3xl p-5 md:p-6 lg:p-8 transition-all duration-500 overflow-hidden shadow-xl hover:shadow-2xl h-full border border-gray-100 dark:border-gray-700 ${colorScheme.glowColor} cursor-pointer`}
-                  style={{ transformStyle: 'preserve-3d' }}
-                >
-                  {/* Animated Gradient Border Effect */}
-                  <div
-                    className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-[2px] bg-gradient-to-br ${colorScheme.borderGradient} animate-gradient-x`}
-                    style={{ backgroundSize: '200% 200%' }}
-                  >
-                    <div className="absolute inset-[2px] rounded-3xl bg-white dark:bg-gray-800" />
-                  </div>
-
-                  {/* Inner card background */}
-                  <div className="absolute inset-[1px] rounded-3xl bg-white dark:bg-gray-800" />
-
-                  {/* Content */}
-                  <div className="relative z-10">
-                    <div
-                      className={`w-14 h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 relative overflow-hidden ${colorScheme.iconBg} group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300`}
-                    >
-                      <Icon size={28} className={`md:w-8 md:h-8 lg:w-9 lg:h-9 ${colorScheme.iconColor}`} />
-                      {/* Shimmer/Shine sweep effect - only on hover */}
-                      <div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:animate-shine-sweep transition-opacity duration-300"
-                        style={{ 
-                          background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 45%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.25) 55%, transparent 60%)',
-                          backgroundSize: '250% 100%'
-                        }}
+                {/* Decorative circle for featured card */}
+                {isFeatured && (
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <svg width="60" height="60" viewBox="0 0 100 100" fill="none">
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="45"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeDasharray="6 6"
+                        className="animate-spin-slow"
+                        style={{ animationDuration: '20s' }}
                       />
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-extrabold text-gray-900 dark:text-white mb-2 md:mb-4 transition-all duration-300">
-                      {service.displayTitle}
-                    </h3>
-                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                      {service.displayDescription}
-                    </p>
-
-                    {/* Learn more indicator */}
-                    <div className={`mt-4 md:mt-6 flex items-center text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${colorScheme.iconColor}`}>
-                      <span>{t('services.learnMore')}</span>
-                      <span className="ml-2 animate-arrow-bounce">→</span>
-                    </div>
+                    </svg>
                   </div>
+                )}
 
-                  {/* Floating accent shape */}
-                  <div
-                    className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full opacity-20 group-hover:opacity-40 transition-all duration-500 group-hover:scale-125 ${colorScheme.accentColor}`}
+                {/* Icon */}
+                <div
+                  className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-all duration-300 ${
+                    isFeatured
+                      ? 'bg-white/20 border-2 border-white/30 border-dashed'
+                      : `${service.iconBg} ${service.hoverBg} group-hover:text-white`
+                  }`}
+                >
+                  <Icon
+                    size={28}
+                    className={isFeatured ? 'text-white' : service.iconColor}
                   />
                 </div>
-              </Link>
+
+                {/* Title */}
+                <h3
+                  className={`text-2xl font-bold mb-4 ${
+                    isFeatured ? 'text-white' : 'text-gray-900'
+                  }`}
+                >
+                  {service.title}
+                  <br />
+                  {service.subtitle}
+                </h3>
+
+                {/* Description */}
+                <p
+                  className={`leading-relaxed mb-8 text-sm ${
+                    isFeatured ? 'text-white/80' : 'text-gray-500'
+                  }`}
+                >
+                  {service.description}
+                </p>
+
+                {/* Arrow Button */}
+                <div
+                  className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 cursor-pointer ${
+                    isFeatured
+                      ? 'border-white/30 text-white hover:bg-white hover:text-secondary'
+                      : `border-gray-200 text-gray-400 ${service.hoverBg} group-hover:text-white group-hover:border-transparent`
+                  }`}
+                >
+                  <ArrowRight size={16} />
+                </div>
+              </div>
             );
           })}
         </div>

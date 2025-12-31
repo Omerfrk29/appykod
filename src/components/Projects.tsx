@@ -1,185 +1,128 @@
 'use client';
 
-import Link from 'next/link';
-import { Project, LocalizedText } from '@/lib/db';
-import { motion } from 'framer-motion';
-import { ExternalLink, ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { ArrowRight, Loader2, Package } from 'lucide-react';
+import { projectsApi } from '@/lib/api/client';
+import type { Project, LocalizedText } from '@/lib/db';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { analytics } from '@/lib/analytics';
 
-// Helper to get localized text
-function getLocalizedText(text: LocalizedText | string | undefined, lang: 'tr' | 'en'): string {
+function getLocalizedText(
+  text: LocalizedText | string | undefined,
+  lang: 'tr' | 'en'
+): string {
   if (!text) return '';
   if (typeof text === 'string') return text;
   return text[lang] || text.tr || '';
 }
 
-export default function Projects({ projects }: { projects: Project[] }) {
-  const { t, language } = useLanguage();
-  
-  // Fallback data
-  const displayProjects =
-    projects.length > 0
-      ? projects.map(p => ({
-          ...p,
-          displayTitle: getLocalizedText(p.title, language),
-          displayDescription: getLocalizedText(p.description, language),
-        }))
-      : [
-          {
-            id: '1',
-            displayTitle: 'E-Commerce Platform',
-            displayDescription: 'A full-featured online store with payment integration.',
-            imageUrl: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80',
-            link: '#',
-          },
-          {
-            id: '2',
-            displayTitle: 'Finance Dashboard',
-            displayDescription: 'Real-time analytics and reporting tool for fintech.',
-            imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
-            link: '#',
-          },
-          {
-            id: '3',
-            displayTitle: 'Social App',
-            displayDescription: 'Community platform with messaging and feed features.',
-            imageUrl: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80',
-            link: '#',
-          },
-        ];
+export default function Projects() {
+  const { language } = useLanguage();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const response = await projectsApi.getAll();
+        if (response.success && response.data) {
+          setProjects(response.data);
+        }
+      } catch (error) {
+        console.error('Error loading projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProjects();
+  }, []);
 
   return (
-    <section id="projects" className="py-24 bg-white dark:bg-gray-950 transition-colors duration-300">
+    <section id="projects" className="py-24 bg-[#F8FAFC]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
-            {t('projects.title')}
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-16">
+          <div className="w-1 h-8 bg-secondary rounded-full" />
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            Our Projects
           </h2>
-          <p className="max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-300">
-            {t('projects.subtitle')}
-          </p>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {displayProjects.map((project, index) => {
-            const gradients = [
-              'linear-gradient(135deg, rgba(94, 111, 234, 0.8), rgba(0, 206, 209, 0.8))',
-              'linear-gradient(135deg, rgba(71, 207, 134, 0.8), rgba(94, 111, 234, 0.8))',
-              'linear-gradient(135deg, rgba(255, 75, 123, 0.8), rgba(251, 107, 78, 0.8))',
-            ];
-            const glowColors = [
-              'rgba(94, 111, 234, 0.4)',
-              'rgba(71, 207, 134, 0.4)',
-              'rgba(255, 75, 123, 0.4)',
-            ];
-            const gradient = gradients[index % gradients.length];
-            const glowColor = glowColors[index % glowColors.length];
-            
-            return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -5, scale: 1.02 }}
-                className="group relative bg-gray-50 dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
-              >
-                {/* Glow Effect */}
-                <motion.div
-                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-300 -z-10"
-                  style={{ backgroundColor: glowColor }}
-                  animate={{
-                    scale: [1, 1.1, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
-                
-                <div className="relative h-64 overflow-hidden">
-                  {/* Parallax Image */}
-                  <motion.div
-                    className="absolute inset-0"
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={project.imageUrl}
-                      alt={project.displayTitle}
-                      className="w-full h-full object-cover"
-                    />
-                  </motion.div>
-                  
-                  {/* Gradient Overlay */}
-                  <motion.div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ background: gradient }}
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                  />
-                  
-                  {/* Hover Content */}
-                  <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                    <Link
-                      href={`/projects/${project.id}`}
-                      onClick={() => analytics.projectClick(project.id, project.displayTitle)}
-                      className="inline-flex items-center px-6 py-3 border border-white/30 text-base font-medium rounded-full text-white bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all shadow-lg"
-                    >
-                      {t('projects.viewDetails')} <ArrowRight size={18} className="ml-2" />
-                    </Link>
-                    {project.link && project.link !== '#' && (
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <Loader2 className="animate-spin text-secondary w-10 h-10" />
+          </div>
+        ) : projects.length === 0 ? (
+          <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
+            <Package size={48} className="mx-auto text-gray-300 mb-4" />
+            <p className="text-gray-500 text-lg">Henüz bir proje eklenmedi.</p>
+          </div>
+        ) : (
+          <div className="space-y-12">
+            {projects.map((project, index) => {
+              const isEven = index % 2 === 0;
+              return (
+                <div
+                  key={project.id}
+                  className={`bg-white rounded-3xl p-8 lg:p-10 shadow-sm border border-gray-100 flex flex-col ${
+                    isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'
+                  } items-center gap-8 lg:gap-12 group hover:shadow-xl transition-all duration-300`}
+                >
+                  {/* Content */}
+                  <div className="flex-1 space-y-5">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                          isEven ? 'bg-secondary' : 'bg-accent-purple'
+                        }`}
+                      >
+                        <div className="w-3 h-3 bg-white rounded-full opacity-80" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900">
+                        {getLocalizedText(project.title, language)}
+                      </h3>
+                    </div>
+
+                    <p className="text-gray-500 leading-relaxed text-lg">
+                      {getLocalizedText(project.description, language)}
+                    </p>
+
+                    {project.link && (
                       <a
                         href={project.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={() => analytics.externalLinkClick(project.link || '', project.displayTitle)}
-                        className="inline-flex items-center px-4 py-3 border border-white/30 text-base font-medium rounded-full text-white bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all shadow-lg"
+                        className="inline-flex items-center gap-2 text-secondary font-semibold hover:gap-3 transition-all group/link"
                       >
-                        <ExternalLink size={18} />
+                        View Project
+                        <ArrowRight
+                          size={16}
+                          className="group-hover/link:translate-x-1 transition-transform"
+                        />
                       </a>
                     )}
                   </div>
-                  
-                  {/* Floating Badge */}
-                  <motion.div
-                    className="absolute top-4 right-4 px-3 py-1 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-xs font-bold text-primary shadow-lg"
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 + 0.3 }}
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                  >
-                    #{index + 1}
-                  </motion.div>
+
+                  {/* Image */}
+                  <div className="flex-1 w-full overflow-hidden rounded-2xl bg-gray-50 min-h-[280px] relative">
+                    {project.imageUrl ? (
+                      <Image
+                        src={project.imageUrl}
+                        alt={getLocalizedText(project.title, language)}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full min-h-[280px] text-gray-300">
+                        <Package size={48} className="opacity-50" />
+                      </div>
+                    )}
+                  </div>
                 </div>
-                
-                <div className="p-8">
-                  <motion.h3
-                    className="text-2xl font-bold text-gray-900 dark:text-white mb-3"
-                    whileHover={{ x: 5 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                  >
-                    {project.displayTitle}
-                  </motion.h3>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {project.displayDescription}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );
