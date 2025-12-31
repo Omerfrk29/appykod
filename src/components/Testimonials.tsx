@@ -6,6 +6,7 @@ import { Star, Quote } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { testimonialsApi } from '@/lib/api/client';
 import type { Testimonial, LocalizedText } from '@/lib/db';
+import ScrollReveal, { StaggerContainer, StaggerItem } from './ScrollReveal';
 
 const defaultImages = [
   'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80',
@@ -48,35 +49,42 @@ export default function Testimonials() {
   }
 
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-30" />
+    <section className="py-24 bg-bg-elevated relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-warm-glow opacity-10" />
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(245,158,11,0.02)_1px,transparent_1px)] [background-size:32px_32px]" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            {t('testimonials.title')}
+        <ScrollReveal className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 bg-accent-amber/10 border border-accent-amber/20 rounded-full text-accent-amber text-sm font-medium mb-4">
+            Referanslar
+          </span>
+          <h2 className="text-h2 font-bold text-text-primary mb-4">
+            Müşterilerimiz{' '}
+            <span className="text-transparent bg-gradient-warm bg-clip-text">
+              Ne Diyor?
+            </span>
           </h2>
-          <p className="max-w-2xl mx-auto text-lg text-gray-500">
-            {t('testimonials.subtitle')}
+          <p className="max-w-2xl mx-auto text-body-lg text-text-secondary">
+            Birlikte çalıştığımız müşterilerimizin değerli görüşleri.
           </p>
-        </div>
+        </ScrollReveal>
 
         {loading ? (
           <div className="text-center py-12">
-            <div className="w-8 h-8 border-2 border-secondary border-t-transparent rounded-full animate-spin mx-auto" />
+            <div className="w-8 h-8 border-2 border-accent-amber border-t-transparent rounded-full animate-spin mx-auto" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={100}>
             {testimonials.map((testimonial, index) => (
+              <StaggerItem key={testimonial.id} index={index}>
               <div
-                key={testimonial.id}
-                className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-gray-200 transition-all duration-300 relative group"
+                className="group relative bg-glass-bg backdrop-blur-xl p-8 rounded-3xl border border-white/5 hover:border-glass-border-hover transition-all duration-500 hover:shadow-glass-card-hover h-full"
               >
-                {/* Quote Icon */}
-                <div className="absolute top-6 right-6 text-gray-100 group-hover:text-secondary/10 transition-colors">
-                  <Quote size={40} />
+                {/* Quote Icon - Amber Gradient */}
+                <div className="absolute top-6 right-6 opacity-20 group-hover:opacity-40 transition-opacity">
+                  <Quote size={40} className="text-accent-amber" />
                 </div>
 
                 {/* Stars */}
@@ -85,42 +93,52 @@ export default function Testimonials() {
                     <Star
                       key={i}
                       size={16}
-                      className="text-secondary fill-secondary"
+                      className="text-accent-amber fill-accent-amber"
                     />
                   ))}
                 </div>
 
                 {/* Content */}
-                <p className="text-gray-600 mb-8 leading-relaxed relative z-10">
+                <p className="text-text-secondary mb-8 leading-relaxed relative z-10">
                   &ldquo;{getLocalizedText(testimonial.content, language)}&rdquo;
                 </p>
 
                 {/* Author */}
                 <div className="flex items-center gap-4">
-                  <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gray-100">
-                    <Image
-                      src={
-                        testimonial.imageUrl ||
-                        defaultImages[index % defaultImages.length]
-                      }
-                      alt={getLocalizedText(testimonial.name, language)}
-                      fill
-                      sizes="48px"
-                      className="object-cover"
-                    />
+                  {/* Avatar with Amber Ring */}
+                  <div className="relative">
+                    <div className="absolute -inset-1 bg-gradient-warm rounded-full opacity-50 blur-sm group-hover:opacity-80 transition-opacity" />
+                    <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-accent-amber/30 group-hover:ring-accent-amber/60 transition-all">
+                      <Image
+                        src={
+                          testimonial.imageUrl ||
+                          defaultImages[index % defaultImages.length]
+                        }
+                        alt={getLocalizedText(testimonial.name, language)}
+                        fill
+                        sizes="48px"
+                        className="object-cover"
+                      />
+                    </div>
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900">
+                    <h4 className="font-bold text-text-primary group-hover:text-transparent group-hover:bg-gradient-warm group-hover:bg-clip-text transition-all">
                       {getLocalizedText(testimonial.name, language)}
                     </h4>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-text-muted">
                       {getLocalizedText(testimonial.role, language)}
                     </p>
                   </div>
                 </div>
+
+                {/* Hover Effect */}
+                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent-amber/5 to-transparent rounded-3xl" />
+                </div>
               </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         )}
       </div>
     </section>

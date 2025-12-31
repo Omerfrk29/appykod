@@ -8,9 +8,27 @@ import {
   Mail,
   Loader2,
   MapPin,
+  Phone,
+  ArrowRight,
 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { analytics } from '@/lib/analytics';
+import ScrollReveal from './ScrollReveal';
+
+const contactInfo = [
+  {
+    icon: Mail,
+    title: 'Email',
+    value: 'appykod@gmail.com',
+    href: 'mailto:appykod@gmail.com',
+  },
+  {
+    icon: MapPin,
+    title: 'Konum',
+    value: 'Izmir, Turkey',
+    href: null,
+  },
+];
 
 export default function Contact() {
   const { t } = useLanguage();
@@ -60,58 +78,76 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="py-24 bg-[#0F1117] text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left Content */}
-          <div className="space-y-10">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                {t('contact.title')}
-              </h2>
-              <p className="text-lg text-gray-400 leading-relaxed">
-                {t('contact.subtitle')}
+    <section id="contact" className="py-24 bg-bg-base relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-warm-glow opacity-20" />
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(245,158,11,0.02)_1px,transparent_1px)] [background-size:32px_32px]" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header */}
+        <ScrollReveal className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 bg-accent-amber/10 border border-accent-amber/20 rounded-full text-accent-amber text-sm font-medium mb-4">
+            İletişim
+          </span>
+          <h2 className="text-h2 font-bold text-text-primary mb-4">
+            Projenizi{' '}
+            <span className="text-transparent bg-gradient-warm bg-clip-text">
+              Birlikte Geliştirelim
+            </span>
+          </h2>
+          <p className="max-w-2xl mx-auto text-body-lg text-text-secondary">
+            Fikirlerinizi hayata geçirmek için sabırsızlanıyoruz. Hemen iletişime geçin!
+          </p>
+        </ScrollReveal>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* Left Content - Contact Info */}
+          <ScrollReveal direction="left" delay={100} className="space-y-8">
+            {/* Info Cards */}
+            <div className="space-y-4">
+              {contactInfo.map((item, index) => {
+                const Icon = item.icon;
+                const content = (
+                  <div className="group flex items-start gap-4 p-6 bg-glass-bg backdrop-blur-xl rounded-2xl border border-white/5 hover:border-glass-border-hover transition-all duration-300">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-warm flex items-center justify-center flex-shrink-0 shadow-glow-amber">
+                      <Icon className="text-white" size={22} />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-medium text-text-muted mb-1">
+                        {item.title}
+                      </h3>
+                      <p className="text-text-primary font-medium group-hover:text-accent-amber transition-colors">
+                        {item.value}
+                      </p>
+                    </div>
+                  </div>
+                );
+
+                return item.href ? (
+                  <a key={index} href={item.href}>
+                    {content}
+                  </a>
+                ) : (
+                  <div key={index}>{content}</div>
+                );
+              })}
+            </div>
+
+            {/* Additional CTA */}
+            <div className="p-6 bg-gradient-warm-soft rounded-2xl border border-accent-amber/20">
+              <h3 className="text-lg font-bold text-text-primary mb-2">
+                Hızlı yanıt garantisi
+              </h3>
+              <p className="text-text-secondary text-sm">
+                Mesajlarınıza 24 saat içinde dönüş yapıyoruz. Acil projeler için doğrudan email atabilirsiniz.
               </p>
             </div>
-
-            <div className="space-y-6">
-              {/* Email */}
-              <div className="flex items-start gap-4 group">
-                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-secondary/10 group-hover:border-secondary/20 transition-all">
-                  <Mail className="text-secondary" size={24} />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-1">
-                    Email Us
-                  </h3>
-                  <a
-                    href="mailto:appykod@gmail.com"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    appykod@gmail.com
-                  </a>
-                </div>
-              </div>
-
-              {/* Location */}
-              <div className="flex items-start gap-4 group">
-                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-accent-purple/10 group-hover:border-accent-purple/20 transition-all">
-                  <MapPin className="text-accent-purple" size={24} />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white mb-1">
-                    Location
-                  </h3>
-                  <p className="text-gray-400">Izmir, Turkey</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          </ScrollReveal>
 
           {/* Right Form */}
           <div
             ref={formRef}
-            className={`bg-[#1A1D26] rounded-3xl p-8 border border-white/5 shadow-2xl transition-all duration-700 ${
+            className={`bg-glass-bg backdrop-blur-xl rounded-3xl p-8 border border-white/5 shadow-glass-card transition-all duration-700 ${
               isInView
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-12'
@@ -131,7 +167,7 @@ export default function Contact() {
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-sm font-medium text-gray-400 mb-2"
+                  className="block text-sm font-medium text-text-secondary mb-2"
                 >
                   {t('contact.form.name')}
                 </label>
@@ -140,7 +176,7 @@ export default function Contact() {
                   id="name"
                   name="name"
                   required
-                  className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-secondary focus:bg-white/10 outline-none transition-all"
+                  className="w-full px-4 py-3.5 rounded-xl bg-bg-surface/50 border border-white/10 text-text-primary placeholder-text-muted focus:border-accent-amber focus:ring-2 focus:ring-accent-amber/20 focus:bg-bg-surface outline-none transition-all"
                   placeholder={t('contact.form.namePlaceholder')}
                 />
               </div>
@@ -148,7 +184,7 @@ export default function Contact() {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-400 mb-2"
+                  className="block text-sm font-medium text-text-secondary mb-2"
                 >
                   {t('contact.form.email')}
                 </label>
@@ -157,7 +193,7 @@ export default function Contact() {
                   id="email"
                   name="email"
                   required
-                  className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-secondary focus:bg-white/10 outline-none transition-all"
+                  className="w-full px-4 py-3.5 rounded-xl bg-bg-surface/50 border border-white/10 text-text-primary placeholder-text-muted focus:border-accent-amber focus:ring-2 focus:ring-accent-amber/20 focus:bg-bg-surface outline-none transition-all"
                   placeholder={t('contact.form.emailPlaceholder')}
                 />
               </div>
@@ -165,7 +201,7 @@ export default function Contact() {
               <div>
                 <label
                   htmlFor="content"
-                  className="block text-sm font-medium text-gray-400 mb-2"
+                  className="block text-sm font-medium text-text-secondary mb-2"
                 >
                   {t('contact.form.message')}
                 </label>
@@ -174,7 +210,7 @@ export default function Contact() {
                   name="content"
                   required
                   rows={4}
-                  className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-secondary focus:bg-white/10 outline-none transition-all resize-none"
+                  className="w-full px-4 py-3.5 rounded-xl bg-bg-surface/50 border border-white/10 text-text-primary placeholder-text-muted focus:border-accent-amber focus:ring-2 focus:ring-accent-amber/20 focus:bg-bg-surface outline-none transition-all resize-none"
                   placeholder={t('contact.form.messagePlaceholder')}
                 />
               </div>
@@ -182,18 +218,23 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={status === 'loading' || status === 'success'}
-                className="w-full py-4 bg-secondary hover:bg-secondary-dark text-white font-bold rounded-xl transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-secondary/20"
+                className="w-full py-4 bg-gradient-warm text-white font-bold rounded-xl transition-all hover:shadow-glow-amber hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {status === 'loading' && (
                   <Loader2 className="animate-spin" size={20} />
                 )}
                 {status === 'success' && <CheckCircle size={20} />}
                 {status === 'error' && <AlertCircle size={20} />}
+                {status === 'idle' && <Send size={20} />}
 
                 {status === 'idle' && t('contact.form.send')}
                 {status === 'loading' && t('contact.form.sending')}
                 {status === 'success' && t('contact.form.success')}
                 {status === 'error' && t('contact.form.error')}
+
+                {status === 'idle' && (
+                  <ArrowRight size={16} className="ml-1" />
+                )}
               </button>
             </form>
           </div>

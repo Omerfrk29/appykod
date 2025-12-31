@@ -1,12 +1,27 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Globe, Twitter } from 'lucide-react';
+import { Globe, Twitter, Linkedin, Github, ArrowRight } from 'lucide-react';
 import { settingsApi } from '@/lib/api/client';
 import { handleSmoothScroll } from '@/lib/utils';
 import { analytics } from '@/lib/analytics';
 import type { SiteSettings } from '@/lib/db';
+import Logo from './Logo';
+import ScrollReveal from './ScrollReveal';
+
+const footerLinks = [
+  { href: '#services', label: 'Hizmetler' },
+  { href: '#projects', label: 'Projeler' },
+  { href: '#contact', label: 'İletişim' },
+];
+
+const socialLinks = [
+  { icon: Twitter, href: '#', label: 'Twitter' },
+  { icon: Linkedin, href: '#', label: 'LinkedIn' },
+  { icon: Github, href: '#', label: 'GitHub' },
+];
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -27,94 +42,102 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-[#0F1117] text-white">
+    <footer className="bg-bg-base relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-warm-glow opacity-10" />
+
       {/* CTA Section */}
-      <div className="py-24 border-b border-white/5">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight leading-tight">
-            Ready to transform your
-            <br />
-            business?
-          </h2>
-          <p className="text-gray-400 mb-10 text-lg max-w-2xl mx-auto">
-            Join hundreds of companies using AppyKod to build faster, safer, and
-            smarter software.
-          </p>
-          <a
-            href="#contact"
-            onClick={(e) => {
-              handleSmoothScroll(e, '#contact');
-              analytics.ctaClick('footer-start-project');
-            }}
-            className="inline-flex items-center gap-2 bg-secondary hover:bg-secondary-dark text-white px-10 py-4 rounded-lg font-bold text-lg shadow-lg shadow-secondary/25 hover:shadow-secondary/40 transition-all duration-300 hover:scale-[1.02]"
-          >
-            Start Your Project
-          </a>
+      <div className="py-24 border-b border-white/5 relative">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* CTA Glass Card */}
+          <ScrollReveal>
+          <div className="relative p-12 bg-glass-bg backdrop-blur-xl rounded-3xl border border-accent-amber/20 shadow-glass-card text-center">
+            {/* Background Glow */}
+            <div className="absolute inset-0 bg-gradient-warm opacity-5 rounded-3xl" />
+            <div className="absolute -inset-px bg-gradient-warm opacity-20 rounded-3xl blur-xl" />
+
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 leading-tight">
+                Bir Sonraki Projeniz İçin{' '}
+                <span className="text-transparent bg-gradient-warm bg-clip-text">
+                  Hazırız
+                </span>
+              </h2>
+              <p className="text-text-secondary mb-8 text-lg max-w-xl mx-auto">
+                Dijital dönüşümünüzü hızlandırmak için bugün iletişime geçin.
+              </p>
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  handleSmoothScroll(e, '#contact');
+                  analytics.ctaClick('footer-start-project');
+                }}
+                className="inline-flex items-center gap-2 bg-gradient-warm text-white px-10 py-4 rounded-xl font-bold text-lg shadow-glow-amber hover:shadow-glow-amber-lg transition-all duration-300 hover:scale-[1.02] group"
+              >
+                Projeye Başla
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </a>
+            </div>
+          </div>
+          </ScrollReveal>
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="py-8">
+      {/* Main Footer */}
+      <div className="py-12 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             {/* Logo */}
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M12 2L2 7L12 12L22 7L12 2Z"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M2 17L12 22L22 17"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M2 12L12 17L22 12"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <span className="font-bold text-xl tracking-tight">AppyKod</span>
-            </div>
+            <Link href="/" className="hover:opacity-80 transition-opacity">
+              <Logo />
+            </Link>
 
-            {/* Copyright */}
-            <p className="text-gray-500 text-sm">
-              © {new Date().getFullYear()} AppyKod Inc. All rights reserved.
-            </p>
+            {/* Links */}
+            <nav className="flex flex-wrap items-center justify-center gap-6">
+              {footerLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleSmoothScroll(e, link.href)}
+                  className="text-text-secondary hover:text-accent-amber font-medium text-sm transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
 
             {/* Social Icons */}
-            <div className="flex items-center gap-4">
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full border border-gray-700 hover:border-gray-500 flex items-center justify-center text-gray-400 hover:text-white transition-all"
-                aria-label="Website"
-              >
-                <Globe size={18} />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full border border-gray-700 hover:border-gray-500 flex items-center justify-center text-gray-400 hover:text-white transition-all"
-                aria-label="Twitter"
-              >
-                <Twitter size={18} />
-              </a>
+            <div className="flex items-center gap-3">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    className="w-10 h-10 rounded-full border border-white/10 hover:border-accent-amber/30 flex items-center justify-center text-text-muted hover:text-accent-amber transition-all hover:bg-accent-amber/10"
+                    aria-label={social.label}
+                  >
+                    <Icon size={18} />
+                  </a>
+                );
+              })}
             </div>
+          </div>
+
+          {/* Divider */}
+          <div className="my-8 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+          {/* Copyright */}
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center">
+            <p className="text-text-muted text-sm">
+              © {new Date().getFullYear()} AppyKod. Tüm hakları saklıdır.
+            </p>
+            <p className="text-text-muted text-sm">
+              <span className="text-transparent bg-gradient-warm bg-clip-text font-medium">
+                Türkiye
+              </span>
+              'den sevgiyle yapıldı.
+            </p>
           </div>
         </div>
       </div>

@@ -15,11 +15,30 @@ interface NavbarProps {
 export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('/');
   const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
+
+      // Detect active section
+      const sections = ['contact', 'projects', 'services'];
+      let found = false;
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 100 && rect.bottom >= 100) {
+            setActiveSection(`#${id}`);
+            found = true;
+            break;
+          }
+        }
+      }
+      if (!found && window.scrollY < 100) {
+        setActiveSection('/');
+      }
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -36,7 +55,7 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#0F1117]/95 backdrop-blur-lg shadow-lg shadow-black/10 py-3'
+          ? 'bg-bg-base/80 backdrop-blur-xl border-b border-glass-border py-3'
           : 'bg-transparent py-5'
       }`}
     >
@@ -52,21 +71,30 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
 
           {/* Desktop Menu - Center */}
           <div className="hidden md:flex items-center space-x-1">
-            {navLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={(e) => {
-                  handleSmoothScroll(e, item.href);
-                  analytics.navClick(item.labelKey);
-                }}
-                className="relative px-4 py-2 text-gray-300 hover:text-white font-medium text-sm transition-colors duration-200 group"
-              >
-                {t(item.labelKey)}
-                {/* Orange underline on hover */}
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-secondary group-hover:w-3/4 transition-all duration-300 rounded-full" />
-              </Link>
-            ))}
+            {navLinks.map((item) => {
+              const isActive = activeSection === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => {
+                    handleSmoothScroll(e, item.href);
+                    analytics.navClick(item.labelKey);
+                  }}
+                  className={`relative px-4 py-2 font-medium text-sm transition-colors duration-200 group ${
+                    isActive ? 'text-accent-amber' : 'text-text-secondary hover:text-text-primary'
+                  }`}
+                >
+                  {t(item.labelKey)}
+                  {/* Amber gradient underline */}
+                  <span
+                    className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-warm rounded-full transition-all duration-300 ${
+                      isActive ? 'w-3/4' : 'w-0 group-hover:w-3/4'
+                    }`}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
           {/* Right Side - CTA Button */}
@@ -77,7 +105,7 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
                 handleSmoothScroll(e, '#contact');
                 analytics.ctaClick('navbar-free-estimate');
               }}
-              className="group relative inline-flex items-center gap-2 bg-secondary hover:bg-secondary-dark text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 shadow-lg shadow-secondary/20 hover:shadow-secondary/40"
+              className="group relative inline-flex items-center gap-2 bg-gradient-warm hover:shadow-glow-amber text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg shadow-accent-amber/20"
             >
               Free estimate
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -88,7 +116,7 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
           <div className="flex items-center md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-white hover:text-gray-300 transition-colors p-2"
+              className="text-text-primary hover:text-accent-amber transition-colors p-2"
               aria-label="Toggle menu"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -97,42 +125,52 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - Fullscreen Glass */}
       <div
-        className={`md:hidden absolute top-full left-0 w-full bg-[#0F1117]/98 backdrop-blur-lg border-t border-white/5 shadow-xl transition-all duration-300 ${
+        className={`md:hidden fixed inset-0 top-[60px] bg-bg-base/95 backdrop-blur-xl transition-all duration-300 ${
           isOpen
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 -translate-y-4 pointer-events-none'
+            ? 'opacity-100 pointer-events-auto'
+            : 'opacity-0 pointer-events-none'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex flex-col space-y-1">
-            {navLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={(e) => {
-                  handleSmoothScroll(e, item.href, 80, () => setIsOpen(false));
-                  analytics.navClick(item.labelKey);
-                }}
-                className="text-gray-300 hover:text-white hover:bg-white/5 font-medium py-3 px-4 rounded-lg transition-all"
-              >
-                {t(item.labelKey)}
-              </Link>
-            ))}
+        <div className="h-full flex flex-col justify-center items-center px-4">
+          <div className="flex flex-col items-center space-y-6">
+            {navLinks.map((item) => {
+              const isActive = activeSection === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={(e) => {
+                    handleSmoothScroll(e, item.href, 80, () => setIsOpen(false));
+                    analytics.navClick(item.labelKey);
+                  }}
+                  className={`relative text-2xl font-bold transition-all ${
+                    isActive
+                      ? 'text-transparent bg-gradient-warm bg-clip-text'
+                      : 'text-text-secondary hover:text-text-primary'
+                  }`}
+                >
+                  {t(item.labelKey)}
+                  {isActive && (
+                    <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-gradient-warm rounded-full" />
+                  )}
+                </Link>
+              );
+            })}
 
             {/* Mobile CTA */}
-            <div className="pt-4 mt-4 border-t border-white/10">
+            <div className="pt-8">
               <a
                 href="#contact"
                 onClick={(e) => {
                   handleSmoothScroll(e, '#contact', 80, () => setIsOpen(false));
                   analytics.ctaClick('navbar-mobile-free-estimate');
                 }}
-                className="w-full flex items-center justify-center gap-2 bg-secondary hover:bg-secondary-dark text-white px-6 py-3 rounded-lg font-semibold transition-all"
+                className="inline-flex items-center justify-center gap-2 bg-gradient-warm text-white px-8 py-4 rounded-xl font-bold text-lg shadow-glow-amber transition-all hover:shadow-glow-amber-lg"
               >
                 Free estimate
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-5 h-5" />
               </a>
             </div>
           </div>

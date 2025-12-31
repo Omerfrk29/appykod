@@ -68,7 +68,7 @@ export default async function Home() {
   return (
     <>
       <Navbar isHolidayTheme={isHolidayThemeEnabled} />
-      <main>
+      <main id="main-content">
         <Hero />
         <TechStack />
         <Services />

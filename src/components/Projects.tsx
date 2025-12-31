@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { ArrowRight, Loader2, Package } from 'lucide-react';
+import { ArrowRight, Loader2, Package, ExternalLink } from 'lucide-react';
 import { projectsApi } from '@/lib/api/client';
 import type { Project, LocalizedText } from '@/lib/db';
 import { useLanguage } from '@/contexts/LanguageContext';
+import ScrollReveal, { StaggerContainer, StaggerItem } from './ScrollReveal';
 
 function getLocalizedText(
   text: LocalizedText | string | undefined,
@@ -14,6 +15,108 @@ function getLocalizedText(
   if (!text) return '';
   if (typeof text === 'string') return text;
   return text[lang] || text.tr || '';
+}
+
+function ProjectCard({
+  project,
+  index,
+  language,
+}: {
+  project: Project;
+  index: number;
+  language: 'tr' | 'en';
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [transform, setTransform] = useState({ rotateX: 0, rotateY: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -5;
+    const rotateY = ((x - centerX) / centerX) * 5;
+    setTransform({ rotateX, rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    setTransform({ rotateX: 0, rotateY: 0 });
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="group relative bg-bg-elevated/50 backdrop-blur-md rounded-3xl border border-white/5 overflow-hidden transition-all duration-500 hover:border-glass-border-hover hover:shadow-glass-card-hover"
+      style={{
+        transform: `perspective(1000px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg)`,
+        transition: 'transform 0.1s ease-out',
+      }}
+    >
+      {/* Image Container */}
+      <div className="relative h-64 overflow-hidden">
+        {project.imageUrl ? (
+          <>
+            <Image
+              src={project.imageUrl}
+              alt={getLocalizedText(project.title, language)}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-bg-base via-bg-base/50 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+            {/* Gradient Border Glow */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-warm" />
+            </div>
+          </>
+        ) : (
+          <div className="flex items-center justify-center h-full bg-bg-surface">
+            <Package size={48} className="text-text-muted opacity-50" />
+          </div>
+        )}
+
+        {/* Project Number Badge */}
+        <div className="absolute top-4 left-4 px-3 py-1 bg-bg-base/80 backdrop-blur-sm rounded-full text-xs font-medium text-text-secondary border border-white/10">
+          #{String(index + 1).padStart(2, '0')}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-6 relative">
+        {/* Title */}
+        <h3 className="text-xl font-bold text-text-primary mb-3 group-hover:text-transparent group-hover:bg-gradient-warm group-hover:bg-clip-text transition-all">
+          {getLocalizedText(project.title, language)}
+        </h3>
+
+        {/* Description */}
+        <p className="text-body-sm text-text-muted mb-6 line-clamp-2">
+          {getLocalizedText(project.description, language)}
+        </p>
+
+        {/* Link */}
+        {project.link && (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-accent-amber font-medium text-sm group/link hover:gap-3 transition-all"
+          >
+            <span>Projeyi Görüntüle</span>
+            <ExternalLink size={14} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+          </a>
+        )}
+      </div>
+
+      {/* Hover Shine Effect */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
+      </div>
+    </div>
+  );
 }
 
 export default function Projects() {
@@ -38,89 +141,64 @@ export default function Projects() {
   }, []);
 
   return (
-    <section id="projects" className="py-24 bg-[#F8FAFC]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="projects" className="py-24 bg-bg-base relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-warm-glow opacity-20" />
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(245,158,11,0.02)_1px,transparent_1px)] [background-size:40px_40px]" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-16">
-          <div className="w-1 h-8 bg-secondary rounded-full" />
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-            Our Projects
+        <ScrollReveal className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 bg-accent-amber/10 border border-accent-amber/20 rounded-full text-accent-amber text-sm font-medium mb-4">
+            Projelerimiz
+          </span>
+          <h2 className="text-h2 font-bold text-text-primary mb-4">
+            Başarı{' '}
+            <span className="text-transparent bg-gradient-warm bg-clip-text">
+              Hikayeleri
+            </span>
           </h2>
-        </div>
+          <p className="max-w-2xl mx-auto text-body-lg text-text-secondary">
+            Müşterilerimiz için geliştirdiğimiz projelerden bazıları.
+          </p>
+        </ScrollReveal>
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <Loader2 className="animate-spin text-secondary w-10 h-10" />
+            <div className="flex flex-col items-center gap-4">
+              <Loader2 className="animate-spin text-accent-amber w-10 h-10" />
+              <span className="text-text-muted text-sm">Projeler yükleniyor...</span>
+            </div>
           </div>
         ) : projects.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
-            <Package size={48} className="mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500 text-lg">Henüz bir proje eklenmedi.</p>
+          <div className="text-center py-20 bg-bg-elevated/50 backdrop-blur-md rounded-3xl border border-white/5">
+            <Package size={48} className="mx-auto text-text-muted mb-4 opacity-50" />
+            <p className="text-text-secondary text-lg">Henüz bir proje eklenmedi.</p>
           </div>
         ) : (
-          <div className="space-y-12">
-            {projects.map((project, index) => {
-              const isEven = index % 2 === 0;
-              return (
-                <div
-                  key={project.id}
-                  className={`bg-white rounded-3xl p-8 lg:p-10 shadow-sm border border-gray-100 flex flex-col ${
-                    isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'
-                  } items-center gap-8 lg:gap-12 group hover:shadow-xl transition-all duration-300`}
-                >
-                  {/* Content */}
-                  <div className="flex-1 space-y-5">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                          isEven ? 'bg-secondary' : 'bg-accent-purple'
-                        }`}
-                      >
-                        <div className="w-3 h-3 bg-white rounded-full opacity-80" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-gray-900">
-                        {getLocalizedText(project.title, language)}
-                      </h3>
-                    </div>
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={100}>
+            {projects.map((project, index) => (
+              <StaggerItem key={project.id} index={index}>
+                <ProjectCard
+                  project={project}
+                  index={index}
+                  language={language}
+                />
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        )}
 
-                    <p className="text-gray-500 leading-relaxed text-lg">
-                      {getLocalizedText(project.description, language)}
-                    </p>
-
-                    {project.link && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-secondary font-semibold hover:gap-3 transition-all group/link"
-                      >
-                        View Project
-                        <ArrowRight
-                          size={16}
-                          className="group-hover/link:translate-x-1 transition-transform"
-                        />
-                      </a>
-                    )}
-                  </div>
-
-                  {/* Image */}
-                  <div className="flex-1 w-full overflow-hidden rounded-2xl bg-gray-50 min-h-[280px] relative">
-                    {project.imageUrl ? (
-                      <Image
-                        src={project.imageUrl}
-                        alt={getLocalizedText(project.title, language)}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="flex items-center justify-center h-full min-h-[280px] text-gray-300">
-                        <Package size={48} className="opacity-50" />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+        {/* View All Link */}
+        {projects.length > 0 && (
+          <div className="text-center mt-12">
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 text-text-secondary hover:text-accent-amber font-medium transition-colors group"
+            >
+              <span>Tüm projelerimiz için iletişime geçin</span>
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </a>
           </div>
         )}
       </div>
