@@ -50,6 +50,22 @@ export async function updateSettings(
   }
 ): Promise<SiteSettings> {
   await connectDB();
+  
+  // If contact.address is being updated, ensure both tr and en are present
+  // to avoid MongoDB validation errors
+  if (updateData.contact?.address) {
+    const currentSettings = await SettingsModel.findOne().lean();
+    const currentAddress = currentSettings?.contact?.address || defaultSettings.contact.address;
+    
+    // If tr or en is missing, use the current value
+    if (!updateData.contact.address.tr?.trim()) {
+      updateData.contact.address.tr = currentAddress.tr;
+    }
+    if (!updateData.contact.address.en?.trim()) {
+      updateData.contact.address.en = currentAddress.en;
+    }
+  }
+  
   // Use findOneAndUpdate with upsert to ensure only one settings document exists
   // MongoDB $set will merge nested objects, so partial nested updates work correctly
   const settings = await SettingsModel.findOneAndUpdate(

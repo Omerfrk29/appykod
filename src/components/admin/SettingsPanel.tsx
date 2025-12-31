@@ -57,14 +57,20 @@ export default function SettingsPanel() {
     setSaved(false);
 
     try {
+      // Build contact object - only include address if both tr and en have values
+      const contactObj: Partial<SiteSettings['contact']> = {
+        email,
+      };
+      if (address.tr.trim() || address.en.trim()) {
+        contactObj.address = address;
+      }
+
       const settings: Partial<SiteSettings> = {
         siteName,
         siteDescription,
         logo,
-        contact: {
-          email,
-          address,
-        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        contact: contactObj as any,
         social: {
           twitter: twitter || undefined,
           linkedin: linkedin || undefined,

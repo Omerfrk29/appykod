@@ -71,16 +71,21 @@ export async function PUT(request: Request) {
 
     // Transform the parsed data to match Partial<SiteSettings> type
     // Handle nested partial updates for contact and social objects
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateData: any = { ...parsed.data };
     
     // If contact is provided, build the contact object only with defined fields
     if (parsed.data.contact) {
-      const contactObj: any = {};
+      const contactObj: Partial<SiteSettings['contact']> = {};
       if (parsed.data.contact.email !== undefined) {
         contactObj.email = parsed.data.contact.email;
       }
       if (parsed.data.contact.address !== undefined) {
-        contactObj.address = parsed.data.contact.address;
+        const addr = parsed.data.contact.address;
+        // Only include address if at least one language has a value
+        if (addr && (addr.tr?.trim() || addr.en?.trim())) {
+          contactObj.address = addr;
+        }
       }
       // Only include contact if it has at least one field
       if (Object.keys(contactObj).length > 0) {
