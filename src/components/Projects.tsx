@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowRight, Loader2, Package, ExternalLink } from 'lucide-react';
 import { projectsApi } from '@/lib/api/client';
 import type { Project, LocalizedText } from '@/lib/db';
@@ -45,12 +46,24 @@ function ProjectCard({
     setTransform({ rotateX: 0, rotateY: 0 });
   };
 
+  const handleExternalLinkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (project.link) {
+      window.open(project.link, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   return (
+    <Link
+      href={`/projects/${project.id}`}
+      className="block"
+    >
     <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="group relative bg-bg-elevated/50 backdrop-blur-md rounded-3xl border border-white/5 overflow-hidden transition-all duration-500 hover:border-glass-border-hover hover:shadow-glass-card-hover"
+        className="group relative bg-bg-elevated/50 backdrop-blur-md rounded-3xl border border-white/5 overflow-hidden transition-all duration-500 hover:border-glass-border-hover hover:shadow-glass-card-hover cursor-pointer"
       style={{
         transform: `perspective(1000px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg)`,
         transition: 'transform 0.1s ease-out',
@@ -97,17 +110,16 @@ function ProjectCard({
           {getLocalizedText(project.description, language)}
         </p>
 
-        {/* Link */}
+        {/* External Link */}
         {project.link && (
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-accent-amber font-medium text-sm group/link hover:gap-3 transition-all"
+          <button
+            type="button"
+            onClick={handleExternalLinkClick}
+            className="inline-flex items-center gap-2 text-accent-amber font-medium text-sm group/link hover:gap-3 transition-all z-10 relative"
           >
             <span>Projeyi Görüntüle</span>
             <ExternalLink size={14} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-          </a>
+          </button>
         )}
       </div>
 
@@ -116,6 +128,7 @@ function ProjectCard({
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
       </div>
     </div>
+    </Link>
   );
 }
 

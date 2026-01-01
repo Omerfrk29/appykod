@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import Logo from './Logo';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -18,6 +19,20 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('/');
   const { t } = useLanguage();
+  const pathname = usePathname();
+
+  // Anasayfaya git veya en üste scroll yap
+  const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (pathname === '/') {
+      // Zaten anasayfadaysak, en üste scroll yap
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+    // Başka bir sayfadaysak, normal link davranışı devam edecek (Next.js router)
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,6 +93,7 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
           {/* Logo */}
           <Link
             href="/"
+            onClick={handleHomeClick}
             className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
           >
             <Logo />
@@ -92,7 +108,11 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
                   key={item.href}
                   href={item.href}
                   onClick={(e) => {
-                    handleSmoothScroll(e, item.href);
+                    if (item.href === '/') {
+                      handleHomeClick(e);
+                    } else {
+                      handleSmoothScroll(e, item.href);
+                    }
                     analytics.navClick(item.labelKey);
                   }}
                   className={`relative px-4 py-2 font-medium text-sm transition-colors duration-200 group ${
@@ -159,7 +179,12 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
                   key={item.href}
                   href={item.href}
                   onClick={(e) => {
-                    handleSmoothScroll(e, item.href, 80, () => setIsOpen(false));
+                    if (item.href === '/') {
+                      handleHomeClick(e);
+                      setIsOpen(false);
+                    } else {
+                      handleSmoothScroll(e, item.href, 80, () => setIsOpen(false));
+                    }
                     analytics.navClick(item.labelKey);
                   }}
                   className={`relative text-2xl font-bold transition-all ${

@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { analytics } from '@/lib/analytics';
+import { fetchWithCsrf, getCsrfToken } from '@/lib/api/csrf';
 import ScrollReveal from './ScrollReveal';
 
 const contactInfoKeys = ['email', 'location', 'location2'];
@@ -36,6 +37,15 @@ export default function Contact() {
     return () => observer.disconnect();
   }, []);
 
+  // Ensure CSRF token is available when component mounts
+  useEffect(() => {
+    const token = getCsrfToken();
+    if (!token) {
+      // Fetch CSRF token if not present
+      fetch('/api/csrf', { credentials: 'include' }).catch(console.error);
+    }
+  }, []);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus('loading');
@@ -44,7 +54,18 @@ export default function Contact() {
     const data = Object.fromEntries(formData);
 
     try {
-      const res = await fetch('/api/contact', {
+      // Ensure CSRF token exists before submitting
+      let token = getCsrfToken();
+      if (!token) {
+        // Fetch token if not present
+        const csrfRes = await fetch('/api/csrf', { credentials: 'include' });
+        if (csrfRes.ok) {
+          const csrfData = await csrfRes.json();
+          token = csrfData.token;
+        }
+      }
+
+      const res = await fetchWithCsrf('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

@@ -8,6 +8,7 @@ import { MotionProvider } from "@/components/MotionProvider";
 import CookieConsent from "@/components/CookieConsent";
 import PageViewTracker from "@/components/PageViewTracker";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import GoToTop from "@/components/GoToTop";
 
 // Google Font - Special Gothic Expanded One (Logo font)
 const specialGothic = Special_Gothic_Expanded_One({
@@ -81,6 +82,7 @@ export default function RootLayout({
               <PageViewTracker />
               {children}
               <CookieConsent />
+              <GoToTop />
             </MotionProvider>
           </LanguageProvider>
         </ThemeProvider>

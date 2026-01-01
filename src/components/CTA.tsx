@@ -12,7 +12,7 @@ export default function CTA() {
   return (
     <section className="py-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="animate-fade-in-up relative bg-gradient-to-r from-primary to-primary/80 dark:from-primary/90 dark:to-primary/70 rounded-3xl p-12 md:p-16 text-center shadow-2xl overflow-hidden">
+        <div className="animate-fade-in-up relative bg-gradient-to-r from-info to-accent-primary dark:from-info/90 dark:to-accent-primary/70 rounded-3xl p-12 md:p-16 text-center shadow-2xl overflow-hidden">
           {/* Background decoration */}
           <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
             <div className="absolute top-[-50%] left-[-20%] w-[600px] h-[600px] rounded-full bg-white blur-[100px]" />
@@ -36,7 +36,7 @@ export default function CTA() {
               >
                 {/* Animated Gradient Background */}
                 <div
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-success via-primary to-danger opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient-x"
+                  className="absolute inset-0 rounded-full bg-gradient-to-r from-success via-info to-danger opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient-x"
                   style={{ backgroundSize: '200% 200%' }}
                 />
                 <span className="relative z-10 flex items-center group-hover:text-white transition-colors duration-300">

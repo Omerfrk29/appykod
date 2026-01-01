@@ -71,16 +71,38 @@ export async function PUT(request: Request) {
 
     // Transform the parsed data to match Partial<SiteSettings> type
     // Handle nested partial updates for contact and social objects
-    const updateData: any = { ...parsed.data };
+    type UpdateData = Omit<Partial<SiteSettings>, 'contact' | 'social'> & {
+      contact?: {
+        email?: string;
+        address?: Partial<SiteSettings['contact']['address']>;
+      };
+      social?: Partial<SiteSettings['social']>;
+    };
+    const updateData: UpdateData = { ...parsed.data };
     
     // If contact is provided, build the contact object only with defined fields
     if (parsed.data.contact) {
-      const contactObj: any = {};
+      const contactObj: {
+        email?: string;
+        address?: Partial<SiteSettings['contact']['address']>;
+      } = {};
       if (parsed.data.contact.email !== undefined) {
         contactObj.email = parsed.data.contact.email;
       }
       if (parsed.data.contact.address !== undefined) {
-        contactObj.address = parsed.data.contact.address;
+        // Handle empty strings in address - convert to undefined to preserve existing values
+        const addressObj: Partial<SiteSettings['contact']['address']> = {};
+        if (parsed.data.contact.address.tr !== undefined && parsed.data.contact.address.tr !== '') {
+          addressObj.tr = parsed.data.contact.address.tr;
+        }
+        if (parsed.data.contact.address.en !== undefined && parsed.data.contact.address.en !== '') {
+          addressObj.en = parsed.data.contact.address.en;
+        }
+        // Only include address if at least one language has a non-empty value
+        if (Object.keys(addressObj).length > 0) {
+          contactObj.address = addressObj;
+        }
+        // If both languages are empty strings, don't include address (preserve existing)
       }
       // Only include contact if it has at least one field
       if (Object.keys(contactObj).length > 0) {
@@ -90,9 +112,8 @@ export async function PUT(request: Request) {
       }
     }
     
-    // Use type assertion since we're handling partial nested updates
-    // MongoDB $set will merge nested objects correctly
-    const settings = await settingsService.updateSettings(updateData as Partial<SiteSettings>);
+    // Pass updateData directly - updateSettings accepts nested partial updates
+    const settings = await settingsService.updateSettings(updateData as Parameters<typeof settingsService.updateSettings>[0]);
     return NextResponse.json({ success: true, data: settings });
   } catch (error) {
     return handleApiError(error);

@@ -135,10 +135,10 @@ export default function FeaturedProducts() {
                     ))}
                   </div>
 
-                  <button className="inline-flex items-center gap-2 text-secondary font-semibold hover:gap-3 transition-all group">
+                  {/* <button className="inline-flex items-center gap-2 text-secondary font-semibold hover:gap-3 transition-all group">
                     {t('products.viewProduct') || 'View Product'}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </button>
+                  </button> */}
                 </div>
 
                 {/* Image/Visual */}

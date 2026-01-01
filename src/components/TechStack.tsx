@@ -1,15 +1,100 @@
 'use client';
 
 const technologies = [
-  { name: 'React', color: '#61DAFB' },
-  { name: 'Next.js', color: '#ffffff' },
-  { name: 'TypeScript', color: '#3178C6' },
-  { name: 'Node.js', color: '#47CF86' },
-  { name: 'Tailwind CSS', color: '#00CED1' },
-  { name: 'PostgreSQL', color: '#336791' },
-  { name: 'AWS', color: '#FF9900' },
-  { name: 'Docker', color: '#2496ED' },
-  { name: 'Figma', color: '#F24E1E' },
+  // Frontend Frameworks & Libraries
+  'React',
+  'Next.js',
+  'Vue.js',
+  'Angular',
+  'Svelte',
+  'Nuxt.js',
+  'Remix',
+  'Astro',
+  // Languages
+  'TypeScript',
+  'JavaScript',
+  'HTML5',
+  'CSS3',
+  'Python',
+  'Java',
+  'Go',
+  'Rust',
+  'PHP',
+  'Ruby',
+  // Backend & Runtime
+  'Node.js',
+  'Express.js',
+  'NestJS',
+  'Fastify',
+  'Django',
+  'Flask',
+  'Laravel',
+  'Ruby on Rails',
+  'Spring Boot',
+  // Styling & UI
+  'Tailwind CSS',
+  'Bootstrap',
+  'Material-UI',
+  'Chakra UI',
+  'Styled Components',
+  'Sass',
+  'Less',
+  'CSS Modules',
+  // Databases
+  'PostgreSQL',
+  'MySQL',
+  'MongoDB',
+  'Redis',
+  'SQLite',
+  'MariaDB',
+  'SQL Server',
+  'Oracle',
+  'Firebase',
+  'Supabase',
+  // Cloud & DevOps
+  'AWS',
+  'Azure',
+  'Google Cloud',
+  'Vercel',
+  'Netlify',
+  'Heroku',
+  'Docker',
+  'Kubernetes',
+  'Git',
+  'GitHub',
+  'GitLab',
+  // Microsoft Stack
+  '.NET',
+  'C#',
+  'Windows Server',
+  'ASP.NET',
+  // Mobile
+  'React Native',
+  'Flutter',
+  'Ionic',
+  // Tools & Build
+  'Webpack',
+  'Vite',
+  'Babel',
+  'ESLint',
+  'Prettier',
+  'Jest',
+  'Cypress',
+  'Storybook',
+  // APIs & Protocols
+  'GraphQL',
+  'REST API',
+  'WebSocket',
+  'gRPC',
+  // Design & Prototyping
+  'Figma',
+  'Adobe XD',
+  'Sketch',
+  // Other
+  'PWA',
+  'SEO',
+  'WebAssembly',
+  'Microservices',
 ];
 
 export default function TechStack() {
@@ -20,15 +105,25 @@ export default function TechStack() {
           Powered by modern technologies
         </p>
 
-        <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
-          {technologies.map((tech) => (
-            <div
-              key={tech.name}
-              className="text-lg md:text-xl font-semibold text-gray-600 hover:text-white transition-colors duration-300 cursor-default"
-            >
-              {tech.name}
+        <div className="relative overflow-hidden">
+          {/* Sol gradient overlay */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0F1117] to-transparent z-10 pointer-events-none" />
+          
+          {/* Sağ gradient overlay */}
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0F1117] to-transparent z-10 pointer-events-none" />
+
+          <div className="group">
+            <div className="flex gap-12 w-fit animate-tech-slide">
+              {[...technologies, ...technologies].map((tech, index) => (
+                <div
+                  key={`${tech}-${index}`}
+                  className="text-lg md:text-xl font-semibold text-gray-600 group-hover:text-white transition-colors duration-300 cursor-default whitespace-nowrap"
+                >
+                  {tech}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>

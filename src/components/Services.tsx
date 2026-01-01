@@ -1,17 +1,26 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Globe, Smartphone, Palette, Database, Shield, ArrowRight, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { Globe, Smartphone, Palette, Database, Shield, ArrowRight, Loader2, Code, Cloud, Zap, Layout, Server, Cpu, Wifi, Monitor } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import ScrollReveal, { StaggerContainer, StaggerItem } from './ScrollReveal';
 import type { Service } from '@/lib/db';
 
 const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-  Globe,
-  Smartphone,
-  Palette,
-  Database,
-  Shield,
+  globe: Globe,
+  smartphone: Smartphone,
+  palette: Palette,
+  database: Database,
+  shield: Shield,
+  code: Code,
+  cloud: Cloud,
+  zap: Zap,
+  layout: Layout,
+  server: Server,
+  cpu: Cpu,
+  wifi: Wifi,
+  monitor: Monitor,
 };
 
 const serviceConfig: Record<string, { span: string }> = {
@@ -61,7 +70,7 @@ export default function Services() {
         id,
         title: t(`services.items.${id}.title`),
         description: t(`services.items.${id}.description`),
-        icon: iconMap[id === 'web' ? 'Globe' : id === 'mobile' ? 'Smartphone' : id === 'uxui' ? 'Palette' : id === 'backend' ? 'Database' : 'Shield'],
+        icon: iconMap[id === 'web' ? 'globe' : id === 'mobile' ? 'smartphone' : id === 'uxui' ? 'palette' : id === 'backend' ? 'database' : 'shield'] || Globe,
         featured: id === 'web',
         span: serviceConfig[id]?.span || 'md:col-span-1',
       }));
@@ -107,16 +116,20 @@ export default function Services() {
 
             return (
               <StaggerItem key={service.id} index={index} className={service.span}>
-              <div
-                className={`group relative rounded-3xl p-8 transition-all duration-500 cursor-pointer h-full ${
-                  isFeatured
-                    ? 'bg-glass-bg backdrop-blur-xl border border-accent-amber/30 shadow-glass-card hover:shadow-glass-card-hover hover:border-accent-amber/50'
-                    : 'bg-bg-elevated/50 backdrop-blur-md border border-white/5 hover:border-glass-border-hover hover:bg-bg-elevated'
-                }`}
-                style={{
-                  transform: 'perspective(1000px)',
-                }}
+              <Link
+                href={`/services/${service.id}`}
+                className="block h-full"
               >
+                <div
+                  className={`group relative rounded-3xl p-8 transition-all duration-500 cursor-pointer h-full ${
+                    isFeatured
+                      ? 'bg-glass-bg backdrop-blur-xl border border-accent-amber/30 shadow-glass-card hover:shadow-glass-card-hover hover:border-accent-amber/50'
+                      : 'bg-bg-elevated/50 backdrop-blur-md border border-white/5 hover:border-glass-border-hover hover:bg-bg-elevated'
+                  }`}
+                  style={{
+                    transform: 'perspective(1000px)',
+                  }}
+                >
                 {/* Gradient Glow for Featured */}
                 {isFeatured && (
                   <div className="absolute inset-0 rounded-3xl bg-gradient-warm opacity-5 group-hover:opacity-10 transition-opacity" />
@@ -174,6 +187,7 @@ export default function Services() {
                   <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl" />
                 </div>
               </div>
+              </Link>
               </StaggerItem>
             );
           })}

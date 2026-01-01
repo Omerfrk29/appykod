@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MessageSquare, Mail, Calendar, Trash2, Check } from 'lucide-react';
+import { MessageSquare, Mail, Calendar, Trash2, Check, Loader2 } from 'lucide-react';
 import { messagesApi } from '@/lib/api/client';
 import type { Message } from '@/lib/db';
 
@@ -9,6 +9,7 @@ export default function MessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [processingId, setProcessingId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchMessages();
@@ -33,7 +34,7 @@ export default function MessagesPage() {
   }
 
   async function handleMarkAsRead(id: string) {
-    setLoading(true);
+    setProcessingId(id);
     setError(null);
     try {
       const response = await messagesApi.markAsRead(id);
@@ -46,13 +47,13 @@ export default function MessagesPage() {
       setError('Mesaj işaretlenirken bir sorun oluştu');
       console.error('Error marking message as read:', err);
     } finally {
-      setLoading(false);
+      setProcessingId(null);
     }
   }
 
   async function handleDeleteMessage(id: string) {
     if (!confirm('Bu mesajı silmek istediğinize emin misiniz?')) return;
-    setLoading(true);
+    setProcessingId(id);
     setError(null);
     try {
       const response = await messagesApi.delete(id);
@@ -65,106 +66,130 @@ export default function MessagesPage() {
       setError('Mesaj silinirken bir sorun oluştu');
       console.error('Error deleting message:', err);
     } finally {
-      setLoading(false);
+      setProcessingId(null);
     }
   }
 
   const unreadMessages = messages.filter((m) => !m.read);
 
+  if (loading && messages.length === 0) {
+    return (
+      <div className="flex items-center justify-center p-12">
+        <Loader2 className="animate-spin text-primary w-8 h-8" />
+      </div>
+    );
+  }
+
   return (
     <div className="p-8">
       {error && (
-        <div className="mb-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl flex items-center justify-between">
-          <span className="text-red-800 dark:text-red-200">{error}</span>
+        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center justify-between">
+          <span className="text-red-400">{error}</span>
           <button
             onClick={() => setError(null)}
-            className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-200"
+            className="text-red-400 hover:text-white transition-colors"
           >
             ✕
           </button>
         </div>
       )}
-      {loading && (
-        <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
-          <span className="text-blue-800 dark:text-blue-200">Yükleniyor...</span>
-        </div>
-      )}
+
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-4xl font-bold text-white mb-2">
           Mesajlar
         </h1>
-        <p className="text-gray-500 mt-1">
+        <p className="text-gray-400">
           {messages.length} mesaj {unreadMessages.length > 0 && `(${unreadMessages.length} okunmamış)`}
         </p>
       </header>
 
-      <div className="grid gap-4">
+      <div className="space-y-4">
         {messages.length === 0 ? (
-          <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700">
-            <MessageSquare className="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
-            <p className="text-gray-500 dark:text-gray-400">Henüz mesaj yok</p>
+          <div className="text-center py-16 bg-[#1E2330] rounded-3xl border border-white/5">
+            <MessageSquare className="w-16 h-16 mx-auto text-gray-600 mb-4" />
+            <p className="text-gray-400 text-lg">Henüz mesaj yok</p>
           </div>
         ) : (
           messages.map((m) => (
             <div
               key={m.id}
-              className={`bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border ${
+              className={`p-6 rounded-3xl border transition-all duration-300 ${
                 !m.read
-                  ? 'border-primary/30 bg-primary/5 dark:bg-primary/10'
-                  : 'border-gray-100 dark:border-gray-700'
-              } hover:shadow-md transition-shadow`}
+                  ? 'bg-[#1E2330] border-primary/50 shadow-lg shadow-primary/10'
+                  : 'bg-[#1E2330] border-white/5 hover:border-white/10'
+              }`}
             >
-              <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-white font-bold">
+              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-4">
+                <div className="flex items-start gap-4 flex-1">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                     {m.name.charAt(0).toUpperCase()}
                   </div>
-                  <div>
-                    <h3 className="font-bold text-gray-900 dark:text-white">
-                      {m.name}
-                    </h3>
-                    <div className="flex items-center space-x-2 text-sm text-gray-500">
-                      <Mail className="w-3 h-3" />
-                      <span>{m.email}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="font-bold text-white text-lg">
+                        {m.name}
+                      </h3>
+                      {!m.read && (
+                        <span className="px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full">
+                          Yeni
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-400 mb-3">
+                      <Mail className="w-4 h-4 flex-shrink-0" />
+                      <span className="truncate">{m.email}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <Calendar className="w-4 h-4 flex-shrink-0" />
+                      <span>
+                        {new Date(m.date).toLocaleDateString('tr-TR', {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </span>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="flex items-center text-sm text-gray-400">
-                    <Calendar className="w-3 h-3 mr-1" />
-                    {new Date(m.date).toLocaleDateString('tr-TR', {
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </div>
-                  {!m.read && (
-                    <span className="ml-2 px-2 py-0.5 bg-primary text-white text-xs rounded-full">
-                      Yeni
-                    </span>
-                  )}
-                </div>
               </div>
-              <p className="text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-900 p-4 rounded-xl mb-4">
-                {m.content}
-              </p>
-              <div className="flex items-center space-x-2">
+
+              <div className={`p-5 rounded-2xl mb-5 ${
+                !m.read 
+                  ? 'bg-primary/10 border border-primary/20' 
+                  : 'bg-black/20'
+              }`}>
+                <p className="text-gray-300 leading-relaxed whitespace-pre-wrap break-words">
+                  {m.content}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 pt-4 border-t border-white/5">
                 {!m.read && (
                   <button
                     onClick={() => handleMarkAsRead(m.id)}
-                    className="flex items-center space-x-1 px-3 py-1.5 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors text-sm"
+                    disabled={processingId === m.id}
+                    className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-primary to-primary/80 text-white rounded-xl hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 transform hover:-translate-y-0.5 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                   >
-                    <Check size={14} />
+                    {processingId === m.id ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Check className="w-4 h-4" />
+                    )}
                     <span>Okundu İşaretle</span>
                   </button>
                 )}
                 <button
                   onClick={() => handleDeleteMessage(m.id)}
-                  className="flex items-center space-x-1 px-3 py-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors text-sm"
+                  disabled={processingId === m.id}
+                  className="flex items-center gap-2 px-5 py-2.5 text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-xl transition-all duration-200 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Trash2 size={14} />
+                  {processingId === m.id ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="w-4 h-4" />
+                  )}
                   <span>Sil</span>
                 </button>
               </div>

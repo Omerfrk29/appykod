@@ -145,6 +145,16 @@ a, button, [role="button"], input[type="submit"], input[type="button"], [onclick
   cursor: pointer;
 }
 
+/* Link ve buton içindeki tüm elementler için pointer cursor garantisi */
+a *, button *, [role="button"] *, input[type="submit"] *, input[type="button"] *, [onclick] * {
+  cursor: pointer !important;
+}
+
+/* Next.js Link bileşenleri için pointer cursor */
+a[href], a[href] * {
+  cursor: pointer;
+}
+
 @layer utilities {
   /* Logo Color Cycle Animation */
   @keyframes color-cycle {
@@ -655,6 +665,22 @@ a, button, [role="button"], input[type="submit"], input[type="button"], [onclick
   /* Animation Pause Utility */
   .animation-paused {
     animation-play-state: paused !important;
+  }
+
+  /* Tech Stack Slider Animation */
+  @keyframes tech-slide {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  .animate-tech-slide {
+    animation: tech-slide 130s linear infinite;
+  }
+  .group:hover .animate-tech-slide {
+    animation-play-state: paused;
   }
 
   /* Snowfall Animation - GPU Accelerated */

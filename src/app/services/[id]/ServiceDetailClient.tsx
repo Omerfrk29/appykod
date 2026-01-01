@@ -23,6 +23,7 @@ import {
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Services from '@/components/Services';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { Service, LocalizedText } from '@/lib/db';
 
@@ -78,19 +79,19 @@ export default function ServiceDetailClient({ service }: { service: Service }) {
 
   const colorSchemes = [
     {
-      gradient: 'from-primary via-info to-success',
-      iconBg: 'bg-primary/15',
-      iconColor: 'text-primary',
+      gradient: 'from-info via-success to-accent-primary',
+      iconBg: 'bg-info/15',
+      iconColor: 'text-info',
       glow: 'rgba(94, 111, 234, 0.3)',
     },
     {
-      gradient: 'from-success via-primary to-info',
+      gradient: 'from-success via-info to-accent-primary',
       iconBg: 'bg-success/15',
       iconColor: 'text-success',
       glow: 'rgba(71, 207, 134, 0.3)',
     },
     {
-      gradient: 'from-danger via-warning to-primary',
+      gradient: 'from-danger via-warning to-info',
       iconBg: 'bg-danger/15',
       iconColor: 'text-danger',
       glow: 'rgba(255, 75, 123, 0.3)',
@@ -308,6 +309,9 @@ export default function ServiceDetailClient({ service }: { service: Service }) {
           </section>
         )}
 
+        {/* Services Section */}
+        <Services />
+
         {/* CTA Section */}
         <section className="py-16 bg-white dark:bg-gray-950">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -318,7 +322,7 @@ export default function ServiceDetailClient({ service }: { service: Service }) {
               <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">{t('serviceDetail.ctaSubtitle')}</p>
               <Link
                 href="/#contact"
-                className="inline-flex items-center px-8 py-4 rounded-full font-bold text-white bg-gradient-to-r from-primary to-info hover:shadow-lg hover:scale-105 transition-all duration-300"
+                className="inline-flex items-center px-8 py-4 rounded-full font-bold text-white bg-gradient-to-r from-info to-accent-primary hover:shadow-lg hover:scale-105 transition-all duration-300"
               >
                 {t('cta.button')}
               </Link>

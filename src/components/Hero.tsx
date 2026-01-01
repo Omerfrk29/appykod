@@ -73,7 +73,7 @@ export default function Hero() {
           <span className="text-gradient-warm">
             {t('hero.title.highlight') || 'Gerçeğe'}
           </span>{' '}
-          {t('hero.title.line2') || 'Dönüştürüyoruz'}
+          {t('hero.title.line2') || ''}
         </h1>
 
         {/* Subtitle */}
