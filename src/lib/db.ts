@@ -60,6 +60,15 @@ export interface Testimonial {
     imageUrl?: string;
 }
 
+export interface Product {
+    id: string;
+    name: LocalizedText;
+    description: LocalizedText;
+    icon: string;
+    features: LocalizedText[];
+    gradient: string;
+}
+
 export interface SiteSettings {
     siteName: LocalizedText;
     siteDescription: LocalizedText;
@@ -83,6 +92,7 @@ export interface DBData {
     services: Service[];
     projects: Project[];
     messages: Message[];
+    products?: Product[];
     settings?: SiteSettings;
 }
 

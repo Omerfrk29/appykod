@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Globe, Twitter, Linkedin, Github, ArrowRight } from 'lucide-react';
+import { Globe, Twitter, Linkedin, Github, Instagram, ArrowRight } from 'lucide-react';
 import { settingsApi } from '@/lib/api/client';
 import { handleSmoothScroll } from '@/lib/utils';
 import { analytics } from '@/lib/analytics';
@@ -17,11 +17,12 @@ const footerLinks = [
   { href: '#contact', labelKey: 'footer.links.contact' },
 ];
 
-const socialLinks = [
-  { icon: Twitter, href: '#', label: 'Twitter' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  { icon: Github, href: '#', label: 'GitHub' },
-];
+const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
+  twitter: Twitter,
+  linkedin: Linkedin,
+  github: Github,
+  instagram: Instagram,
+};
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -106,22 +107,29 @@ export default function Footer() {
               ))}
             </nav>
 
-            {/* Social Icons */}
-            <div className="flex items-center gap-3">
-              {socialLinks.map((social) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    className="w-10 h-10 rounded-full border border-white/10 hover:border-accent-amber/30 flex items-center justify-center text-text-muted hover:text-accent-amber transition-all hover:bg-accent-amber/10"
-                    aria-label={social.label}
-                  >
-                    <Icon size={18} />
-                  </a>
-                );
-              })}
-            </div>
+            {/* Social Icons - From Admin Panel */}
+            {settings?.social && Object.keys(settings.social).length > 0 && (
+              <div className="flex items-center gap-3">
+                {Object.entries(settings.social)
+                  .filter(([_, url]) => url && (url as string).trim() !== '')
+                  .map(([key, url]) => {
+                    const Icon = iconMap[key] || Globe;
+                    const label = key.charAt(0).toUpperCase() + key.slice(1);
+                    return (
+                      <a
+                        key={key}
+                        href={url as string}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full border border-white/10 hover:border-accent-amber/30 flex items-center justify-center text-text-muted hover:text-accent-amber transition-all hover:bg-accent-amber/10"
+                        aria-label={label}
+                      >
+                        <Icon size={18} />
+                      </a>
+                    );
+                  })}
+              </div>
+            )}
           </div>
 
           {/* Divider */}

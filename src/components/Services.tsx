@@ -1,28 +1,78 @@
 'use client';
 
-import { Globe, Smartphone, Palette, Code, Database, Shield, ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Globe, Smartphone, Palette, Database, Shield, ArrowRight, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import ScrollReveal, { StaggerContainer, StaggerItem } from './ScrollReveal';
+import type { Service } from '@/lib/db';
 
-const serviceIds = ['web', 'mobile', 'uxui', 'backend', 'security'];
-
-const serviceConfig = {
-  web: { icon: Globe, featured: true, span: 'md:col-span-2 md:row-span-2' },
-  mobile: { icon: Smartphone, featured: false, span: 'md:col-span-1' },
-  uxui: { icon: Palette, featured: false, span: 'md:col-span-1' },
-  backend: { icon: Database, featured: false, span: 'md:col-span-1' },
-  security: { icon: Shield, featured: false, span: 'md:col-span-1' },
+const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  Globe,
+  Smartphone,
+  Palette,
+  Database,
+  Shield,
 };
 
-export default function Services() {
-  const { t } = useLanguage();
+const serviceConfig: Record<string, { span: string }> = {
+  web: { span: 'md:col-span-2 md:row-span-2' },
+  mobile: { span: 'md:col-span-1' },
+  uxui: { span: 'md:col-span-1' },
+  backend: { span: 'md:col-span-1' },
+  security: { span: 'md:col-span-1' },
+};
 
-  const services = serviceIds.map((id) => ({
-    id,
-    title: t(`services.items.${id}.title`),
-    description: t(`services.items.${id}.description`),
-    ...serviceConfig[id],
-  }));
+// Fallback service IDs for backward compatibility
+const fallbackServiceIds = ['web', 'mobile', 'uxui', 'backend', 'security'];
+
+export default function Services() {
+  const { t, language } = useLanguage();
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchServices() {
+      try {
+        const res = await fetch('/api/services');
+        const data = await res.json();
+        if (data.success && data.data?.length > 0) {
+          setServices(data.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch services:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchServices();
+  }, []);
+
+  // Use fetched services or fallback to locale-based services
+  const displayServices = services.length > 0
+    ? services.map((s) => ({
+        id: s.id,
+        title: typeof s.title === 'object' ? s.title[language] : s.title,
+        description: typeof s.description === 'object' ? s.description[language] : s.description,
+        icon: iconMap[s.icon] || Globe,
+        featured: s.id === 'web',
+        span: serviceConfig[s.id]?.span || 'md:col-span-1',
+      }))
+    : fallbackServiceIds.map((id) => ({
+        id,
+        title: t(`services.items.${id}.title`),
+        description: t(`services.items.${id}.description`),
+        icon: iconMap[id === 'web' ? 'Globe' : id === 'mobile' ? 'Smartphone' : id === 'uxui' ? 'Palette' : id === 'backend' ? 'Database' : 'Shield'],
+        featured: id === 'web',
+        span: serviceConfig[id]?.span || 'md:col-span-1',
+      }));
+
+  if (loading) {
+    return (
+      <section id="services" className="py-24 bg-bg-base relative overflow-hidden flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-accent-amber" />
+      </section>
+    );
+  }
 
   return (
     <section id="services" className="py-24 bg-bg-base relative overflow-hidden">
@@ -51,7 +101,7 @@ export default function Services() {
 
         {/* Bento Grid */}
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerDelay={100}>
-          {services.map((service, index) => {
+          {displayServices.map((service, index) => {
             const Icon = service.icon;
             const isFeatured = service.featured;
 

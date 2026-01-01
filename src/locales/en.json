@@ -138,7 +138,9 @@
       "email": "Email",
       "emailLabel": "Email",
       "location": "Location",
-      "locationValue": "Izmir, Turkey"
+      "locationValue": "Istanbul, Turkey",
+      "location2Label": "Second Office",
+      "location2Value": "Izmir, Turkey"
     },
     "guarantee": {
       "title": "Quick response guarantee",
@@ -175,6 +177,10 @@
     },
     "copyrightText": "© {year} AppyKod. All rights reserved.",
     "madeWithText": "Made with love from Turkey."
+  },
+  "products": {
+    "title": "Featured Products",
+    "viewProduct": "View Product"
   },
   "techstack": {
     "subtitle": "Powered by modern technologies"

@@ -93,6 +93,32 @@ body {
   overflow-x: hidden;
 }
 
+/* Mobile Menu Body Lock */
+body.menu-open {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Ensure mobile menu covers everything */
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(9, 9, 11, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Safe area support for notched devices */
+@supports (padding: max(0px)) {
+  .mobile-menu-overlay {
+    padding-top: max(60px, env(safe-area-inset-top));
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
 a {
   color: inherit;
   text-decoration: none;

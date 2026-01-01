@@ -15,7 +15,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { analytics } from '@/lib/analytics';
 import ScrollReveal from './ScrollReveal';
 
-const contactInfoKeys = ['email', 'location'];
+const contactInfoKeys = ['email', 'location', 'location2'];
 
 export default function Contact() {
   const { t } = useLanguage();
@@ -95,6 +95,16 @@ export default function Contact() {
               {contactInfoKeys.map((key, index) => {
                 const Icon = key === 'email' ? Mail : MapPin;
                 const href = key === 'email' ? 'mailto:appykod@gmail.com' : null;
+                const label = key === 'email'
+                  ? t('contact.info.emailLabel')
+                  : key === 'location'
+                  ? t('contact.info.location')
+                  : t('contact.info.location2Label');
+                const value = key === 'email'
+                  ? 'appykod@gmail.com'
+                  : key === 'location'
+                  ? t('contact.info.locationValue')
+                  : t('contact.info.location2Value');
                 const content = (
                   <div className="group flex items-start gap-4 p-6 bg-glass-bg backdrop-blur-xl rounded-2xl border border-white/5 hover:border-glass-border-hover transition-all duration-300">
                     <div className="w-12 h-12 rounded-xl bg-gradient-warm flex items-center justify-center flex-shrink-0 shadow-glow-amber">
@@ -102,10 +112,10 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="text-sm font-medium text-text-muted mb-1">
-                        {t(`contact.info.${key === 'email' ? 'emailLabel' : 'location'}`)}
+                        {label}
                       </h3>
                       <p className="text-text-primary font-medium group-hover:text-accent-amber transition-colors">
-                        {key === 'email' ? 'appykod@gmail.com' : t('contact.info.locationValue')}
+                        {value}
                       </p>
                     </div>
                   </div>

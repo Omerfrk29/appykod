@@ -16,8 +16,8 @@
     "badge": "Modern Yazılım Çözümleri",
     "subtitle": "Fikirlerinizi güçlü, ölçeklenebilir ve estetik yazılım çözümlerine dönüştürüyoruz. Modern web geliştirmede güvenilir ortağınız.",
     "cta": {
-      "primary": "Projeye Başla",
-      "secondary": "Portföyümüzü İncele"
+      "primary": "Ücretsiz Teklif Alın",
+      "secondary": "Projelerimizi İncele"
     },
     "stats": {
       "projects": "Proje",
@@ -138,7 +138,9 @@
       "email": "E-posta",
       "emailLabel": "Email",
       "location": "Konum",
-      "locationValue": "Izmir, Turkey"
+      "locationValue": "İstanbul, Türkiye",
+      "location2Label": "İkinci Ofis",
+      "location2Value": "İzmir, Türkiye"
     },
     "guarantee": {
       "title": "Hızlı yanıt garantisi",
@@ -175,6 +177,10 @@
     },
     "copyrightText": "© {year} AppyKod. Tüm hakları saklıdır.",
     "madeWithText": "Türkiye'den sevgiyle yapıldı."
+  },
+  "products": {
+    "title": "Öne Çıkan Ürünler",
+    "viewProduct": "Ürünü Görüntüle"
   },
   "techstack": {
     "subtitle": "Modern teknolojilerle güçlendirilmiştir"

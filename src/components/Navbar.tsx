@@ -45,6 +45,19 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('menu-open');
+    } else {
+      document.body.classList.remove('menu-open');
+    }
+
+    return () => {
+      document.body.classList.remove('menu-open');
+    };
+  }, [isOpen]);
+
   const navLinks = [
     { href: '/', labelKey: 'nav.home', label: 'Home' },
     { href: '#services', labelKey: 'nav.services', label: 'IT Services' },
@@ -130,13 +143,14 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
 
       {/* Mobile Menu Overlay - Fullscreen Glass */}
       <div
-        className={`md:hidden fixed inset-0 top-[60px] bg-bg-base/95 backdrop-blur-xl transition-all duration-300 ${
+        className={`md:hidden fixed inset-0 top-0 z-40 bg-bg-base/98 backdrop-blur-xl transition-all duration-300 ${
           isOpen
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none'
         }`}
+        style={{ height: '100dvh' }}
       >
-        <div className="h-full flex flex-col justify-center items-center px-4">
+        <div className="h-full flex flex-col justify-center items-center px-4 pt-[60px]">
           <div className="flex flex-col items-center space-y-6">
             {navLinks.map((item) => {
               const isActive = activeSection === item.href;
