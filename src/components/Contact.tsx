@@ -1,14 +1,28 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Send, CheckCircle, AlertCircle, Mail, Loader2 } from 'lucide-react';
+import {
+  Send,
+  CheckCircle,
+  AlertCircle,
+  Mail,
+  Loader2,
+  MapPin,
+  Phone,
+  ArrowRight,
+} from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { analytics } from '@/lib/analytics';
+import { fetchWithCsrf, getCsrfToken } from '@/lib/api/csrf';
+import ScrollReveal from './ScrollReveal';
+
+const contactInfoKeys = ['email', 'location', 'location2'];
 
 export default function Contact() {
   const { t } = useLanguage();
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [status, setStatus] = useState<
+    'idle' | 'loading' | 'success' | 'error'
+  >('idle');
   const [isInView, setIsInView] = useState(false);
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -23,6 +37,15 @@ export default function Contact() {
     return () => observer.disconnect();
   }, []);
 
+  // Ensure CSRF token is available when component mounts
+  useEffect(() => {
+    const token = getCsrfToken();
+    if (!token) {
+      // Fetch CSRF token if not present
+      fetch('/api/csrf', { credentials: 'include' }).catch(console.error);
+    }
+  }, []);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus('loading');
@@ -31,7 +54,18 @@ export default function Contact() {
     const data = Object.fromEntries(formData);
 
     try {
-      const res = await fetch('/api/contact', {
+      // Ensure CSRF token exists before submitting
+      let token = getCsrfToken();
+      if (!token) {
+        // Fetch token if not present
+        const csrfRes = await fetch('/api/csrf', { credentials: 'include' });
+        if (csrfRes.ok) {
+          const csrfData = await csrfRes.json();
+          token = csrfData.token;
+        }
+      }
+
+      const res = await fetchWithCsrf('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -51,62 +85,95 @@ export default function Contact() {
     }
   }
 
-  const focusColors: Record<string, string> = {
-    name: 'focus:border-primary focus:shadow-[0_0_0_4px_rgba(94,111,234,0.15),0_0_30px_rgba(94,111,234,0.1)]',
-    email: 'focus:border-info focus:shadow-[0_0_0_4px_rgba(0,206,209,0.15),0_0_30px_rgba(0,206,209,0.1)]',
-    content: 'focus:border-success focus:shadow-[0_0_0_4px_rgba(71,207,134,0.15),0_0_30px_rgba(71,207,134,0.1)]',
-  };
-
   return (
-    <section id="contact" className="py-12 md:py-16 lg:py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-blob-1" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-info/5 rounded-full blur-3xl animate-blob-2" />
-      </div>
+    <section id="contact" className="py-24 bg-bg-base relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-warm-glow opacity-20" />
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(245,158,11,0.02)_1px,transparent_1px)] [background-size:32px_32px]" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-center">
-          <div className="animate-fade-in-left">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-4 md:mb-6">
-              {t('contact.title')}
-            </h2>
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-6 md:mb-8 leading-relaxed">
-              {t('contact.subtitle')}
-            </p>
-            
-            {/* Contact Info Cards */}
-            <div className="space-y-3 md:space-y-4">
-              <a
-                href="mailto:appykod@gmail.com"
-                className="flex items-center gap-3 md:gap-4 p-4 md:p-5 bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-2xl hover:scale-[1.02] hover:translate-x-2 transition-all duration-300 group relative overflow-hidden"
-                style={{ animationDelay: '100ms' }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-danger/5 to-warning/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-danger to-warning rounded-2xl flex items-center justify-center group-hover:-rotate-6 transition-transform duration-300 shadow-[0_0_20px_rgba(255,75,123,0.3)]">
-                  <Mail className="w-6 h-6 text-white" />
-                </div>
-                <div className="relative z-10">
-                  <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{t('contact.info.email')}</p>
-                  <p className="text-lg font-bold text-gray-900 dark:text-white">appykod@gmail.com</p>
-                </div>
-                <span className="absolute right-5 text-gray-300 dark:text-gray-600 opacity-0 group-hover:opacity-100 animate-arrow-bounce transition-opacity duration-300">→</span>
-              </a>
-            </div>
-          </div>
+        {/* Header */}
+        <ScrollReveal className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 bg-accent-amber/10 border border-accent-amber/20 rounded-full text-accent-amber text-sm font-medium mb-4">
+            {t('contact.badge')}
+          </span>
+          <h2 className="text-h2 font-bold text-text-primary mb-4">
+            {t('contact.titleMain')}{' '}
+            <span className="text-transparent bg-gradient-warm bg-clip-text">
+              {t('contact.titleHighlight')}
+            </span>
+          </h2>
+          <p className="max-w-2xl mx-auto text-body-lg text-text-secondary">
+            {t('contact.subtitleText')}
+          </p>
+        </ScrollReveal>
 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* Left Content - Contact Info */}
+          <ScrollReveal direction="left" delay={100} className="space-y-8">
+            {/* Info Cards */}
+            <div className="space-y-4">
+              {contactInfoKeys.map((key, index) => {
+                const Icon = key === 'email' ? Mail : MapPin;
+                const href = key === 'email' ? 'mailto:appykod@gmail.com' : null;
+                const label = key === 'email'
+                  ? t('contact.info.emailLabel')
+                  : key === 'location'
+                  ? t('contact.info.location')
+                  : t('contact.info.location2Label');
+                const value = key === 'email'
+                  ? 'appykod@gmail.com'
+                  : key === 'location'
+                  ? t('contact.info.locationValue')
+                  : t('contact.info.location2Value');
+                const content = (
+                  <div className="group flex items-start gap-4 p-6 bg-glass-bg backdrop-blur-xl rounded-2xl border border-white/5 hover:border-glass-border-hover transition-all duration-300">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-warm flex items-center justify-center flex-shrink-0 shadow-glow-amber">
+                      <Icon className="text-white" size={22} />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-medium text-text-muted mb-1">
+                        {label}
+                      </h3>
+                      <p className="text-text-primary font-medium group-hover:text-accent-amber transition-colors">
+                        {value}
+                      </p>
+                    </div>
+                  </div>
+                );
+
+                return href ? (
+                  <a key={index} href={href}>
+                    {content}
+                  </a>
+                ) : (
+                  <div key={index}>{content}</div>
+                );
+              })}
+            </div>
+
+            {/* Additional CTA */}
+            <div className="p-6 bg-gradient-warm-soft rounded-2xl border border-accent-amber/20">
+              <h3 className="text-lg font-bold text-text-primary mb-2">
+                {t('contact.guarantee.title')}
+              </h3>
+              <p className="text-text-secondary text-sm">
+                {t('contact.guarantee.description')}
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* Right Form */}
           <div
             ref={formRef}
-            className={`bg-white dark:bg-gray-800 rounded-2xl md:rounded-3xl shadow-2xl p-5 md:p-6 lg:p-8 border border-gray-100 dark:border-gray-700 relative overflow-hidden transition-all duration-700 ${
-              isInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'
+            className={`bg-glass-bg backdrop-blur-xl rounded-3xl p-8 border border-white/5 shadow-glass-card transition-all duration-700 ${
+              isInView
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-12'
             }`}
           >
-            {/* Decorative corner gradient */}
-            <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-primary/20 to-info/20 rounded-full blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br from-danger/20 to-warning/20 rounded-full blur-3xl" />
-
-            <form className="space-y-4 md:space-y-5 relative z-10" onSubmit={handleSubmit}>
-              {/* Honeypot (botlar doldurur) */}
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              {/* Honeypot */}
               <input
                 type="text"
                 name="website"
@@ -115,11 +182,11 @@ export default function Contact() {
                 className="hidden"
                 aria-hidden="true"
               />
-              {/* Name Field */}
-              <div className={`transition-all duration-300 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: '100ms' }}>
+
+              <div>
                 <label
                   htmlFor="name"
-                  className={`block text-sm font-semibold mb-2 transition-colors duration-300 ${focusedField === 'name' ? 'text-primary' : 'text-gray-700 dark:text-gray-300'}`}
+                  className="block text-sm font-medium text-text-secondary mb-2"
                 >
                   {t('contact.form.name')}
                 </label>
@@ -128,18 +195,15 @@ export default function Contact() {
                   id="name"
                   name="name"
                   required
+                  className="w-full px-4 py-3.5 rounded-xl bg-bg-surface/50 border border-white/10 text-text-primary placeholder-text-muted focus:border-accent-amber focus:ring-2 focus:ring-accent-amber/20 focus:bg-bg-surface outline-none transition-all"
                   placeholder={t('contact.form.namePlaceholder')}
-                  className={`w-full px-4 py-3 md:px-5 md:py-4 rounded-xl md:rounded-2xl bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 outline-none transition-all duration-300 text-sm md:text-base ${focusColors.name}`}
-                  onFocus={() => setFocusedField('name')}
-                  onBlur={() => setFocusedField(null)}
                 />
               </div>
 
-              {/* Email Field */}
-              <div className={`transition-all duration-300 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: '200ms' }}>
+              <div>
                 <label
                   htmlFor="email"
-                  className={`block text-sm font-semibold mb-2 transition-colors duration-300 ${focusedField === 'email' ? 'text-info' : 'text-gray-700 dark:text-gray-300'}`}
+                  className="block text-sm font-medium text-text-secondary mb-2"
                 >
                   {t('contact.form.email')}
                 </label>
@@ -148,18 +212,15 @@ export default function Contact() {
                   id="email"
                   name="email"
                   required
+                  className="w-full px-4 py-3.5 rounded-xl bg-bg-surface/50 border border-white/10 text-text-primary placeholder-text-muted focus:border-accent-amber focus:ring-2 focus:ring-accent-amber/20 focus:bg-bg-surface outline-none transition-all"
                   placeholder={t('contact.form.emailPlaceholder')}
-                  className={`w-full px-4 py-3 md:px-5 md:py-4 rounded-xl md:rounded-2xl bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 outline-none transition-all duration-300 text-sm md:text-base ${focusColors.email}`}
-                  onFocus={() => setFocusedField('email')}
-                  onBlur={() => setFocusedField(null)}
                 />
               </div>
 
-              {/* Message Field */}
-              <div className={`transition-all duration-300 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: '300ms' }}>
+              <div>
                 <label
                   htmlFor="content"
-                  className={`block text-sm font-semibold mb-2 transition-colors duration-300 ${focusedField === 'content' ? 'text-success' : 'text-gray-700 dark:text-gray-300'}`}
+                  className="block text-sm font-medium text-text-secondary mb-2"
                 >
                   {t('contact.form.message')}
                 </label>
@@ -167,79 +228,33 @@ export default function Contact() {
                   id="content"
                   name="content"
                   required
-                  rows={5}
+                  rows={4}
+                  className="w-full px-4 py-3.5 rounded-xl bg-bg-surface/50 border border-white/10 text-text-primary placeholder-text-muted focus:border-accent-amber focus:ring-2 focus:ring-accent-amber/20 focus:bg-bg-surface outline-none transition-all resize-none"
                   placeholder={t('contact.form.messagePlaceholder')}
-                  className={`w-full px-4 py-3 md:px-5 md:py-4 rounded-xl md:rounded-2xl bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 outline-none transition-all duration-300 resize-none text-sm md:text-base ${focusColors.content}`}
-                  onFocus={() => setFocusedField('content')}
-                  onBlur={() => setFocusedField(null)}
                 />
               </div>
 
-              {/* Submit Button */}
-              <div className={`transition-all duration-300 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ transitionDelay: '400ms' }}>
-                <button
-                  type="submit"
-                  disabled={status === 'loading' || status === 'success'}
-                  className={`relative w-full flex items-center justify-center px-6 py-4 md:px-8 md:py-5 text-base md:text-lg font-extrabold rounded-xl md:rounded-2xl text-white transition-all duration-500 overflow-hidden hover:scale-[1.02] hover:-translate-y-1 active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed ${
-                    status === 'success'
-                      ? 'bg-success'
-                      : status === 'error'
-                      ? 'bg-danger'
-                      : 'bg-gradient-to-r from-primary via-info to-danger'
-                  }`}
-                  style={status === 'idle' || status === 'loading' ? { backgroundSize: '200% 200%' } : {}}
-                >
-                  {/* Animated gradient background */}
-                  {(status === 'idle' || status === 'loading') && (
-                    <div
-                      className="absolute inset-0 bg-gradient-to-r from-primary via-info via-success to-danger animate-gradient-x"
-                      style={{ backgroundSize: '300% 100%' }}
-                    />
-                  )}
-                  {/* Shine effect */}
-                  <div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine-button"
-                    style={{ backgroundSize: '200% 100%' }}
-                  />
-                  {/* Glow */}
-                  <div
-                    className="absolute -inset-1 rounded-2xl opacity-50 blur-xl"
-                    style={{
-                      background: status === 'success'
-                        ? 'rgba(71, 207, 134, 0.5)'
-                        : status === 'error'
-                        ? 'rgba(255, 75, 123, 0.5)'
-                        : 'linear-gradient(90deg, rgba(94, 111, 234, 0.5), rgba(0, 206, 209, 0.5))',
-                    }}
-                  />
-                  <span className="relative z-10 flex items-center gap-3">
-                    {status === 'idle' && (
-                      <>
-                        {t('contact.form.send')}
-                        <Send size={22} className="animate-arrow-bounce" />
-                      </>
-                    )}
-                    {status === 'loading' && (
-                      <>
-                        {t('contact.form.sending')}
-                        <Loader2 size={22} className="animate-spin" />
-                      </>
-                    )}
-                    {status === 'success' && (
-                      <>
-                        {t('contact.form.success')}
-                        <CheckCircle size={22} />
-                      </>
-                    )}
-                    {status === 'error' && (
-                      <>
-                        {t('contact.form.error')}
-                        <AlertCircle size={22} className="animate-wiggle" />
-                      </>
-                    )}
-                  </span>
-                </button>
-              </div>
+              <button
+                type="submit"
+                disabled={status === 'loading' || status === 'success'}
+                className="w-full py-4 bg-gradient-warm text-white font-bold rounded-xl transition-all hover:shadow-glow-amber hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {status === 'loading' && (
+                  <Loader2 className="animate-spin" size={20} />
+                )}
+                {status === 'success' && <CheckCircle size={20} />}
+                {status === 'error' && <AlertCircle size={20} />}
+                {status === 'idle' && <Send size={20} />}
+
+                {status === 'idle' && t('contact.form.send')}
+                {status === 'loading' && t('contact.form.sending')}
+                {status === 'success' && t('contact.form.success')}
+                {status === 'error' && t('contact.form.error')}
+
+                {status === 'idle' && (
+                  <ArrowRight size={16} className="ml-1" />
+                )}
+              </button>
             </form>
           </div>
         </div>

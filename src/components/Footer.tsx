@@ -1,11 +1,28 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Logo from './Logo';
+import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Heart, Github, Twitter, Linkedin, Instagram } from 'lucide-react';
+import { Globe, Twitter, Linkedin, Github, Instagram, ArrowRight } from 'lucide-react';
 import { settingsApi } from '@/lib/api/client';
+import { handleSmoothScroll } from '@/lib/utils';
+import { analytics } from '@/lib/analytics';
 import type { SiteSettings } from '@/lib/db';
+import Logo from './Logo';
+import ScrollReveal from './ScrollReveal';
+
+const footerLinks = [
+  { href: '#services', labelKey: 'footer.links.services' },
+  { href: '#projects', labelKey: 'footer.links.projects' },
+  { href: '#contact', labelKey: 'footer.links.contact' },
+];
+
+const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
+  twitter: Twitter,
+  linkedin: Linkedin,
+  github: Github,
+  instagram: Instagram,
+};
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -25,83 +42,106 @@ export default function Footer() {
     loadSettings();
   }, []);
 
-  // Build social links from settings
-  const socialLinks = [];
-  if (settings?.social?.github) {
-    socialLinks.push({ icon: Github, href: settings.social.github, label: 'GitHub', hoverBg: 'hover:bg-gray-800 hover:text-white' });
-  }
-  if (settings?.social?.twitter) {
-    socialLinks.push({ icon: Twitter, href: settings.social.twitter, label: 'Twitter', hoverBg: 'hover:bg-[#1DA1F2] hover:text-white' });
-  }
-  if (settings?.social?.linkedin) {
-    socialLinks.push({ icon: Linkedin, href: settings.social.linkedin, label: 'LinkedIn', hoverBg: 'hover:bg-[#0A66C2] hover:text-white' });
-  }
-  if (settings?.social?.instagram) {
-    socialLinks.push({ icon: Instagram, href: settings.social.instagram, label: 'Instagram', hoverBg: 'hover:bg-gradient-to-r hover:from-purple-500 hover:via-pink-500 hover:to-orange-500 hover:text-white' });
-  }
-
   return (
-    <footer className="bg-white dark:bg-gray-950 transition-colors duration-300 relative overflow-hidden">
-      {/* Animated gradient divider at top */}
-      <div className="absolute top-0 left-0 right-0 h-1 overflow-hidden">
-        <div
-          className="h-full w-full bg-gradient-to-r from-primary via-info via-success via-warning to-danger animate-gradient-x"
-          style={{ backgroundSize: '200% 100%' }}
-        />
-      </div>
+    <footer className="bg-bg-base relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-warm-glow opacity-10" />
 
-      {/* Background decorations */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-blob-1" />
-        <div className="absolute -bottom-32 -right-32 w-64 h-64 bg-info/5 rounded-full blur-3xl animate-blob-2" />
-      </div>
+      {/* CTA Section */}
+      <div className="py-24 border-b border-white/5 relative">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* CTA Glass Card */}
+          <ScrollReveal>
+          <div className="relative p-12 bg-glass-bg backdrop-blur-xl rounded-3xl border border-accent-amber/20 shadow-glass-card text-center">
+            {/* Background Glow */}
+            <div className="absolute inset-0 bg-gradient-warm opacity-5 rounded-3xl" />
+            <div className="absolute -inset-px bg-gradient-warm opacity-20 rounded-3xl blur-xl" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10 lg:py-12 relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
-          {/* Logo & Tagline */}
-          <div className="flex flex-col items-center md:items-start space-y-3 animate-fade-in-up">
-            <div className="flex items-center space-x-2 hover:scale-105 transition-transform duration-200">
-              <Logo />
-            </div>
-            <p className="text-gray-500 dark:text-gray-400 text-sm max-w-xs text-center md:text-left">
-              {t('footer.tagline')}
-            </p>
-          </div>
-
-          {/* Social Links */}
-          {socialLinks.length > 0 && (
-          <div className="flex items-center space-x-4 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-            {socialLinks.map((social, index) => (
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 leading-tight">
+                {t('footer.cta.title')}{' '}
+                <span className="text-transparent bg-gradient-warm bg-clip-text">
+                  {t('footer.cta.titleHighlight')}
+                </span>
+              </h2>
+              <p className="text-text-secondary mb-8 text-lg max-w-xl mx-auto">
+                {t('footer.cta.subtitle')}
+              </p>
               <a
-                key={social.label}
-                href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                aria-label={social.label}
-                className={`w-10 h-10 md:w-11 md:h-11 rounded-lg md:rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 transition-all duration-300 hover:scale-110 hover:-translate-y-1 ${social.hoverBg}`}
-                style={{ animationDelay: `${index * 100}ms` }}
+                href="#contact"
+                onClick={(e) => {
+                  handleSmoothScroll(e, '#contact');
+                  analytics.ctaClick('footer-start-project');
+                }}
+                className="inline-flex items-center gap-2 bg-gradient-warm text-white px-10 py-4 rounded-xl font-bold text-lg shadow-glow-amber hover:shadow-glow-amber-lg transition-all duration-300 hover:scale-[1.02] group"
               >
-                <social.icon size={20} />
+                {t('footer.cta.button')}
+                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </a>
-            ))}
+            </div>
           </div>
-          )}
+          </ScrollReveal>
         </div>
+      </div>
 
-        {/* Bottom section */}
-        <div className="mt-6 md:mt-8 pt-6 md:pt-8 relative animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-          {/* Gradient border line */}
-          <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+      {/* Main Footer */}
+      <div className="py-12 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+            {/* Logo */}
+            <Link href="/" className="hover:opacity-80 transition-opacity">
+              <Logo />
+            </Link>
 
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-center md:text-left">
-            <p className="text-sm text-gray-400 dark:text-gray-500 flex items-center gap-1 hover:scale-[1.02] transition-transform duration-200">
-              &copy; {new Date().getFullYear()} Appykod. {t('footer.copyright')}
+            {/* Links */}
+            <nav className="flex flex-wrap items-center justify-center gap-6">
+              {footerLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleSmoothScroll(e, link.href)}
+                  className="text-text-secondary hover:text-accent-amber font-medium text-sm transition-colors"
+                >
+                  {t(link.labelKey)}
+                </a>
+              ))}
+            </nav>
+
+            {/* Social Icons - From Admin Panel */}
+            {settings?.social && Object.keys(settings.social).length > 0 && (
+              <div className="flex items-center gap-3">
+                {Object.entries(settings.social)
+                  .filter(([_, url]) => url && (url as string).trim() !== '')
+                  .map(([key, url]) => {
+                    const Icon = iconMap[key] || Globe;
+                    const label = key.charAt(0).toUpperCase() + key.slice(1);
+                    return (
+                      <a
+                        key={key}
+                        href={url as string}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full border border-white/10 hover:border-accent-amber/30 flex items-center justify-center text-text-muted hover:text-accent-amber transition-all hover:bg-accent-amber/10"
+                        aria-label={label}
+                      >
+                        <Icon size={18} />
+                      </a>
+                    );
+                  })}
+              </div>
+            )}
+          </div>
+
+          {/* Divider */}
+          <div className="my-8 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+          {/* Copyright */}
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center">
+            <p className="text-text-muted text-sm">
+              {t('footer.copyrightText').replace('{year}', new Date().getFullYear().toString())}
             </p>
-
-            <p className="text-sm text-gray-400 dark:text-gray-500 flex items-center gap-1">
-              {t('footer.madeWith')}
-              <Heart size={14} className="text-danger fill-danger animate-pulse" />
-              {t('footer.inTurkey')}
+            <p className="text-text-muted text-sm">
+              {t('footer.madeWithText')}
             </p>
           </div>
         </div>

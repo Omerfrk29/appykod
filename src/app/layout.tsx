@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { Anek_Latin, Special_Gothic_Expanded_One } from "next/font/google";
-import Script from "next/script";
+import { Special_Gothic_Expanded_One } from "next/font/google";
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -9,14 +8,7 @@ import { MotionProvider } from "@/components/MotionProvider";
 import CookieConsent from "@/components/CookieConsent";
 import PageViewTracker from "@/components/PageViewTracker";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-
-// Google Font - Anek Latin (Ana font)
-const anekLatin = Anek_Latin({
-  subsets: ["latin", "latin-ext"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
-  display: "swap",
-  variable: "--font-anek-latin",
-});
+import GoToTop from "@/components/GoToTop";
 
 // Google Font - Special Gothic Expanded One (Logo font)
 const specialGothic = Special_Gothic_Expanded_One({
@@ -60,8 +52,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr" suppressHydrationWarning className={`${anekLatin.variable} ${specialGothic.variable}`}>
-      <body className="font-sans bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300" suppressHydrationWarning>
+    <html lang="tr" suppressHydrationWarning className={specialGothic.variable}>
+      <head>
+        {/* Satoshi Font from Fontshare */}
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="font-sans bg-bg-base text-text-primary transition-colors duration-300" suppressHydrationWarning>
+        {/* Skip to main content link for accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent-amber focus:text-white focus:rounded-lg focus:font-medium focus:outline-none focus:ring-2 focus:ring-white"
+        >
+          Ana içeriğe atla
+        </a>
+
         {/* Google Analytics with Consent Mode - loads before page content */}
         <GoogleAnalytics />
         <ThemeProvider
@@ -75,6 +82,7 @@ export default function RootLayout({
               <PageViewTracker />
               {children}
               <CookieConsent />
+              <GoToTop />
             </MotionProvider>
           </LanguageProvider>
         </ThemeProvider>

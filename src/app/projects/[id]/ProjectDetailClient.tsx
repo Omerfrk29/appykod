@@ -6,6 +6,7 @@ import { ArrowLeft, ExternalLink, Layers, Lightbulb, Target } from 'lucide-react
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Services from '@/components/Services';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { Project, LocalizedText } from '@/lib/db';
 
@@ -35,7 +36,7 @@ export default function ProjectDetailClient({ project }: { project: Project }) {
   const projectChallenges = getLocalizedText(project.challenges, language);
   const projectSolutions = getLocalizedText(project.solutions, language);
 
-  const gradients = ['from-primary via-info to-success', 'from-success via-primary to-info', 'from-danger via-warning to-primary'];
+  const gradients = ['from-info via-success to-accent-primary', 'from-success via-info to-accent-primary', 'from-danger via-warning to-info'];
   const gradient = gradients[stableIndex(project.id, gradients.length)] || gradients[0];
 
   return (
@@ -233,6 +234,9 @@ export default function ProjectDetailClient({ project }: { project: Project }) {
             </button>
           </motion.div>
         )}
+
+        {/* Services Section */}
+        <Services />
 
         {/* CTA Section */}
         <section className="py-16 bg-gray-50 dark:bg-gray-900">

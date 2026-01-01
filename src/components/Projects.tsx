@@ -1,185 +1,219 @@
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { Project, LocalizedText } from '@/lib/db';
-import { motion } from 'framer-motion';
-import { ExternalLink, ArrowRight } from 'lucide-react';
+import { ArrowRight, Loader2, Package, ExternalLink } from 'lucide-react';
+import { projectsApi } from '@/lib/api/client';
+import type { Project, LocalizedText } from '@/lib/db';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { analytics } from '@/lib/analytics';
+import ScrollReveal, { StaggerContainer, StaggerItem } from './ScrollReveal';
 
-// Helper to get localized text
-function getLocalizedText(text: LocalizedText | string | undefined, lang: 'tr' | 'en'): string {
+function getLocalizedText(
+  text: LocalizedText | string | undefined,
+  lang: 'tr' | 'en'
+): string {
   if (!text) return '';
   if (typeof text === 'string') return text;
   return text[lang] || text.tr || '';
 }
 
-export default function Projects({ projects }: { projects: Project[] }) {
-  const { t, language } = useLanguage();
-  
-  // Fallback data
-  const displayProjects =
-    projects.length > 0
-      ? projects.map(p => ({
-          ...p,
-          displayTitle: getLocalizedText(p.title, language),
-          displayDescription: getLocalizedText(p.description, language),
-        }))
-      : [
-          {
-            id: '1',
-            displayTitle: 'E-Commerce Platform',
-            displayDescription: 'A full-featured online store with payment integration.',
-            imageUrl: 'https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80',
-            link: '#',
-          },
-          {
-            id: '2',
-            displayTitle: 'Finance Dashboard',
-            displayDescription: 'Real-time analytics and reporting tool for fintech.',
-            imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
-            link: '#',
-          },
-          {
-            id: '3',
-            displayTitle: 'Social App',
-            displayDescription: 'Community platform with messaging and feed features.',
-            imageUrl: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80',
-            link: '#',
-          },
-        ];
+function ProjectCard({
+  project,
+  index,
+  language,
+}: {
+  project: Project;
+  index: number;
+  language: 'tr' | 'en';
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [transform, setTransform] = useState({ rotateX: 0, rotateY: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -5;
+    const rotateY = ((x - centerX) / centerX) * 5;
+    setTransform({ rotateX, rotateY });
+  };
+
+  const handleMouseLeave = () => {
+    setTransform({ rotateX: 0, rotateY: 0 });
+  };
+
+  const handleExternalLinkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (project.link) {
+      window.open(project.link, '_blank', 'noopener,noreferrer');
+    }
+  };
 
   return (
-    <section id="projects" className="py-24 bg-white dark:bg-gray-950 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
-            {t('projects.title')}
-          </h2>
-          <p className="max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-300">
-            {t('projects.subtitle')}
-          </p>
-        </motion.div>
+    <Link
+      href={`/projects/${project.id}`}
+      className="block"
+    >
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+        className="group relative bg-bg-elevated/50 backdrop-blur-md rounded-3xl border border-white/5 overflow-hidden transition-all duration-500 hover:border-glass-border-hover hover:shadow-glass-card-hover cursor-pointer"
+      style={{
+        transform: `perspective(1000px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg)`,
+        transition: 'transform 0.1s ease-out',
+      }}
+    >
+      {/* Image Container */}
+      <div className="relative h-64 overflow-hidden">
+        {project.imageUrl ? (
+          <>
+            <Image
+              src={project.imageUrl}
+              alt={getLocalizedText(project.title, language)}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-bg-base via-bg-base/50 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+            {/* Gradient Border Glow */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-warm" />
+            </div>
+          </>
+        ) : (
+          <div className="flex items-center justify-center h-full bg-bg-surface">
+            <Package size={48} className="text-text-muted opacity-50" />
+          </div>
+        )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {displayProjects.map((project, index) => {
-            const gradients = [
-              'linear-gradient(135deg, rgba(94, 111, 234, 0.8), rgba(0, 206, 209, 0.8))',
-              'linear-gradient(135deg, rgba(71, 207, 134, 0.8), rgba(94, 111, 234, 0.8))',
-              'linear-gradient(135deg, rgba(255, 75, 123, 0.8), rgba(251, 107, 78, 0.8))',
-            ];
-            const glowColors = [
-              'rgba(94, 111, 234, 0.4)',
-              'rgba(71, 207, 134, 0.4)',
-              'rgba(255, 75, 123, 0.4)',
-            ];
-            const gradient = gradients[index % gradients.length];
-            const glowColor = glowColors[index % glowColors.length];
-            
-            return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -5, scale: 1.02 }}
-                className="group relative bg-gray-50 dark:bg-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
-              >
-                {/* Glow Effect */}
-                <motion.div
-                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 blur-2xl transition-opacity duration-300 -z-10"
-                  style={{ backgroundColor: glowColor }}
-                  animate={{
-                    scale: [1, 1.1, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
-                
-                <div className="relative h-64 overflow-hidden">
-                  {/* Parallax Image */}
-                  <motion.div
-                    className="absolute inset-0"
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={project.imageUrl}
-                      alt={project.displayTitle}
-                      className="w-full h-full object-cover"
-                    />
-                  </motion.div>
-                  
-                  {/* Gradient Overlay */}
-                  <motion.div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ background: gradient }}
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                  />
-                  
-                  {/* Hover Content */}
-                  <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                    <Link
-                      href={`/projects/${project.id}`}
-                      onClick={() => analytics.projectClick(project.id, project.displayTitle)}
-                      className="inline-flex items-center px-6 py-3 border border-white/30 text-base font-medium rounded-full text-white bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all shadow-lg"
-                    >
-                      {t('projects.viewDetails')} <ArrowRight size={18} className="ml-2" />
-                    </Link>
-                    {project.link && project.link !== '#' && (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => analytics.externalLinkClick(project.link || '', project.displayTitle)}
-                        className="inline-flex items-center px-4 py-3 border border-white/30 text-base font-medium rounded-full text-white bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all shadow-lg"
-                      >
-                        <ExternalLink size={18} />
-                      </a>
-                    )}
-                  </div>
-                  
-                  {/* Floating Badge */}
-                  <motion.div
-                    className="absolute top-4 right-4 px-3 py-1 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-xs font-bold text-primary shadow-lg"
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 + 0.3 }}
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                  >
-                    #{index + 1}
-                  </motion.div>
-                </div>
-                
-                <div className="p-8">
-                  <motion.h3
-                    className="text-2xl font-bold text-gray-900 dark:text-white mb-3"
-                    whileHover={{ x: 5 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                  >
-                    {project.displayTitle}
-                  </motion.h3>
-                  <p className="text-gray-600 dark:text-gray-300">
-                    {project.displayDescription}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
+        {/* Project Number Badge */}
+        <div className="absolute top-4 left-4 px-3 py-1 bg-bg-base/80 backdrop-blur-sm rounded-full text-xs font-medium text-text-secondary border border-white/10">
+          #{String(index + 1).padStart(2, '0')}
         </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-6 relative">
+        {/* Title */}
+        <h3 className="text-xl font-bold text-text-primary mb-3 group-hover:text-transparent group-hover:bg-gradient-warm group-hover:bg-clip-text transition-all">
+          {getLocalizedText(project.title, language)}
+        </h3>
+
+        {/* Description */}
+        <p className="text-body-sm text-text-muted mb-6 line-clamp-2">
+          {getLocalizedText(project.description, language)}
+        </p>
+
+        {/* External Link */}
+        {project.link && (
+          <button
+            type="button"
+            onClick={handleExternalLinkClick}
+            className="inline-flex items-center gap-2 text-accent-amber font-medium text-sm group/link hover:gap-3 transition-all z-10 relative"
+          >
+            <span>Projeyi Görüntüle</span>
+            <ExternalLink size={14} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+          </button>
+        )}
+      </div>
+
+      {/* Hover Shine Effect */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
+      </div>
+    </div>
+    </Link>
+  );
+}
+
+export default function Projects() {
+  const { language } = useLanguage();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const response = await projectsApi.getAll();
+        if (response.success && response.data) {
+          setProjects(response.data);
+        }
+      } catch (error) {
+        console.error('Error loading projects:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProjects();
+  }, []);
+
+  return (
+    <section id="projects" className="py-24 bg-bg-base relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-warm-glow opacity-20" />
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(245,158,11,0.02)_1px,transparent_1px)] [background-size:40px_40px]" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header */}
+        <ScrollReveal className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 bg-accent-amber/10 border border-accent-amber/20 rounded-full text-accent-amber text-sm font-medium mb-4">
+            Projelerimiz
+          </span>
+          <h2 className="text-h2 font-bold text-text-primary mb-4">
+            Başarı{' '}
+            <span className="text-transparent bg-gradient-warm bg-clip-text">
+              Hikayeleri
+            </span>
+          </h2>
+          <p className="max-w-2xl mx-auto text-body-lg text-text-secondary">
+            Müşterilerimiz için geliştirdiğimiz projelerden bazıları.
+          </p>
+        </ScrollReveal>
+
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <div className="flex flex-col items-center gap-4">
+              <Loader2 className="animate-spin text-accent-amber w-10 h-10" />
+              <span className="text-text-muted text-sm">Projeler yükleniyor...</span>
+            </div>
+          </div>
+        ) : projects.length === 0 ? (
+          <div className="text-center py-20 bg-bg-elevated/50 backdrop-blur-md rounded-3xl border border-white/5">
+            <Package size={48} className="mx-auto text-text-muted mb-4 opacity-50" />
+            <p className="text-text-secondary text-lg">Henüz bir proje eklenmedi.</p>
+          </div>
+        ) : (
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={100}>
+            {projects.map((project, index) => (
+              <StaggerItem key={project.id} index={index}>
+                <ProjectCard
+                  project={project}
+                  index={index}
+                  language={language}
+                />
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        )}
+
+        {/* View All Link */}
+        {projects.length > 0 && (
+          <div className="text-center mt-12">
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 text-text-secondary hover:text-accent-amber font-medium transition-colors group"
+            >
+              <span>Tüm projelerimiz için iletişime geçin</span>
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );

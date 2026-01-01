@@ -43,14 +43,16 @@ export default function AdminSidebar({ onLogout }: AdminSidebarProps) {
   }, []);
 
   return (
-    <aside className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col fixed h-full z-10 transition-colors duration-300">
-      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-        <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-          Admin Panel
+    <aside className="w-64 bg-[#1E2330] border-r border-white/5 flex flex-col fixed h-full z-10">
+      <div className="p-8 border-b border-white/5">
+        <h2 className="text-2xl font-bold text-white tracking-tight">
+          AppyKod
+          <span className="text-accent-primary">.</span>
         </h2>
+        <p className="text-xs text-gray-400 mt-1 uppercase tracking-widest">Admin Panel</p>
       </div>
-      
-      <nav className="flex-1 p-4 space-y-2">
+
+      <nav className="flex-1 p-4 space-y-2 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.path || (item.path === '/admin' && pathname === '/admin');
@@ -58,16 +60,15 @@ export default function AdminSidebar({ onLogout }: AdminSidebarProps) {
             <Link
               key={item.id}
               href={item.path}
-              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-                isActive
-                  ? 'bg-primary/10 text-primary shadow-sm'
-                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
-              }`}
+              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive
+                  ? 'bg-accent-primary text-white shadow-lg shadow-accent-primary/20'
+                  : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                }`}
             >
-              <Icon size={20} className={isActive ? 'text-primary' : ''} />
+              <Icon size={20} />
               <span className="font-medium">{item.label}</span>
               {item.id === 'messages' && unreadCount > 0 && (
-                <span className="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-white text-accent-primary' : 'bg-accent-primary text-white'}`}>
                   {unreadCount}
                 </span>
               )}
@@ -76,15 +77,15 @@ export default function AdminSidebar({ onLogout }: AdminSidebarProps) {
         })}
       </nav>
 
-      <div className="p-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
+      <div className="p-4 space-y-2 border-t border-white/5 bg-[#1E2330]">
         <Link
           href="/"
-          className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
         >
           <Home size={20} /> <span>Siteye Git</span>
         </Link>
         <button
-          className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+          className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-accent-pink hover:bg-accent-pink/10 hover:text-accent-pink transition-colors"
           onClick={onLogout}
         >
           <LogOut size={20} /> <span>Çıkış Yap</span>

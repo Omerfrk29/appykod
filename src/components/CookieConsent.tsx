@@ -65,7 +65,7 @@ export default function CookieConsent() {
             <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
               {/* Icon */}
               <div className="flex-shrink-0">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary to-info rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-info to-accent-primary rounded-xl flex items-center justify-center shadow-lg">
                   <Cookie className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -98,7 +98,7 @@ export default function CookieConsent() {
                 </button>
                 <button
                   onClick={handleAccept}
-                  className="px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-primary to-info rounded-xl hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
+                  className="px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-info to-accent-primary rounded-xl hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
                 >
                   {t('cookies.accept')}
                 </button>

@@ -3,20 +3,37 @@
     "home": "Ana Sayfa",
     "services": "Hizmetler",
     "projects": "İşlerimiz",
-    "contact": "İletişim"
+    "contact": "İletişim",
+    "freeEstimate": "Ücretsiz Teklif Alın",
+    "toggleMenu": "Menüyü Aç/Kapat"
   },
   "hero": {
-    "title": "Dijital Geleceği",
-    "titlePrefix": "",
-    "titleSuffix": "Tasarlıyoruz",
+    "title": {
+      "line1": "Dijital Geleceği",
+      "highlight": "Tasarlıyoruz",
+      "line2": ""
+    },
+    "badge": "Modern Yazılım Çözümleri",
     "subtitle": "Fikirlerinizi güçlü, ölçeklenebilir ve estetik yazılım çözümlerine dönüştürüyoruz. Modern web geliştirmede güvenilir ortağınız.",
-    "ctaPrimary": "Projeye Başla",
-    "ctaSecondary": "Portföyümüzü İncele"
+    "cta": {
+      "primary": "Ücretsiz Teklif Alın",
+      "secondary": "Projelerimizi İncele"
+    },
+    "stats": {
+      "projects": "Proje",
+      "clients": "Mutlu Müşteri",
+      "years": "Yıl Deneyim"
+    },
+    "scroll": "Keşfedin"
   },
   "services": {
     "title": "Hizmetlerimiz",
     "subtitle": "Dijital ihtiyaçlarınız için kapsamlı çözümler",
     "learnMore": "Daha Fazla",
+    "badge": "Hizmetlerimiz",
+    "titleMain": "Dijital Dönüşümünüzü",
+    "titleHighlight": "Hızlandırıyoruz",
+    "subtitleText": "Modern teknolojiler ve yaratıcı çözümlerle işletmenizi geleceğe taşıyoruz.",
     "items": {
       "web-development": {
         "title": "Web Geliştirme",
@@ -32,6 +49,26 @@
         "title": "Özel Yazılım",
         "description": "İşletmenize özel yazılım çözümleri ve sistemler.",
         "fullDescription": "İşletmenizin benzersiz ihtiyaçlarına göre tasarlanmış özel yazılım çözümleri geliştiriyoruz. ERP sistemleri, CRM uygulamaları, otomasyon araçları ve daha fazlası.\n\nMevcut sistemlerinizle uyumlu çalışan, ölçeklenebilir ve güvenli yazılım çözümleri sunuyoruz. İş süreçlerinizi optimize ederek verimliliğinizi artırmanıza yardımcı oluyoruz."
+      },
+      "web": {
+        "title": "Web Geliştirme",
+        "description": "Modern web teknolojileri ile hızlı, güvenli ve ölçeklenebilir web uygulamaları geliştiriyoruz. Next.js, React ve Node.js ile tam kapsamlı çözümler."
+      },
+      "mobile": {
+        "title": "Mobil Uygulama",
+        "description": "iOS ve Android için native performanslı, kullanıcı dostu mobil uygulamalar."
+      },
+      "uxui": {
+        "title": "UI/UX Tasarım",
+        "description": "Kullanıcı deneyimini ön plana alan, modern ve şık arayüz tasarımları."
+      },
+      "backend": {
+        "title": "Backend Sistemler",
+        "description": "Güçlü ve güvenilir API'lar, veritabanı tasarımı ve sunucu altyapısı."
+      },
+      "security": {
+        "title": "Güvenlik Danışmanlığı",
+        "description": "Penetrasyon testleri, güvenlik denetimleri ve en iyi güvenlik uygulamaları."
       }
     }
   },
@@ -92,9 +129,22 @@
   "contact": {
     "title": "Birlikte Çalışalım",
     "subtitle": "Aklınızda bir proje mi var? Detaylarını öğrenmek isteriz. Bize mesaj gönderin, en kısa sürede size dönüş yapalım.",
+    "badge": "İletişim",
+    "titleMain": "Projenizi",
+    "titleHighlight": "Birlikte Geliştirelim",
+    "subtitleText": "Fikirlerinizi hayata geçirmek için sabırsızlanıyoruz. Hemen iletişime geçin!",
     "info": {
       "phone": "Telefon",
-      "email": "E-posta"
+      "email": "E-posta",
+      "emailLabel": "Email",
+      "location": "Konum",
+      "locationValue": "İstanbul, Türkiye",
+      "location2Label": "İkinci Ofis",
+      "location2Value": "İzmir, Türkiye"
+    },
+    "guarantee": {
+      "title": "Hızlı yanıt garantisi",
+      "description": "Mesajlarınıza 24 saat içinde dönüş yapıyoruz. Acil projeler için doğrudan email atabilirsiniz."
     },
     "form": {
       "name": "Ad",
@@ -113,7 +163,24 @@
     "tagline": "Değer yaratan dijital deneyimler tasarlıyoruz.",
     "copyright": "Tüm hakları saklıdır.",
     "madeWith": "ile yapıldı",
-    "inTurkey": "Türkiye'de"
+    "inTurkey": "Türkiye'de",
+    "links": {
+      "services": "Hizmetler",
+      "projects": "Projeler",
+      "contact": "İletişim"
+    },
+    "cta": {
+      "title": "Bir Sonraki Projeniz İçin",
+      "titleHighlight": "Hazırız",
+      "subtitle": "Dijital dönüşümünüzü hızlandırmak için bugün iletişime geçin.",
+      "button": "Projeye Başla"
+    },
+    "copyrightText": "© {year} AppyKod. Tüm hakları saklıdır.",
+    "madeWithText": "Türkiye'den sevgiyle yapıldı."
+  },
+  "products": {
+    "title": "Öne Çıkan Ürünler",
+    "viewProduct": "Ürünü Görüntüle"
   },
   "techstack": {
     "subtitle": "Modern teknolojilerle güçlendirilmiştir"

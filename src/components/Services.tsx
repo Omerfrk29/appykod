@@ -1,18 +1,20 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Service, LocalizedText } from '@/lib/db';
-import { Code, Smartphone, Globe, Database, Cloud, Shield, Zap, Layout, Server, Cpu, Wifi, Monitor } from 'lucide-react';
+import { Globe, Smartphone, Palette, Database, Shield, ArrowRight, Loader2, Code, Cloud, Zap, Layout, Server, Cpu, Wifi, Monitor } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { analytics } from '@/lib/analytics';
+import ScrollReveal, { StaggerContainer, StaggerItem } from './ScrollReveal';
+import type { Service } from '@/lib/db';
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties; className?: string }>> = {
-  code: Code,
-  smartphone: Smartphone,
+const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   globe: Globe,
+  smartphone: Smartphone,
+  palette: Palette,
   database: Database,
-  cloud: Cloud,
   shield: Shield,
+  code: Code,
+  cloud: Cloud,
   zap: Zap,
   layout: Layout,
   server: Server,
@@ -21,111 +23,175 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; style?: React
   monitor: Monitor,
 };
 
-// Helper to get localized text
-function getLocalizedText(text: LocalizedText | string | undefined, lang: 'tr' | 'en'): string {
-  if (!text) return '';
-  if (typeof text === 'string') return text;
-  return text[lang] || text.tr || '';
-}
+const serviceConfig: Record<string, { span: string }> = {
+  web: { span: 'md:col-span-2 md:row-span-2' },
+  mobile: { span: 'md:col-span-1' },
+  uxui: { span: 'md:col-span-1' },
+  backend: { span: 'md:col-span-1' },
+  security: { span: 'md:col-span-1' },
+};
 
-export default function Services({ services }: { services: Service[] }) {
+// Fallback service IDs for backward compatibility
+const fallbackServiceIds = ['web', 'mobile', 'uxui', 'backend', 'security'];
+
+export default function Services() {
   const { t, language } = useLanguage();
-  
-  // Servisleri çoklu dil formatında göster
-  const displayServices = services.length > 0 ? services.map(service => ({
-    ...service,
-    displayTitle: getLocalizedText(service.title, language),
-    displayDescription: getLocalizedText(service.description, language),
-  })) : [
-    { id: '1', displayTitle: 'Web Development', displayDescription: 'Modern, responsive websites built with the latest technologies.', icon: 'globe' },
-    { id: '2', displayTitle: 'Mobile Apps', displayDescription: 'Native and cross-platform mobile applications for iOS and Android.', icon: 'smartphone' },
-    { id: '3', displayTitle: 'Custom Software', displayDescription: 'Tailored software solutions to meet your specific business needs.', icon: 'code' },
-  ];
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const colorSchemes = [
-    { iconBg: 'bg-primary/15 dark:bg-primary/25', iconColor: 'text-primary', borderGradient: 'from-primary via-info to-danger', glowColor: 'group-hover:shadow-[0_0_50px_rgba(94,111,234,0.6),0_0_100px_rgba(94,111,234,0.3)]', accentColor: 'bg-info/20' },
-    { iconBg: 'bg-success/15 dark:bg-success/25', iconColor: 'text-success', borderGradient: 'from-success via-primary to-info', glowColor: 'group-hover:shadow-[0_0_50px_rgba(71,207,134,0.6),0_0_100px_rgba(71,207,134,0.3)]', accentColor: 'bg-primary/20' },
-    { iconBg: 'bg-danger/15 dark:bg-danger/25', iconColor: 'text-danger', borderGradient: 'from-danger via-warning to-primary', glowColor: 'group-hover:shadow-[0_0_50px_rgba(255,75,123,0.6),0_0_100px_rgba(255,75,123,0.3)]', accentColor: 'bg-warning/20' },
-  ];
+  useEffect(() => {
+    async function fetchServices() {
+      try {
+        const res = await fetch('/api/services');
+        const data = await res.json();
+        if (data.success && data.data?.length > 0) {
+          setServices(data.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch services:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchServices();
+  }, []);
+
+  // Use fetched services or fallback to locale-based services
+  const displayServices = services.length > 0
+    ? services.map((s) => ({
+        id: s.id,
+        title: typeof s.title === 'object' ? s.title[language] : s.title,
+        description: typeof s.description === 'object' ? s.description[language] : s.description,
+        icon: iconMap[s.icon] || Globe,
+        featured: s.id === 'web',
+        span: serviceConfig[s.id]?.span || 'md:col-span-1',
+      }))
+    : fallbackServiceIds.map((id) => ({
+        id,
+        title: t(`services.items.${id}.title`),
+        description: t(`services.items.${id}.description`),
+        icon: iconMap[id === 'web' ? 'globe' : id === 'mobile' ? 'smartphone' : id === 'uxui' ? 'palette' : id === 'backend' ? 'database' : 'shield'] || Globe,
+        featured: id === 'web',
+        span: serviceConfig[id]?.span || 'md:col-span-1',
+      }));
+
+  if (loading) {
+    return (
+      <section id="services" className="py-24 bg-bg-base relative overflow-hidden flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-accent-amber" />
+      </section>
+    );
+  }
 
   return (
-    <section id="services" className="py-12 md:py-16 lg:py-20 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10 md:mb-12 animate-fade-in-up">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white mb-3 md:mb-4">
-            {t('services.title')}
-          </h2>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 dark:text-gray-300 px-4">
-            {t('services.subtitle')}
-          </p>
-        </div>
+    <section id="services" className="py-24 bg-bg-base relative overflow-hidden">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-warm-glow opacity-30" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6" style={{ perspective: '1000px' }}>
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(245,158,11,0.03)_1px,transparent_1px)] [background-size:32px_32px]" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header */}
+        <ScrollReveal className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 bg-accent-amber/10 border border-accent-amber/20 rounded-full text-accent-amber text-sm font-medium mb-4">
+            {t('services.badge')}
+          </span>
+          <h2 className="text-h2 font-bold text-text-primary mb-4">
+            {t('services.titleMain')}{' '}
+            <span className="text-transparent bg-gradient-warm bg-clip-text">
+              {t('services.titleHighlight')}
+            </span>
+          </h2>
+          <p className="max-w-2xl mx-auto text-body-lg text-text-secondary">
+            {t('services.subtitleText')}
+          </p>
+        </ScrollReveal>
+
+        {/* Bento Grid */}
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerDelay={100}>
           {displayServices.map((service, index) => {
-            const Icon = iconMap[service.icon || 'code'] || Code;
-            const colorScheme = colorSchemes[index % colorSchemes.length];
+            const Icon = service.icon;
+            const isFeatured = service.featured;
 
             return (
+              <StaggerItem key={service.id} index={index} className={service.span}>
               <Link
-                key={service.id}
                 href={`/services/${service.id}`}
-                onClick={() => analytics.serviceClick(service.id, service.displayTitle)}
-                className="animate-fade-in-up block"
-                style={{ animationDelay: `${index * 150}ms`, animationFillMode: 'backwards' }}
+                className="block h-full"
               >
                 <div
-                  className={`relative group bg-white dark:bg-gray-800 rounded-2xl md:rounded-3xl p-5 md:p-6 lg:p-8 transition-all duration-500 overflow-hidden shadow-xl hover:shadow-2xl h-full border border-gray-100 dark:border-gray-700 ${colorScheme.glowColor} cursor-pointer`}
-                  style={{ transformStyle: 'preserve-3d' }}
+                  className={`group relative rounded-3xl p-8 transition-all duration-500 cursor-pointer h-full ${
+                    isFeatured
+                      ? 'bg-glass-bg backdrop-blur-xl border border-accent-amber/30 shadow-glass-card hover:shadow-glass-card-hover hover:border-accent-amber/50'
+                      : 'bg-bg-elevated/50 backdrop-blur-md border border-white/5 hover:border-glass-border-hover hover:bg-bg-elevated'
+                  }`}
+                  style={{
+                    transform: 'perspective(1000px)',
+                  }}
                 >
-                  {/* Animated Gradient Border Effect */}
-                  <div
-                    className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-[2px] bg-gradient-to-br ${colorScheme.borderGradient} animate-gradient-x`}
-                    style={{ backgroundSize: '200% 200%' }}
-                  >
-                    <div className="absolute inset-[2px] rounded-3xl bg-white dark:bg-gray-800" />
-                  </div>
+                {/* Gradient Glow for Featured */}
+                {isFeatured && (
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-warm opacity-5 group-hover:opacity-10 transition-opacity" />
+                )}
 
-                  {/* Inner card background */}
-                  <div className="absolute inset-[1px] rounded-3xl bg-white dark:bg-gray-800" />
-
-                  {/* Content */}
-                  <div className="relative z-10">
-                    <div
-                      className={`w-14 h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 relative overflow-hidden ${colorScheme.iconBg} group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300`}
-                    >
-                      <Icon size={28} className={`md:w-8 md:h-8 lg:w-9 lg:h-9 ${colorScheme.iconColor}`} />
-                      {/* Shimmer/Shine sweep effect - only on hover */}
-                      <div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:animate-shine-sweep transition-opacity duration-300"
-                        style={{ 
-                          background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 45%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.25) 55%, transparent 60%)',
-                          backgroundSize: '250% 100%'
-                        }}
-                      />
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-extrabold text-gray-900 dark:text-white mb-2 md:mb-4 transition-all duration-300">
-                      {service.displayTitle}
-                    </h3>
-                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
-                      {service.displayDescription}
-                    </p>
-
-                    {/* Learn more indicator */}
-                    <div className={`mt-4 md:mt-6 flex items-center text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${colorScheme.iconColor}`}>
-                      <span>{t('services.learnMore')}</span>
-                      <span className="ml-2 animate-arrow-bounce">→</span>
-                    </div>
-                  </div>
-
-                  {/* Floating accent shape */}
-                  <div
-                    className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full opacity-20 group-hover:opacity-40 transition-all duration-500 group-hover:scale-125 ${colorScheme.accentColor}`}
+                {/* Icon */}
+                <div
+                  className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 ${
+                    isFeatured
+                      ? 'bg-gradient-warm shadow-glow-amber'
+                      : 'bg-bg-surface border border-white/10 group-hover:bg-gradient-warm group-hover:border-transparent group-hover:shadow-glow-amber'
+                  }`}
+                >
+                  <Icon
+                    size={28}
+                    className={`${
+                      isFeatured
+                        ? 'text-white'
+                        : 'text-text-secondary group-hover:text-white'
+                    } transition-colors`}
                   />
                 </div>
+
+                {/* Title */}
+                <h3
+                  className={`font-bold mb-3 transition-colors ${
+                    isFeatured ? 'text-h3 text-text-primary' : 'text-xl text-text-primary'
+                  }`}
+                >
+                  {service.title}
+                </h3>
+
+                {/* Description */}
+                <p
+                  className={`leading-relaxed mb-6 ${
+                    isFeatured ? 'text-body text-text-secondary' : 'text-body-sm text-text-muted'
+                  }`}
+                >
+                  {service.description}
+                </p>
+
+                {/* Arrow Button */}
+                <div
+                  className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                    isFeatured
+                      ? 'border-accent-amber/30 text-accent-amber group-hover:bg-gradient-warm group-hover:text-white group-hover:border-transparent group-hover:shadow-glow-amber'
+                      : 'border-white/10 text-text-muted group-hover:border-accent-amber/30 group-hover:text-accent-amber'
+                  }`}
+                >
+                  <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+                </div>
+
+                {/* Hover Tilt Effect */}
+                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl" />
+                </div>
+              </div>
               </Link>
+              </StaggerItem>
             );
           })}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   );

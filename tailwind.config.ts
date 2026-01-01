@@ -10,51 +10,116 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                primary: {
-                    DEFAULT: "#5E6FEA",
-                    light: "#8B96F0",
-                    dark: "#4254D6",
-                    50: "#ECEEFF",
-                    100: "#D8DDFF",
-                    200: "#B1BBFF",
-                    300: "#8B96F0",
-                    400: "#5E6FEA",
-                    500: "#4254D6",
-                    600: "#3340A8",
-                    700: "#252F7A",
-                    800: "#181F4C",
-                    900: "#0A0F1E",
-                },
+                // === LOGO COLOR PALETTE ===
+                // Background Layers
+                'bg-base': '#09090B',      // Zinc 950 - darkest
+                'bg-elevated': '#18181B',  // Zinc 900
+                'bg-surface': '#27272A',   // Zinc 800
+                'bg-muted': '#3F3F46',     // Zinc 700
+
+                // Text Colors
+                'text-primary': '#FAFAFA',   // Zinc 50
+                'text-secondary': '#A1A1AA', // Zinc 400
+                'text-muted': '#71717A',     // Zinc 500
+
+                // Logo Color Palette
+                'accent-primary': '#00CED1',      // Turkuaz - Ana renk
+                'accent-secondary': '#5E6FEA',    // Mor - İkincil renk
+                'accent-green': '#47CF86',        // Yeşil
+                'accent-orange': '#FB6B4E',       // Turuncu
+                'accent-pink': '#FF4B7B',         // Pembe
+                'accent-primary-light': '#20E5E8',
+                'accent-secondary-light': '#7A8AFF',
+                
+                // Legacy compatibility - alias to logo colors
+                'accent-amber': '#00CED1',
+                'accent-red': '#5E6FEA',
+                'accent-amber-light': '#20E5E8',
+                'accent-red-light': '#7A8AFF',
+
+                // Semantic Colors
                 success: {
-                    DEFAULT: "#47CF86",
-                    light: "#6EDBA0",
-                    dark: "#2EB36C",
+                    DEFAULT: '#47CF86', // Logo Green
+                    light: '#6DD9A0',
                 },
                 warning: {
-                    DEFAULT: "#FB6B4E",
-                    light: "#FC8D76",
-                    dark: "#E94D2D",
+                    DEFAULT: '#FB6B4E', // Logo Orange
+                    light: '#FF8A6F',
                 },
                 danger: {
-                    DEFAULT: "#FF4B7B",
-                    light: "#FF7A9E",
-                    dark: "#E62958",
+                    DEFAULT: '#FF4B7B', // Logo Pink
+                    light: '#FF6B9B',
                 },
                 info: {
+                    DEFAULT: '#00CED1', // Logo Turkuaz
+                    light: '#20E5E8',
+                },
+
+                // Glass Colors
+                'glass-bg': 'rgba(24, 24, 27, 0.6)',
+                'glass-border': 'rgba(0, 206, 209, 0.1)',
+                'glass-border-hover': 'rgba(0, 206, 209, 0.2)',
+
+                // Legacy colors (for backward compatibility)
+                primary: {
+                    DEFAULT: "#18181B",
+                    light: "#27272A",
+                    dark: "#09090B",
+                },
+                secondary: {
                     DEFAULT: "#00CED1",
-                    light: "#33D8DA",
-                    dark: "#00A8AA",
+                    light: "#20E5E8",
+                    dark: "#00A8AB",
                 },
                 accent: {
-                    gold: "#FFD700",
-                    purple: "#9B59B6",
-                    coral: "#FF6B6B",
-                    mint: "#00D9A5",
+                    primary: "#00CED1",
+                    secondary: "#5E6FEA",
+                    green: "#47CF86",
+                    orange: "#FB6B4E",
+                    pink: "#FF4B7B",
+                    // Legacy aliases
+                    gold: "#00CED1",
+                    red: "#5E6FEA",
+                    amber: "#00CED1",
+                },
+                background: {
+                    dark: "#09090B",
+                    light: "#FAFAFA",
                 },
             },
             fontFamily: {
-                sans: ['var(--font-anek-latin)', '"Anek Latin"', 'sans-serif'],
+                sans: ['Satoshi', 'var(--font-satoshi)', 'system-ui', 'sans-serif'],
+                heading: ['Satoshi', 'var(--font-satoshi)', 'system-ui', 'sans-serif'],
                 logo: ['var(--font-logo)', '"Special Gothic Expanded One"', 'cursive'],
+            },
+            fontSize: {
+                // Heading sizes with line-height and letter-spacing
+                'display': ['4.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+                'h1': ['3.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+                'h2': ['2.5rem', { lineHeight: '1.2', letterSpacing: '-0.01em' }],
+                'h3': ['1.75rem', { lineHeight: '1.3', letterSpacing: '0' }],
+                'h4': ['1.25rem', { lineHeight: '1.4', letterSpacing: '0' }],
+                'body-lg': ['1.125rem', { lineHeight: '1.6' }],
+                'body': ['1rem', { lineHeight: '1.6' }],
+                'body-sm': ['0.875rem', { lineHeight: '1.5' }],
+                'caption': ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.02em' }],
+            },
+            fontWeight: {
+                regular: '400',
+                medium: '500',
+                bold: '700',
+                black: '900',
+            },
+            backgroundImage: {
+                // Logo Color Gradients
+                'gradient-warm': 'linear-gradient(135deg, #00CED1 0%, #5E6FEA 100%)',
+                'gradient-warm-reverse': 'linear-gradient(135deg, #5E6FEA 0%, #00CED1 100%)',
+                'gradient-warm-soft': 'linear-gradient(135deg, rgba(0, 206, 209, 0.2) 0%, rgba(94, 111, 234, 0.2) 100%)',
+                'gradient-warm-glow': 'radial-gradient(circle at center, rgba(0, 206, 209, 0.15) 0%, transparent 70%)',
+                // Glass
+                'glass': 'rgba(24, 24, 27, 0.6)',
+                // Legacy
+                'hero-gradient': 'linear-gradient(135deg, #00CED1 0%, #5E6FEA 100%)',
             },
             letterSpacing: {
                 tightest: '-0.075em',
@@ -67,31 +132,9 @@ const config: Config = {
                 relaxed: '1.75',
             },
             animation: {
-                'gradient-x': 'gradient-x 3s ease infinite',
-                'gradient-y': 'gradient-y 3s ease infinite',
-                'gradient-xy': 'gradient-xy 6s ease infinite',
+                'gradient-x': 'gradient-x 5s ease infinite',
                 'float': 'float 6s ease-in-out infinite',
-                'float-slow': 'float-slow 8s ease-in-out infinite',
-                'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
-                'pulse-glow-success': 'pulse-glow-success 2s ease-in-out infinite',
-                'pulse-glow-danger': 'pulse-glow-danger 2s ease-in-out infinite',
-                'pulse-glow-warning': 'pulse-glow-warning 2s ease-in-out infinite',
-                'pulse-glow-info': 'pulse-glow-info 2s ease-in-out infinite',
-                'rotate-slow': 'rotate-slow 20s linear infinite',
-                'scale-pulse': 'scale-pulse 2s ease-in-out infinite',
-                'shimmer': 'shimmer 2s linear infinite',
-                // New animations
-                'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
-                'slide-up-fade': 'slide-up-fade 0.5s ease-out',
-                'slide-down-fade': 'slide-down-fade 0.5s ease-out',
-                'wiggle': 'wiggle 0.5s ease-in-out',
-                'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
-                'text-shimmer': 'text-shimmer 3s ease-in-out infinite',
-                'border-dance': 'border-dance 4s linear infinite',
-                'morph': 'morph 8s ease-in-out infinite',
-                'aurora': 'aurora 15s ease-in-out infinite',
-                'sparkle': 'sparkle 2s ease-in-out infinite',
-                'tilt-shake': 'tilt-shake 0.5s ease-in-out',
+                'pulse-soft': 'pulse-soft 3s ease-in-out infinite',
             },
             keyframes: {
                 'gradient-x': {
@@ -101,6 +144,10 @@ const config: Config = {
                     '50%': {
                         'background-position': '100% 50%',
                     },
+                },
+                'pulse-soft': {
+                    '0%, 100%': { opacity: '1' },
+                    '50%': { opacity: '0.7' },
                 },
                 'gradient-y': {
                     '0%, 100%': {
@@ -331,12 +378,23 @@ const config: Config = {
                 '400%': '400% 400%',
             },
             boxShadow: {
-                'glow-primary': '0 0 20px rgba(94, 111, 234, 0.4)',
+                // Logo Color Glow Effects
+                'glow-amber': '0 0 20px rgba(0, 206, 209, 0.4)',
+                'glow-amber-lg': '0 0 40px rgba(0, 206, 209, 0.5)',
+                'glow-amber-xl': '0 0 60px rgba(0, 206, 209, 0.4), 0 0 100px rgba(0, 206, 209, 0.2)',
+                'glow-red': '0 0 20px rgba(94, 111, 234, 0.4)',
+                'glow-warm': '0 0 30px rgba(0, 206, 209, 0.3), 0 0 60px rgba(94, 111, 234, 0.15)',
+                // Glass Card Shadows
+                'glass-card': '0 4px 24px rgba(0, 0, 0, 0.2), 0 0 40px rgba(0, 206, 209, 0.05)',
+                'glass-card-hover': '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 60px rgba(0, 206, 209, 0.1)',
+                // Semantic Glows - Logo Colors
                 'glow-success': '0 0 20px rgba(71, 207, 134, 0.4)',
                 'glow-danger': '0 0 20px rgba(255, 75, 123, 0.4)',
                 'glow-warning': '0 0 20px rgba(251, 107, 78, 0.4)',
                 'glow-info': '0 0 20px rgba(0, 206, 209, 0.4)',
-                'glow-lg': '0 0 40px rgba(94, 111, 234, 0.3), 0 0 80px rgba(94, 111, 234, 0.1)',
+                // Legacy
+                'glow-primary': '0 0 20px rgba(0, 206, 209, 0.4)',
+                'glow-lg': '0 0 40px rgba(0, 206, 209, 0.3), 0 0 80px rgba(0, 206, 209, 0.1)',
             },
         },
     },
