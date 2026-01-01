@@ -15,20 +15,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { analytics } from '@/lib/analytics';
 import ScrollReveal from './ScrollReveal';
 
-const contactInfo = [
-  {
-    icon: Mail,
-    title: 'Email',
-    value: 'appykod@gmail.com',
-    href: 'mailto:appykod@gmail.com',
-  },
-  {
-    icon: MapPin,
-    title: 'Konum',
-    value: 'Izmir, Turkey',
-    href: null,
-  },
-];
+const contactInfoKeys = ['email', 'location'];
 
 export default function Contact() {
   const { t } = useLanguage();
@@ -87,16 +74,16 @@ export default function Contact() {
         {/* Header */}
         <ScrollReveal className="text-center mb-16">
           <span className="inline-block px-4 py-1.5 bg-accent-amber/10 border border-accent-amber/20 rounded-full text-accent-amber text-sm font-medium mb-4">
-            İletişim
+            {t('contact.badge')}
           </span>
           <h2 className="text-h2 font-bold text-text-primary mb-4">
-            Projenizi{' '}
+            {t('contact.titleMain')}{' '}
             <span className="text-transparent bg-gradient-warm bg-clip-text">
-              Birlikte Geliştirelim
+              {t('contact.titleHighlight')}
             </span>
           </h2>
           <p className="max-w-2xl mx-auto text-body-lg text-text-secondary">
-            Fikirlerinizi hayata geçirmek için sabırsızlanıyoruz. Hemen iletişime geçin!
+            {t('contact.subtitleText')}
           </p>
         </ScrollReveal>
 
@@ -105,8 +92,9 @@ export default function Contact() {
           <ScrollReveal direction="left" delay={100} className="space-y-8">
             {/* Info Cards */}
             <div className="space-y-4">
-              {contactInfo.map((item, index) => {
-                const Icon = item.icon;
+              {contactInfoKeys.map((key, index) => {
+                const Icon = key === 'email' ? Mail : MapPin;
+                const href = key === 'email' ? 'mailto:appykod@gmail.com' : null;
                 const content = (
                   <div className="group flex items-start gap-4 p-6 bg-glass-bg backdrop-blur-xl rounded-2xl border border-white/5 hover:border-glass-border-hover transition-all duration-300">
                     <div className="w-12 h-12 rounded-xl bg-gradient-warm flex items-center justify-center flex-shrink-0 shadow-glow-amber">
@@ -114,17 +102,17 @@ export default function Contact() {
                     </div>
                     <div>
                       <h3 className="text-sm font-medium text-text-muted mb-1">
-                        {item.title}
+                        {t(`contact.info.${key === 'email' ? 'emailLabel' : 'location'}`)}
                       </h3>
                       <p className="text-text-primary font-medium group-hover:text-accent-amber transition-colors">
-                        {item.value}
+                        {key === 'email' ? 'appykod@gmail.com' : t('contact.info.locationValue')}
                       </p>
                     </div>
                   </div>
                 );
 
-                return item.href ? (
-                  <a key={index} href={item.href}>
+                return href ? (
+                  <a key={index} href={href}>
                     {content}
                   </a>
                 ) : (
@@ -136,10 +124,10 @@ export default function Contact() {
             {/* Additional CTA */}
             <div className="p-6 bg-gradient-warm-soft rounded-2xl border border-accent-amber/20">
               <h3 className="text-lg font-bold text-text-primary mb-2">
-                Hızlı yanıt garantisi
+                {t('contact.guarantee.title')}
               </h3>
               <p className="text-text-secondary text-sm">
-                Mesajlarınıza 24 saat içinde dönüş yapıyoruz. Acil projeler için doğrudan email atabilirsiniz.
+                {t('contact.guarantee.description')}
               </p>
             </div>
           </ScrollReveal>

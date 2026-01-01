@@ -70,8 +70,8 @@ function Particles({ count = 100 }: { count?: number }) {
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
 
-    const amberColor = new THREE.Color('#F59E0B');
-    const redColor = new THREE.Color('#EF4444');
+    const primaryColor = new THREE.Color('#00CED1');
+    const secondaryColor = new THREE.Color('#5E6FEA');
 
     for (let i = 0; i < count; i++) {
       // Random positions in a sphere
@@ -83,8 +83,8 @@ function Particles({ count = 100 }: { count?: number }) {
       positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
       positions[i * 3 + 2] = radius * Math.cos(phi);
 
-      // Interpolate between amber and red
-      const mixedColor = amberColor.clone().lerp(redColor, Math.random());
+      // Interpolate between primary and secondary
+      const mixedColor = primaryColor.clone().lerp(secondaryColor, Math.random());
       colors[i * 3] = mixedColor.r;
       colors[i * 3 + 1] = mixedColor.g;
       colors[i * 3 + 2] = mixedColor.b;
@@ -176,7 +176,7 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
         <FloatingShape
           position={[-2, 0.5, -1]}
           geometry="icosahedron"
-          color="#F59E0B"
+          color="#00CED1"
           scale={0.8}
           speed={1.2}
           distort={0.4}
@@ -184,7 +184,7 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
         <FloatingShape
           position={[2.5, -0.5, -2]}
           geometry="torus"
-          color="#EF4444"
+          color="#5E6FEA"
           scale={0.6}
           speed={0.8}
           distort={0.3}
@@ -192,7 +192,7 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
         <FloatingShape
           position={[1, 1.5, -3]}
           geometry="octahedron"
-          color="#FBBF24"
+          color="#47CF86"
           scale={0.5}
           speed={1}
           distort={0.2}
@@ -200,7 +200,7 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
         <FloatingShape
           position={[-1.5, -1, -2]}
           geometry="sphere"
-          color="#F87171"
+          color="#FB6B4E"
           scale={0.4}
           speed={1.5}
           distort={0.5}
@@ -211,9 +211,9 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
       </MouseParallax>
 
       {/* Ambient glow */}
-      <pointLight position={[0, 0, 3]} intensity={0.5} color="#F59E0B" />
-      <pointLight position={[-3, 2, 0]} intensity={0.3} color="#EF4444" />
-      <pointLight position={[3, -2, 0]} intensity={0.3} color="#FBBF24" />
+      <pointLight position={[0, 0, 3]} intensity={0.5} color="#00CED1" />
+      <pointLight position={[-3, 2, 0]} intensity={0.3} color="#5E6FEA" />
+      <pointLight position={[3, -2, 0]} intensity={0.3} color="#47CF86" />
     </group>
   );
 }

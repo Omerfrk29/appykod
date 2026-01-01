@@ -47,7 +47,7 @@ export default function AdminSidebar({ onLogout }: AdminSidebarProps) {
       <div className="p-8 border-b border-white/5">
         <h2 className="text-2xl font-bold text-white tracking-tight">
           AppyKod
-          <span className="text-orange-500">.</span>
+          <span className="text-accent-primary">.</span>
         </h2>
         <p className="text-xs text-gray-400 mt-1 uppercase tracking-widest">Admin Panel</p>
       </div>
@@ -61,14 +61,14 @@ export default function AdminSidebar({ onLogout }: AdminSidebarProps) {
               key={item.id}
               href={item.path}
               className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive
-                  ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+                  ? 'bg-accent-primary text-white shadow-lg shadow-accent-primary/20'
                   : 'text-gray-400 hover:bg-white/5 hover:text-white'
                 }`}
             >
               <Icon size={20} />
               <span className="font-medium">{item.label}</span>
               {item.id === 'messages' && unreadCount > 0 && (
-                <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-white text-orange-500' : 'bg-orange-500 text-white'}`}>
+                <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-white text-accent-primary' : 'bg-accent-primary text-white'}`}>
                   {unreadCount}
                 </span>
               )}
@@ -85,7 +85,7 @@ export default function AdminSidebar({ onLogout }: AdminSidebarProps) {
           <Home size={20} /> <span>Siteye Git</span>
         </Link>
         <button
-          className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors"
+          className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-accent-pink hover:bg-accent-pink/10 hover:text-accent-pink transition-colors"
           onClick={onLogout}
         >
           <LogOut size={20} /> <span>Çıkış Yap</span>

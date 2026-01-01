@@ -3,20 +3,37 @@
     "home": "Home",
     "services": "Services",
     "projects": "Projects",
-    "contact": "Contact"
+    "contact": "Contact",
+    "freeEstimate": "Free Estimate",
+    "toggleMenu": "Toggle Menu"
   },
   "hero": {
-    "title": "Digital Future",
-    "titlePrefix": "We Design The",
-    "titleSuffix": "",
+    "title": {
+      "line1": "We Design The",
+      "highlight": "Digital Future",
+      "line2": ""
+    },
+    "badge": "Modern Software Solutions",
     "subtitle": "Transforming ideas into powerful, scalable, and beautiful software solutions. Your partner in modern web development.",
-    "ctaPrimary": "Start a Project",
-    "ctaSecondary": "View Portfolio"
+    "cta": {
+      "primary": "Start a Project",
+      "secondary": "View Portfolio"
+    },
+    "stats": {
+      "projects": "Projects",
+      "clients": "Happy Clients",
+      "years": "Years Experience"
+    },
+    "scroll": "Explore"
   },
   "services": {
     "title": "Our Services",
     "subtitle": "Comprehensive solutions for your digital needs",
     "learnMore": "Learn More",
+    "badge": "Our Services",
+    "titleMain": "Accelerating Your",
+    "titleHighlight": "Digital Transformation",
+    "subtitleText": "We take your business to the future with modern technologies and creative solutions.",
     "items": {
       "web-development": {
         "title": "Web Development",
@@ -32,6 +49,26 @@
         "title": "Custom Software",
         "description": "Tailored software solutions and systems for your business.",
         "fullDescription": "We develop custom software solutions designed according to your business's unique needs. ERP systems, CRM applications, automation tools, and more.\n\nWe offer scalable and secure software solutions that work integrated with your existing systems. Optimize your business processes and increase your efficiency."
+      },
+      "web": {
+        "title": "Web Development",
+        "description": "We develop fast, secure, and scalable web applications with modern web technologies. Full-stack solutions with Next.js, React, and Node.js."
+      },
+      "mobile": {
+        "title": "Mobile App",
+        "description": "Native performance mobile applications for iOS and Android with user-friendly interfaces."
+      },
+      "uxui": {
+        "title": "UI/UX Design",
+        "description": "Modern and elegant interface designs that prioritize user experience."
+      },
+      "backend": {
+        "title": "Backend Systems",
+        "description": "Powerful and reliable APIs, database design, and server infrastructure."
+      },
+      "security": {
+        "title": "Security Consulting",
+        "description": "Penetration testing, security audits, and best security practices."
       }
     }
   },
@@ -92,9 +129,20 @@
   "contact": {
     "title": "Let's Work Together",
     "subtitle": "Have a project in mind? We'd love to hear about it. Send us a message and we'll get back to you as soon as possible.",
+    "badge": "Contact",
+    "titleMain": "Let's Develop",
+    "titleHighlight": "Your Project Together",
+    "subtitleText": "We can't wait to bring your ideas to life. Get in touch now!",
     "info": {
       "phone": "Phone",
-      "email": "Email"
+      "email": "Email",
+      "emailLabel": "Email",
+      "location": "Location",
+      "locationValue": "Izmir, Turkey"
+    },
+    "guarantee": {
+      "title": "Quick response guarantee",
+      "description": "We respond to your messages within 24 hours. For urgent projects, you can email us directly."
     },
     "form": {
       "name": "Name",
@@ -113,7 +161,20 @@
     "tagline": "Building digital experiences that matter.",
     "copyright": "All rights reserved.",
     "madeWith": "Made with",
-    "inTurkey": "in Turkey"
+    "inTurkey": "in Turkey",
+    "links": {
+      "services": "Services",
+      "projects": "Projects",
+      "contact": "Contact"
+    },
+    "cta": {
+      "title": "Ready For",
+      "titleHighlight": "Your Next Project",
+      "subtitle": "Contact us today to accelerate your digital transformation.",
+      "button": "Start a Project"
+    },
+    "copyrightText": "© {year} AppyKod. All rights reserved.",
+    "madeWithText": "Made with love from Turkey."
   },
   "techstack": {
     "subtitle": "Powered by modern technologies"

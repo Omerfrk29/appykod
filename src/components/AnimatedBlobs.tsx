@@ -45,8 +45,8 @@ export default function AnimatedBlobs() {
           radius: Math.min(width, height) * 0.35,
           vx: 0.3,
           vy: 0.2,
-          color1: '#FFB067',
-          color2: '#FF6B4E',
+          color1: '#00CED1',
+          color2: '#5E6FEA',
         },
         {
           x: width * 0.6,
@@ -54,8 +54,8 @@ export default function AnimatedBlobs() {
           radius: Math.min(width, height) * 0.25,
           vx: -0.2,
           vy: 0.3,
-          color1: '#52C1B8',
-          color2: '#8489F0',
+          color1: '#47CF86',
+          color2: '#FB6B4E',
         },
         {
           x: width * 0.8,
@@ -63,8 +63,8 @@ export default function AnimatedBlobs() {
           radius: Math.min(width, height) * 0.2,
           vx: 0.25,
           vy: -0.15,
-          color1: '#E89E92',
-          color2: '#FFD5A3',
+          color1: '#5E6FEA',
+          color2: '#FF4B7B',
         },
       ];
     };

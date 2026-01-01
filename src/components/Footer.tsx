@@ -12,9 +12,9 @@ import Logo from './Logo';
 import ScrollReveal from './ScrollReveal';
 
 const footerLinks = [
-  { href: '#services', label: 'Hizmetler' },
-  { href: '#projects', label: 'Projeler' },
-  { href: '#contact', label: 'İletişim' },
+  { href: '#services', labelKey: 'footer.links.services' },
+  { href: '#projects', labelKey: 'footer.links.projects' },
+  { href: '#contact', labelKey: 'footer.links.contact' },
 ];
 
 const socialLinks = [
@@ -58,13 +58,13 @@ export default function Footer() {
 
             <div className="relative z-10">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 leading-tight">
-                Bir Sonraki Projeniz İçin{' '}
+                {t('footer.cta.title')}{' '}
                 <span className="text-transparent bg-gradient-warm bg-clip-text">
-                  Hazırız
+                  {t('footer.cta.titleHighlight')}
                 </span>
               </h2>
               <p className="text-text-secondary mb-8 text-lg max-w-xl mx-auto">
-                Dijital dönüşümünüzü hızlandırmak için bugün iletişime geçin.
+                {t('footer.cta.subtitle')}
               </p>
               <a
                 href="#contact"
@@ -74,7 +74,7 @@ export default function Footer() {
                 }}
                 className="inline-flex items-center gap-2 bg-gradient-warm text-white px-10 py-4 rounded-xl font-bold text-lg shadow-glow-amber hover:shadow-glow-amber-lg transition-all duration-300 hover:scale-[1.02] group"
               >
-                Projeye Başla
+                {t('footer.cta.button')}
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </a>
             </div>
@@ -101,7 +101,7 @@ export default function Footer() {
                   onClick={(e) => handleSmoothScroll(e, link.href)}
                   className="text-text-secondary hover:text-accent-amber font-medium text-sm transition-colors"
                 >
-                  {link.label}
+                  {t(link.labelKey)}
                 </a>
               ))}
             </nav>
@@ -130,13 +130,10 @@ export default function Footer() {
           {/* Copyright */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center">
             <p className="text-text-muted text-sm">
-              © {new Date().getFullYear()} AppyKod. Tüm hakları saklıdır.
+              {t('footer.copyrightText').replace('{year}', new Date().getFullYear().toString())}
             </p>
             <p className="text-text-muted text-sm">
-              <span className="text-transparent bg-gradient-warm bg-clip-text font-medium">
-                Türkiye
-              </span>
-              'den sevgiyle yapıldı.
+              {t('footer.madeWithText')}
             </p>
           </div>
         </div>

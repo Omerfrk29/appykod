@@ -35,7 +35,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-12">
-        <Loader2 className="animate-spin text-orange-500 w-8 h-8" />
+        <Loader2 className="animate-spin text-accent-primary w-8 h-8" />
       </div>
     );
   }
@@ -69,8 +69,8 @@ export default function AdminDashboard() {
         {/* Services Card */}
         <div className="bg-[#1E2330] p-6 rounded-3xl shadow-xl border border-white/5 hover:border-white/10 transition-all duration-300 group">
           <div className="flex items-center justify-between mb-6">
-            <div className="w-12 h-12 bg-purple-500/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <LayoutDashboard className="w-6 h-6 text-purple-400" />
+            <div className="w-12 h-12 bg-accent-secondary/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <LayoutDashboard className="w-6 h-6 text-accent-secondary" />
             </div>
           </div>
           <h3 className="text-sm font-medium text-gray-400 mb-1">
@@ -84,8 +84,8 @@ export default function AdminDashboard() {
         {/* Projects Card */}
         <div className="bg-[#1E2330] p-6 rounded-3xl shadow-xl border border-white/5 hover:border-white/10 transition-all duration-300 group">
           <div className="flex items-center justify-between mb-6">
-            <div className="w-12 h-12 bg-orange-500/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Briefcase className="w-6 h-6 text-orange-500" />
+            <div className="w-12 h-12 bg-accent-primary/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Briefcase className="w-6 h-6 text-accent-primary" />
             </div>
           </div>
           <h3 className="text-sm font-medium text-gray-400 mb-1">
@@ -99,8 +99,8 @@ export default function AdminDashboard() {
         {/* Messages Card */}
         <div className="bg-[#1E2330] p-6 rounded-3xl shadow-xl border border-white/5 hover:border-white/10 transition-all duration-300 group">
           <div className="flex items-center justify-between mb-6">
-            <div className="w-12 h-12 bg-teal-500/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <MessageSquare className="w-6 h-6 text-teal-400" />
+            <div className="w-12 h-12 bg-accent-green/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <MessageSquare className="w-6 h-6 text-accent-green" />
             </div>
           </div>
           <h3 className="text-sm font-medium text-gray-400 mb-1">
@@ -114,8 +114,8 @@ export default function AdminDashboard() {
         {/* Unread Messages Card */}
         <div className="bg-[#1E2330] p-6 rounded-3xl shadow-xl border border-white/5 hover:border-white/10 transition-all duration-300 group">
           <div className="flex items-center justify-between mb-6">
-            <div className="w-12 h-12 bg-red-500/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <Mail className="w-6 h-6 text-red-500" />
+            <div className="w-12 h-12 bg-accent-pink/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <Mail className="w-6 h-6 text-accent-pink" />
             </div>
           </div>
           <h3 className="text-sm font-medium text-gray-400 mb-1">
@@ -125,7 +125,7 @@ export default function AdminDashboard() {
             {stats?.messages.unread || 0}
           </p>
           {stats?.messages.unread && stats.messages.unread > 0 ? (
-            <p className="text-xs font-semibold text-red-400 mt-2 bg-red-500/10 inline-block px-2 py-1 rounded">
+            <p className="text-xs font-semibold text-accent-pink mt-2 bg-accent-pink/10 inline-block px-2 py-1 rounded">
               Dikkat: {stats.messages.unread} yeni mesaj
             </p>
           ) : null}
@@ -147,14 +147,14 @@ export default function AdminDashboard() {
             </div>
             <div className="flex justify-between items-center bg-black/20 p-4 rounded-xl">
               <span className="text-gray-400">Okunmamış</span>
-              <span className="font-bold text-red-400 text-lg">
+              <span className="font-bold text-accent-pink text-lg">
                 {stats?.messages.unread || 0}
               </span>
             </div>
 
             <div className="w-full bg-black/30 rounded-full h-3 mt-4 overflow-hidden">
               <div
-                className="bg-gradient-to-r from-orange-500 to-purple-500 h-full rounded-full transition-all duration-1000"
+                className="bg-gradient-to-r from-accent-primary to-accent-secondary h-full rounded-full transition-all duration-1000"
                 style={{
                   width: stats?.messages.total
                     ? `${((stats.messages.read || 0) / stats.messages.total) * 100}%`

@@ -7,6 +7,7 @@ import Logo from './Logo';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { handleSmoothScroll } from '@/lib/utils';
 import { analytics } from '@/lib/analytics';
+import { LanguageToggle } from './LanguageToggle';
 
 interface NavbarProps {
   isHolidayTheme?: boolean;
@@ -97,8 +98,9 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
             })}
           </div>
 
-          {/* Right Side - CTA Button */}
+          {/* Right Side - Language Toggle and CTA Button */}
           <div className="hidden md:flex items-center space-x-4">
+            <LanguageToggle />
             <a
               href="#contact"
               onClick={(e) => {
@@ -107,17 +109,18 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
               }}
               className="group relative inline-flex items-center gap-2 bg-gradient-warm hover:shadow-glow-amber text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg shadow-accent-amber/20"
             >
-              Free estimate
+              {t('nav.freeEstimate')}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
             </a>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center md:hidden gap-2">
+            <LanguageToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-text-primary hover:text-accent-amber transition-colors p-2"
-              aria-label="Toggle menu"
+              aria-label={t('nav.toggleMenu')}
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -160,7 +163,8 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
             })}
 
             {/* Mobile CTA */}
-            <div className="pt-8">
+            <div className="pt-8 flex flex-col items-center gap-4">
+              <LanguageToggle />
               <a
                 href="#contact"
                 onClick={(e) => {
@@ -169,7 +173,7 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
                 }}
                 className="inline-flex items-center justify-center gap-2 bg-gradient-warm text-white px-8 py-4 rounded-xl font-bold text-lg shadow-glow-amber transition-all hover:shadow-glow-amber-lg"
               >
-                Free estimate
+                {t('nav.freeEstimate')}
                 <ArrowRight className="w-5 h-5" />
               </a>
             </div>

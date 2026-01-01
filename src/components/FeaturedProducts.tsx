@@ -22,7 +22,7 @@ const products: Product[] = [
       'A powerful workflow automation tool designed to streamline your business operations and increase efficiency by up to 40%.',
     features: ['Drag & Drop Builder', 'API Integrations', 'Real-time Analytics'],
     image: '/images/appyflow-dashboard.png',
-    gradient: 'from-orange-500/20 to-yellow-500/20',
+    gradient: 'from-accent-primary/20 to-accent-secondary/20',
   },
   {
     id: 'kodsecure',
@@ -32,7 +32,7 @@ const products: Product[] = [
       'Enterprise-grade security software protecting your digital assets with real-time threat detection and AI-driven defense mechanisms.',
     features: ['Threat Detection', 'Encryption', '24/7 Monitoring'],
     image: '/images/kodsecure-shield.png',
-    gradient: 'from-teal-500/20 to-blue-500/20',
+    gradient: 'from-accent-primary/20 to-accent-secondary/20',
   },
 ];
 
@@ -147,10 +147,10 @@ export default function FeaturedProducts() {
                     // KodSecure Shield Visual
                     <div className="flex items-center justify-center h-full">
                       <div className="relative">
-                        <div className="absolute inset-0 bg-teal-500/30 rounded-full blur-3xl animate-pulse" />
-                        <Shield className="w-32 h-32 text-teal-500 relative z-10" />
+                        <div className="absolute inset-0 bg-accent-primary/30 rounded-full blur-3xl animate-pulse" />
+                        <Shield className="w-32 h-32 text-accent-primary relative z-10" />
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-40 h-40 border-2 border-teal-500/30 rounded-full animate-ping" />
+                          <div className="w-40 h-40 border-2 border-accent-primary/30 rounded-full animate-ping" />
                         </div>
                         <div className="absolute -top-4 -right-4 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                           <svg

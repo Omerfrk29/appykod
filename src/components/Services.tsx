@@ -4,56 +4,25 @@ import { Globe, Smartphone, Palette, Code, Database, Shield, ArrowRight } from '
 import { useLanguage } from '@/contexts/LanguageContext';
 import ScrollReveal, { StaggerContainer, StaggerItem } from './ScrollReveal';
 
-const services = [
-  {
-    id: 'web',
-    title: 'Web Geliştirme',
-    description:
-      'Modern web teknolojileri ile hızlı, güvenli ve ölçeklenebilir web uygulamaları geliştiriyoruz. Next.js, React ve Node.js ile tam kapsamlı çözümler.',
-    icon: Globe,
-    featured: true,
-    span: 'md:col-span-2 md:row-span-2',
-  },
-  {
-    id: 'mobile',
-    title: 'Mobil Uygulama',
-    description:
-      'iOS ve Android için native performanslı, kullanıcı dostu mobil uygulamalar.',
-    icon: Smartphone,
-    featured: false,
-    span: 'md:col-span-1',
-  },
-  {
-    id: 'uxui',
-    title: 'UI/UX Tasarım',
-    description:
-      'Kullanıcı deneyimini ön plana alan, modern ve şık arayüz tasarımları.',
-    icon: Palette,
-    featured: false,
-    span: 'md:col-span-1',
-  },
-  {
-    id: 'backend',
-    title: 'Backend Sistemler',
-    description:
-      'Güçlü ve güvenilir API\'lar, veritabanı tasarımı ve sunucu altyapısı.',
-    icon: Database,
-    featured: false,
-    span: 'md:col-span-1',
-  },
-  {
-    id: 'security',
-    title: 'Güvenlik Danışmanlığı',
-    description:
-      'Penetrasyon testleri, güvenlik denetimleri ve en iyi güvenlik uygulamaları.',
-    icon: Shield,
-    featured: false,
-    span: 'md:col-span-1',
-  },
-];
+const serviceIds = ['web', 'mobile', 'uxui', 'backend', 'security'];
+
+const serviceConfig = {
+  web: { icon: Globe, featured: true, span: 'md:col-span-2 md:row-span-2' },
+  mobile: { icon: Smartphone, featured: false, span: 'md:col-span-1' },
+  uxui: { icon: Palette, featured: false, span: 'md:col-span-1' },
+  backend: { icon: Database, featured: false, span: 'md:col-span-1' },
+  security: { icon: Shield, featured: false, span: 'md:col-span-1' },
+};
 
 export default function Services() {
   const { t } = useLanguage();
+
+  const services = serviceIds.map((id) => ({
+    id,
+    title: t(`services.items.${id}.title`),
+    description: t(`services.items.${id}.description`),
+    ...serviceConfig[id],
+  }));
 
   return (
     <section id="services" className="py-24 bg-bg-base relative overflow-hidden">
@@ -67,16 +36,16 @@ export default function Services() {
         {/* Header */}
         <ScrollReveal className="text-center mb-16">
           <span className="inline-block px-4 py-1.5 bg-accent-amber/10 border border-accent-amber/20 rounded-full text-accent-amber text-sm font-medium mb-4">
-            Hizmetlerimiz
+            {t('services.badge')}
           </span>
           <h2 className="text-h2 font-bold text-text-primary mb-4">
-            Dijital Dönüşümünüzü{' '}
+            {t('services.titleMain')}{' '}
             <span className="text-transparent bg-gradient-warm bg-clip-text">
-              Hızlandırıyoruz
+              {t('services.titleHighlight')}
             </span>
           </h2>
           <p className="max-w-2xl mx-auto text-body-lg text-text-secondary">
-            Modern teknolojiler ve yaratıcı çözümlerle işletmenizi geleceğe taşıyoruz.
+            {t('services.subtitleText')}
           </p>
         </ScrollReveal>
 

@@ -66,7 +66,7 @@ export default function AdminLayout({
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#14161F]">
-        <Loader2 className="animate-spin text-orange-500 w-8 h-8" />
+        <Loader2 className="animate-spin text-accent-primary w-8 h-8" />
       </div>
     );
   }
@@ -76,8 +76,8 @@ export default function AdminLayout({
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#14161F] relative overflow-hidden">
         {/* Background Effects */}
-        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-orange-500/10 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-accent-primary/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-accent-secondary/10 rounded-full blur-[100px] pointer-events-none" />
 
         <form
           className="relative bg-[#1E2330]/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl w-full max-w-md border border-white/5"
@@ -85,7 +85,7 @@ export default function AdminLayout({
         >
           <div className="flex justify-center mb-8">
             <div className="w-20 h-20 bg-[#14161F] rounded-2xl flex items-center justify-center border border-white/5 shadow-inner">
-              <Lock className="w-8 h-8 text-orange-500" />
+              <Lock className="w-8 h-8 text-accent-primary" />
             </div>
           </div>
 
@@ -106,7 +106,7 @@ export default function AdminLayout({
                 placeholder="yönetici"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-[#14161F] border border-white/5 text-white placeholder-gray-600 focus:border-orange-500/50 outline-none transition-all"
+                className="w-full px-4 py-3 rounded-xl bg-[#14161F] border border-white/5 text-white placeholder-gray-600 focus:border-accent-primary/50 outline-none transition-all"
               />
             </div>
             <div>
@@ -119,7 +119,7 @@ export default function AdminLayout({
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-[#14161F] border border-white/5 text-white placeholder-gray-600 focus:border-orange-500/50 outline-none transition-all pr-12"
+                  className="w-full px-4 py-3 rounded-xl bg-[#14161F] border border-white/5 text-white placeholder-gray-600 focus:border-accent-primary/50 outline-none transition-all pr-12"
                 />
                 <button
                   type="button"
@@ -135,7 +135,7 @@ export default function AdminLayout({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full mt-8 bg-orange-500 hover:bg-orange-600 text-white py-4 rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-orange-500/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            className="w-full mt-8 bg-accent-primary hover:bg-accent-primary-light text-white py-4 rounded-xl font-bold transition-all hover:shadow-lg hover:shadow-accent-primary/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
             {isSubmitting ? <Loader2 className="animate-spin w-5 h-5" /> : 'Giriş Yap'}
           </button>
