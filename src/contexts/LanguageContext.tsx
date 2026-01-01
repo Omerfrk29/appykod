@@ -50,6 +50,13 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  // HTML lang attribute'unu dil değişikliğine göre güncelle
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.documentElement.lang = language;
+    }
+  }, [language]);
+
   const translations = translationsMap[language] || translationsMap.tr;
 
   const setLanguage = useCallback((lang: Language) => {
