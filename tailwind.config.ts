@@ -10,8 +10,41 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                // === LOGO COLOR PALETTE ===
-                // Background Layers
+                // === GLASSMORPHISM PRO COLOR PALETTE ===
+
+                // Obsidian Scale - Deep Blacks
+                obsidian: {
+                    950: '#030303',
+                    900: '#050505',
+                    850: '#0A0A0A',
+                    800: '#121215',
+                    750: '#1A1A1F',
+                },
+
+                // Luxury Metals - Gold
+                gold: {
+                    50: '#FDF8E7',
+                    100: '#F9EBC5',
+                    200: '#F2D68A',
+                    300: '#E8BE4E',
+                    400: '#D4AF37',
+                    500: '#B8960B',
+                    600: '#957A09',
+                    700: '#735E07',
+                },
+
+                // Luxury Metals - Copper
+                copper: {
+                    50: '#FCF3EB',
+                    100: '#F7DFD0',
+                    200: '#EEBB9F',
+                    300: '#DE926A',
+                    400: '#CD7F32',
+                    500: '#B87333',
+                    600: '#9A5D28',
+                },
+
+                // Background Layers (Legacy)
                 'bg-base': '#09090B',      // Zinc 950 - darkest
                 'bg-elevated': '#18181B',  // Zinc 900
                 'bg-surface': '#27272A',   // Zinc 800
@@ -22,7 +55,16 @@ const config: Config = {
                 'text-secondary': '#A1A1AA', // Zinc 400
                 'text-muted': '#71717A',     // Zinc 500
 
-                // Logo Color Palette
+                // Toned Logo Colors
+                'accent-cyan': '#00B4B7',
+                'accent-cyan-muted': '#008F91',
+                'accent-violet': '#5060D0',
+                'accent-violet-muted': '#4050A0',
+                'accent-emerald': '#3DB876',
+                'accent-coral': '#E85D4A',
+                'accent-rose': '#E84570',
+
+                // Logo Color Palette (Original)
                 'accent-primary': '#00CED1',      // Turkuaz - Ana renk
                 'accent-secondary': '#5E6FEA',    // Mor - İkincil renk
                 'accent-green': '#47CF86',        // Yeşil
@@ -30,7 +72,7 @@ const config: Config = {
                 'accent-pink': '#FF4B7B',         // Pembe
                 'accent-primary-light': '#20E5E8',
                 'accent-secondary-light': '#7A8AFF',
-                
+
                 // Legacy compatibility - alias to logo colors
                 'accent-amber': '#00CED1',
                 'accent-red': '#5E6FEA',
@@ -111,13 +153,23 @@ const config: Config = {
                 black: '900',
             },
             backgroundImage: {
-                // Logo Color Gradients
+                // === GLASSMORPHISM PRO GRADIENTS ===
+                // Gold Gradients
+                'gradient-gold': 'linear-gradient(135deg, #D4AF37 0%, #CD7F32 100%)',
+                'gradient-gold-reverse': 'linear-gradient(135deg, #CD7F32 0%, #D4AF37 100%)',
+                'gradient-gold-soft': 'linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(205, 127, 50, 0.15) 100%)',
+                'gradient-gold-vertical': 'linear-gradient(180deg, #D4AF37 0%, #CD7F32 100%)',
+                'gradient-gold-radial': 'radial-gradient(circle at center, rgba(212, 175, 55, 0.15) 0%, transparent 70%)',
+
+                // Logo Color Gradients (Original)
                 'gradient-warm': 'linear-gradient(135deg, #00CED1 0%, #5E6FEA 100%)',
                 'gradient-warm-reverse': 'linear-gradient(135deg, #5E6FEA 0%, #00CED1 100%)',
                 'gradient-warm-soft': 'linear-gradient(135deg, rgba(0, 206, 209, 0.2) 0%, rgba(94, 111, 234, 0.2) 100%)',
                 'gradient-warm-glow': 'radial-gradient(circle at center, rgba(0, 206, 209, 0.15) 0%, transparent 70%)',
+
                 // Glass
                 'glass': 'rgba(24, 24, 27, 0.6)',
+
                 // Legacy
                 'hero-gradient': 'linear-gradient(135deg, #00CED1 0%, #5E6FEA 100%)',
             },
@@ -378,20 +430,42 @@ const config: Config = {
                 '400%': '400% 400%',
             },
             boxShadow: {
-                // Logo Color Glow Effects
+                // === GLASSMORPHISM PRO SHADOWS ===
+                // Gold Glow Effects
+                'glow-gold': '0 0 20px rgba(212, 175, 55, 0.35)',
+                'glow-gold-sm': '0 0 12px rgba(212, 175, 55, 0.25)',
+                'glow-gold-lg': '0 0 40px rgba(212, 175, 55, 0.4)',
+                'glow-gold-xl': '0 0 60px rgba(212, 175, 55, 0.35), 0 0 100px rgba(212, 175, 55, 0.2)',
+                'glow-copper': '0 0 20px rgba(205, 127, 50, 0.3)',
+                'glow-copper-lg': '0 0 40px rgba(205, 127, 50, 0.35)',
+
+                // Glass Pro Shadows
+                'glass-sm': '0 2px 8px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.03)',
+                'glass-md': '0 4px 24px rgba(0, 0, 0, 0.5), 0 0 40px rgba(212, 175, 55, 0.05)',
+                'glass-lg': '0 8px 48px rgba(0, 0, 0, 0.6), 0 0 60px rgba(212, 175, 55, 0.08)',
+                'glass-xl': '0 16px 80px rgba(0, 0, 0, 0.7), 0 0 100px rgba(212, 175, 55, 0.1)',
+
+                // Inner Glow
+                'inner-gold': 'inset 0 1px 0 rgba(212, 175, 55, 0.15), inset 0 0 60px rgba(212, 175, 55, 0.08)',
+                'inner-light': 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+
+                // Logo Color Glow Effects (Original)
                 'glow-amber': '0 0 20px rgba(0, 206, 209, 0.4)',
                 'glow-amber-lg': '0 0 40px rgba(0, 206, 209, 0.5)',
                 'glow-amber-xl': '0 0 60px rgba(0, 206, 209, 0.4), 0 0 100px rgba(0, 206, 209, 0.2)',
                 'glow-red': '0 0 20px rgba(94, 111, 234, 0.4)',
                 'glow-warm': '0 0 30px rgba(0, 206, 209, 0.3), 0 0 60px rgba(94, 111, 234, 0.15)',
+
                 // Glass Card Shadows
                 'glass-card': '0 4px 24px rgba(0, 0, 0, 0.2), 0 0 40px rgba(0, 206, 209, 0.05)',
                 'glass-card-hover': '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 60px rgba(0, 206, 209, 0.1)',
+
                 // Semantic Glows - Logo Colors
                 'glow-success': '0 0 20px rgba(71, 207, 134, 0.4)',
                 'glow-danger': '0 0 20px rgba(255, 75, 123, 0.4)',
                 'glow-warning': '0 0 20px rgba(251, 107, 78, 0.4)',
                 'glow-info': '0 0 20px rgba(0, 206, 209, 0.4)',
+
                 // Legacy
                 'glow-primary': '0 0 20px rgba(0, 206, 209, 0.4)',
                 'glow-lg': '0 0 40px rgba(0, 206, 209, 0.3), 0 0 80px rgba(0, 206, 209, 0.1)',

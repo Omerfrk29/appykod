@@ -69,7 +69,7 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-bg-base/80 backdrop-blur-xl border-b border-glass-border py-3'
+          ? 'glass-frosted border-b border-gold-400/10 py-3'
           : 'bg-transparent py-5'
       }`}
     >
@@ -96,13 +96,13 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
                     analytics.navClick(item.labelKey);
                   }}
                   className={`relative px-4 py-2 font-medium text-sm transition-colors duration-200 group ${
-                    isActive ? 'text-accent-amber' : 'text-text-secondary hover:text-text-primary'
+                    isActive ? 'text-gold-400' : 'text-text-secondary hover:text-text-primary'
                   }`}
                 >
                   {t(item.labelKey)}
-                  {/* Amber gradient underline */}
+                  {/* Gold gradient underline */}
                   <span
-                    className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-warm rounded-full transition-all duration-300 ${
+                    className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-to-r from-gold-400 to-copper-400 rounded-full transition-all duration-300 ${
                       isActive ? 'w-3/4' : 'w-0 group-hover:w-3/4'
                     }`}
                   />
@@ -120,7 +120,7 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
                 handleSmoothScroll(e, '#contact');
                 analytics.ctaClick('navbar-free-estimate');
               }}
-              className="group relative inline-flex items-center gap-2 bg-gradient-warm hover:shadow-glow-amber text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg shadow-accent-amber/20"
+              className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-gold-400 via-gold-300 to-copper-400 hover:shadow-glow-gold-lg text-obsidian-950 px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 shadow-lg shadow-gold-400/20"
             >
               {t('nav.freeEstimate')}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -132,7 +132,7 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
             <LanguageToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-text-primary hover:text-accent-amber transition-colors p-2"
+              className="text-text-primary hover:text-gold-400 transition-colors p-2"
               aria-label={t('nav.toggleMenu')}
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -143,7 +143,7 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
 
       {/* Mobile Menu Overlay - Fullscreen Glass */}
       <div
-        className={`md:hidden fixed inset-0 top-0 z-40 bg-bg-base/98 backdrop-blur-xl transition-all duration-300 ${
+        className={`md:hidden fixed inset-0 top-0 z-40 bg-obsidian-950/98 backdrop-blur-xl transition-all duration-300 ${
           isOpen
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none'
@@ -164,13 +164,13 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
                   }}
                   className={`relative text-2xl font-bold transition-all ${
                     isActive
-                      ? 'text-transparent bg-gradient-warm bg-clip-text'
+                      ? 'text-gradient-gold'
                       : 'text-text-secondary hover:text-text-primary'
                   }`}
                 >
                   {t(item.labelKey)}
                   {isActive && (
-                    <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-gradient-warm rounded-full" />
+                    <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-gold-400 to-copper-400 rounded-full" />
                   )}
                 </Link>
               );
@@ -185,7 +185,7 @@ export default function Navbar({ isHolidayTheme = false }: NavbarProps) {
                   handleSmoothScroll(e, '#contact', 80, () => setIsOpen(false));
                   analytics.ctaClick('navbar-mobile-free-estimate');
                 }}
-                className="inline-flex items-center justify-center gap-2 bg-gradient-warm text-white px-8 py-4 rounded-xl font-bold text-lg shadow-glow-amber transition-all hover:shadow-glow-amber-lg"
+                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-gold-400 via-gold-300 to-copper-400 text-obsidian-950 px-8 py-4 rounded-xl font-bold text-lg shadow-glow-gold transition-all hover:shadow-glow-gold-lg"
               >
                 {t('nav.freeEstimate')}
                 <ArrowRight className="w-5 h-5" />

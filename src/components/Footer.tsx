@@ -43,24 +43,25 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-bg-base relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-warm-glow opacity-10" />
+    <footer className="bg-obsidian-950 relative overflow-hidden">
+      {/* Background - Gold Radial */}
+      <div className="absolute inset-0 bg-gradient-gold-radial opacity-15" />
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(212,175,55,0.01)_1px,transparent_1px)] [background-size:40px_40px]" />
 
       {/* CTA Section */}
       <div className="py-24 border-b border-white/5 relative">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* CTA Glass Card */}
           <ScrollReveal>
-          <div className="relative p-12 bg-glass-bg backdrop-blur-xl rounded-3xl border border-accent-amber/20 shadow-glass-card text-center">
-            {/* Background Glow */}
-            <div className="absolute inset-0 bg-gradient-warm opacity-5 rounded-3xl" />
-            <div className="absolute -inset-px bg-gradient-warm opacity-20 rounded-3xl blur-xl" />
+          <div className="relative p-12 glass-layer-3 glass-border-gradient rounded-3xl shadow-glass-xl text-center">
+            {/* Background Glow - Gold */}
+            <div className="absolute inset-0 bg-gradient-gold-soft opacity-10 rounded-3xl" />
+            <div className="absolute -inset-px bg-gradient-to-r from-gold-400/20 via-copper-400/20 to-gold-400/20 rounded-3xl blur-xl" />
 
             <div className="relative z-10">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 leading-tight">
                 {t('footer.cta.title')}{' '}
-                <span className="text-transparent bg-gradient-warm bg-clip-text">
+                <span className="text-shimmer-gold">
                   {t('footer.cta.titleHighlight')}
                 </span>
               </h2>
@@ -73,7 +74,7 @@ export default function Footer() {
                   handleSmoothScroll(e, '#contact');
                   analytics.ctaClick('footer-start-project');
                 }}
-                className="inline-flex items-center gap-2 bg-gradient-warm text-white px-10 py-4 rounded-xl font-bold text-lg shadow-glow-amber hover:shadow-glow-amber-lg transition-all duration-300 hover:scale-[1.02] group"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-gold-400 via-gold-300 to-copper-400 text-obsidian-950 px-10 py-4 rounded-xl font-bold text-lg shadow-glow-gold hover:shadow-glow-gold-lg transition-all duration-300 hover:scale-[1.02] group"
               >
                 {t('footer.cta.button')}
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
@@ -100,7 +101,7 @@ export default function Footer() {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleSmoothScroll(e, link.href)}
-                  className="text-text-secondary hover:text-accent-amber font-medium text-sm transition-colors"
+                  className="text-text-secondary hover:text-gold-400 font-medium text-sm transition-colors"
                 >
                   {t(link.labelKey)}
                 </a>
@@ -121,7 +122,7 @@ export default function Footer() {
                         href={url as string}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-10 h-10 rounded-full border border-white/10 hover:border-accent-amber/30 flex items-center justify-center text-text-muted hover:text-accent-amber transition-all hover:bg-accent-amber/10"
+                        className="w-10 h-10 rounded-full border border-white/10 hover:border-gold-400/30 flex items-center justify-center text-text-muted hover:text-gold-400 transition-all hover:bg-gold-400/10 hover:shadow-glow-gold-sm"
                         aria-label={label}
                       >
                         <Icon size={18} />
@@ -132,8 +133,8 @@ export default function Footer() {
             )}
           </div>
 
-          {/* Divider */}
-          <div className="my-8 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          {/* Divider - Gold Accent */}
+          <div className="my-8 h-px bg-gradient-to-r from-transparent via-gold-400/20 to-transparent" />
 
           {/* Copyright */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center">

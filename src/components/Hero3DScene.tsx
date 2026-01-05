@@ -70,8 +70,13 @@ function Particles({ count = 100 }: { count?: number }) {
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
 
-    const primaryColor = new THREE.Color('#00CED1');
-    const secondaryColor = new THREE.Color('#5E6FEA');
+    // Glassmorphism Pro color palette
+    const goldColor = new THREE.Color('#D4AF37');
+    const copperColor = new THREE.Color('#CD7F32');
+    const violetColor = new THREE.Color('#5060D0');
+    const cyanColor = new THREE.Color('#00B4B7');
+
+    const colorPalette = [goldColor, copperColor, violetColor, cyanColor];
 
     for (let i = 0; i < count; i++) {
       // Random positions in a sphere
@@ -83,8 +88,10 @@ function Particles({ count = 100 }: { count?: number }) {
       positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
       positions[i * 3 + 2] = radius * Math.cos(phi);
 
-      // Interpolate between primary and secondary
-      const mixedColor = primaryColor.clone().lerp(secondaryColor, Math.random());
+      // Pick from color palette with gold/copper bias
+      const colorIndex = Math.random() < 0.6 ? Math.floor(Math.random() * 2) : Math.floor(Math.random() * 4);
+      const baseColor = colorPalette[colorIndex];
+      const mixedColor = baseColor.clone().lerp(goldColor, Math.random() * 0.3);
       colors[i * 3] = mixedColor.r;
       colors[i * 3 + 1] = mixedColor.g;
       colors[i * 3 + 2] = mixedColor.b;
@@ -172,11 +179,11 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
   return (
     <group ref={groupRef}>
       <MouseParallax>
-        {/* Main shapes */}
+        {/* Main shapes - Glassmorphism Pro colors */}
         <FloatingShape
           position={[-2, 0.5, -1]}
           geometry="icosahedron"
-          color="#00CED1"
+          color="#D4AF37"
           scale={0.8}
           speed={1.2}
           distort={0.4}
@@ -184,7 +191,7 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
         <FloatingShape
           position={[2.5, -0.5, -2]}
           geometry="torus"
-          color="#5E6FEA"
+          color="#CD7F32"
           scale={0.6}
           speed={0.8}
           distort={0.3}
@@ -192,7 +199,7 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
         <FloatingShape
           position={[1, 1.5, -3]}
           geometry="octahedron"
-          color="#47CF86"
+          color="#5060D0"
           scale={0.5}
           speed={1}
           distort={0.2}
@@ -200,7 +207,7 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
         <FloatingShape
           position={[-1.5, -1, -2]}
           geometry="sphere"
-          color="#FB6B4E"
+          color="#E8BE4E"
           scale={0.4}
           speed={1.5}
           distort={0.5}
@@ -210,10 +217,10 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
         <Particles count={80} />
       </MouseParallax>
 
-      {/* Ambient glow */}
-      <pointLight position={[0, 0, 3]} intensity={0.5} color="#00CED1" />
-      <pointLight position={[-3, 2, 0]} intensity={0.3} color="#5E6FEA" />
-      <pointLight position={[3, -2, 0]} intensity={0.3} color="#47CF86" />
+      {/* Ambient glow - Gold/Copper tones */}
+      <pointLight position={[0, 0, 3]} intensity={0.4} color="#D4AF37" />
+      <pointLight position={[-3, 2, 0]} intensity={0.25} color="#CD7F32" />
+      <pointLight position={[3, -2, 0]} intensity={0.2} color="#5060D0" />
     </group>
   );
 }
@@ -221,7 +228,7 @@ function Scene({ scrollProgress }: { scrollProgress: number }) {
 // Static fallback for reduced motion
 function StaticFallback() {
   return (
-    <div className="absolute inset-0 bg-gradient-warm-glow opacity-30" />
+    <div className="absolute inset-0 bg-gradient-gold-radial opacity-30" />
   );
 }
 
@@ -272,8 +279,8 @@ export default function Hero3DScene({ scrollProgress = 0 }: { scrollProgress?: n
         {/* Scene content */}
         <Scene scrollProgress={scrollProgress} />
 
-        {/* Environment */}
-        <fog attach="fog" args={['#09090B', 5, 15]} />
+        {/* Environment - Deeper obsidian fog */}
+        <fog attach="fog" args={['#030303', 5, 15]} />
       </Canvas>
     </div>
   );

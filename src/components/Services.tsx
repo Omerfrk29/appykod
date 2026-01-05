@@ -68,29 +68,29 @@ export default function Services() {
 
   if (loading) {
     return (
-      <section id="services" className="py-24 bg-bg-base relative overflow-hidden flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-8 h-8 animate-spin text-accent-amber" />
+      <section id="services" className="py-24 bg-obsidian-900 relative overflow-hidden flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-gold-400" />
       </section>
     );
   }
 
   return (
-    <section id="services" className="py-24 bg-bg-base relative overflow-hidden">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-warm-glow opacity-30" />
+    <section id="services" className="py-24 bg-obsidian-900 relative overflow-hidden">
+      {/* Background Gradient - Gold tone */}
+      <div className="absolute inset-0 bg-gradient-gold-radial opacity-30" />
 
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(rgba(245,158,11,0.03)_1px,transparent_1px)] [background-size:32px_32px]" />
+      {/* Grid Pattern - Gold dots */}
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(212,175,55,0.02)_1px,transparent_1px)] [background-size:48px_48px]" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <ScrollReveal className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 bg-accent-amber/10 border border-accent-amber/20 rounded-full text-accent-amber text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-1.5 glass-layer-1 border border-gold-400/20 rounded-full text-gold-400 text-sm font-medium mb-4">
             {t('services.badge')}
           </span>
           <h2 className="text-h2 font-bold text-text-primary mb-4">
             {t('services.titleMain')}{' '}
-            <span className="text-transparent bg-gradient-warm bg-clip-text">
+            <span className="text-shimmer-gold">
               {t('services.titleHighlight')}
             </span>
           </h2>
@@ -110,8 +110,8 @@ export default function Services() {
               <div
                 className={`group relative rounded-3xl p-8 transition-all duration-500 cursor-pointer h-full ${
                   isFeatured
-                    ? 'bg-glass-bg backdrop-blur-xl border border-accent-amber/30 shadow-glass-card hover:shadow-glass-card-hover hover:border-accent-amber/50'
-                    : 'bg-bg-elevated/50 backdrop-blur-md border border-white/5 hover:border-glass-border-hover hover:bg-bg-elevated'
+                    ? 'glass-layer-3 glass-border-gradient glass-noise hover-glow-gold'
+                    : 'glass-layer-2 glass-noise-subtle hover:glass-layer-3 hover-glow-gold'
                 }`}
                 style={{
                   transform: 'perspective(1000px)',
@@ -119,23 +119,23 @@ export default function Services() {
               >
                 {/* Gradient Glow for Featured */}
                 {isFeatured && (
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-warm opacity-5 group-hover:opacity-10 transition-opacity" />
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-gold-soft opacity-20 group-hover:opacity-30 transition-opacity" />
                 )}
 
                 {/* Icon */}
                 <div
                   className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 ${
                     isFeatured
-                      ? 'bg-gradient-warm shadow-glow-amber'
-                      : 'bg-bg-surface border border-white/10 group-hover:bg-gradient-warm group-hover:border-transparent group-hover:shadow-glow-amber'
+                      ? 'bg-gradient-to-br from-gold-400 to-copper-400 shadow-glow-gold'
+                      : 'bg-obsidian-800 border border-white/10 group-hover:bg-gradient-to-br group-hover:from-gold-400 group-hover:to-copper-400 group-hover:border-transparent group-hover:shadow-glow-gold'
                   }`}
                 >
                   <Icon
                     size={28}
                     className={`${
                       isFeatured
-                        ? 'text-white'
-                        : 'text-text-secondary group-hover:text-white'
+                        ? 'text-obsidian-950'
+                        : 'text-text-secondary group-hover:text-obsidian-950'
                     } transition-colors`}
                   />
                 </div>
@@ -162,8 +162,8 @@ export default function Services() {
                 <div
                   className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all duration-300 ${
                     isFeatured
-                      ? 'border-accent-amber/30 text-accent-amber group-hover:bg-gradient-warm group-hover:text-white group-hover:border-transparent group-hover:shadow-glow-amber'
-                      : 'border-white/10 text-text-muted group-hover:border-accent-amber/30 group-hover:text-accent-amber'
+                      ? 'border-gold-400/30 text-gold-400 group-hover:bg-gradient-to-br group-hover:from-gold-400 group-hover:to-copper-400 group-hover:text-obsidian-950 group-hover:border-transparent group-hover:shadow-glow-gold'
+                      : 'border-white/10 text-text-muted group-hover:border-gold-400/30 group-hover:text-gold-400'
                   }`}
                 >
                   <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
@@ -171,7 +171,7 @@ export default function Services() {
 
                 {/* Hover Tilt Effect */}
                 <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-gold-400/5 to-transparent rounded-3xl" />
                 </div>
               </div>
               </StaggerItem>

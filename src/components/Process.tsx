@@ -37,10 +37,10 @@ export default function Process() {
   }));
 
   return (
-    <section className="py-24 bg-[#0F1117] text-white overflow-hidden relative">
-      {/* Background Elements */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-accent-purple/5 rounded-full blur-[120px] pointer-events-none" />
+    <section className="py-24 bg-obsidian-900 text-white overflow-hidden relative">
+      {/* Background Elements - Gold/Copper tones */}
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-gold-400/3 rounded-full blur-[180px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-copper-400/3 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
@@ -55,7 +55,7 @@ export default function Process() {
           {/* Connecting Line (Desktop) */}
           <div className="hidden lg:block absolute top-[40px] left-[10%] right-[10%] h-px bg-white/10">
             <div
-              className="h-full bg-gradient-to-r from-secondary via-accent-purple to-accent-teal transition-all duration-1000 ease-out"
+              className="h-full bg-gradient-to-r from-gold-400 via-copper-400 to-gold-300 transition-all duration-1000 ease-out"
               style={{ width: isInView ? '100%' : '0%' }}
             />
           </div>
@@ -74,24 +74,24 @@ export default function Process() {
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
                   <div className="flex flex-col items-center text-center">
-                    {/* Icon */}
-                    <div className="w-20 h-20 rounded-2xl bg-[#1A1D26] border border-white/5 flex items-center justify-center mb-8 relative group-hover:scale-110 group-hover:border-secondary/50 transition-all duration-300 shadow-xl">
+                    {/* Icon - Glass Effect */}
+                    <div className="w-20 h-20 rounded-2xl glass-layer-2 flex items-center justify-center mb-8 relative group-hover:scale-110 transition-all duration-300 shadow-xl group-hover:shadow-glow-gold">
                       <Icon
                         size={32}
-                        className="text-gray-400 group-hover:text-secondary transition-colors"
+                        className="text-text-secondary group-hover:text-gold-400 transition-colors"
                       />
-                      {/* Step number badge */}
-                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-secondary rounded-full flex items-center justify-center text-xs font-bold">
+                      {/* Step number badge - Gold Gradient */}
+                      <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-br from-gold-400 to-copper-400 rounded-full flex items-center justify-center text-xs font-bold text-obsidian-950 shadow-glow-gold-sm">
                         {step.id}
                       </div>
                     </div>
 
-                    {/* Content Card */}
-                    <div className="bg-[#1A1D26]/50 backdrop-blur-sm p-6 rounded-2xl border border-white/5 hover:bg-[#1A1D26] hover:border-white/10 transition-all duration-300 w-full">
-                      <h3 className="text-xl font-bold mb-3 text-white">
+                    {/* Content Card - Glass Effect */}
+                    <div className="glass-layer-1 p-6 rounded-2xl hover:glass-layer-2 transition-all duration-300 w-full group-hover:shadow-glow-gold-sm">
+                      <h3 className="text-xl font-bold mb-3 text-text-primary group-hover:text-gradient-gold transition-all">
                         {step.title}
                       </h3>
-                      <p className="text-gray-400 text-sm leading-relaxed">
+                      <p className="text-text-muted text-sm leading-relaxed">
                         {step.description}
                       </p>
                     </div>

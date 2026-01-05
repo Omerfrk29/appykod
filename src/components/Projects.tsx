@@ -50,7 +50,7 @@ function ProjectCard({
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="group relative bg-bg-elevated/50 backdrop-blur-md rounded-3xl border border-white/5 overflow-hidden transition-all duration-500 hover:border-glass-border-hover hover:shadow-glass-card-hover"
+      className="group relative glass-layer-2 glass-border-gradient rounded-3xl overflow-hidden transition-all duration-500 hover-glow-gold"
       style={{
         transform: `perspective(1000px) rotateX(${transform.rotateX}deg) rotateY(${transform.rotateY}deg)`,
         transition: 'transform 0.1s ease-out',
@@ -67,10 +67,10 @@ function ProjectCard({
               className="object-cover transition-transform duration-700 group-hover:scale-110"
             />
             {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-bg-base via-bg-base/50 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+            <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950 via-obsidian-950/50 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
             {/* Gradient Border Glow */}
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-              <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-warm" />
+              <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-gold-400 to-copper-400" />
             </div>
           </>
         ) : (
@@ -80,7 +80,7 @@ function ProjectCard({
         )}
 
         {/* Project Number Badge */}
-        <div className="absolute top-4 left-4 px-3 py-1 bg-bg-base/80 backdrop-blur-sm rounded-full text-xs font-medium text-text-secondary border border-white/10">
+        <div className="absolute top-4 left-4 px-3 py-1 glass-frosted rounded-full text-xs font-medium text-gold-400 border border-gold-400/10">
           #{String(index + 1).padStart(2, '0')}
         </div>
       </div>
@@ -88,7 +88,7 @@ function ProjectCard({
       {/* Content */}
       <div className="p-6 relative">
         {/* Title */}
-        <h3 className="text-xl font-bold text-text-primary mb-3 group-hover:text-transparent group-hover:bg-gradient-warm group-hover:bg-clip-text transition-all">
+        <h3 className="text-xl font-bold text-text-primary mb-3 group-hover:text-gradient-gold transition-all">
           {getLocalizedText(project.title, language)}
         </h3>
 

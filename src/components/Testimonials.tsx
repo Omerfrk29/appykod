@@ -49,20 +49,20 @@ export default function Testimonials() {
   }
 
   return (
-    <section className="py-24 bg-bg-elevated relative overflow-hidden">
+    <section className="py-24 bg-obsidian-850 relative overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-warm-glow opacity-10" />
-      <div className="absolute inset-0 bg-[radial-gradient(rgba(245,158,11,0.02)_1px,transparent_1px)] [background-size:32px_32px]" />
+      <div className="absolute inset-0 bg-gradient-gold-radial opacity-10" />
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(212,175,55,0.02)_1px,transparent_1px)] [background-size:48px_48px]" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <ScrollReveal className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 bg-accent-amber/10 border border-accent-amber/20 rounded-full text-accent-amber text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-1.5 glass-layer-1 border border-gold-400/20 rounded-full text-gold-400 text-sm font-medium mb-4">
             Referanslar
           </span>
           <h2 className="text-h2 font-bold text-text-primary mb-4">
             Müşterilerimiz{' '}
-            <span className="text-transparent bg-gradient-warm bg-clip-text">
+            <span className="text-shimmer-gold">
               Ne Diyor?
             </span>
           </h2>
@@ -73,18 +73,18 @@ export default function Testimonials() {
 
         {loading ? (
           <div className="text-center py-12">
-            <div className="w-8 h-8 border-2 border-accent-amber border-t-transparent rounded-full animate-spin mx-auto" />
+            <div className="w-8 h-8 border-2 border-gold-400 border-t-transparent rounded-full animate-spin mx-auto" />
           </div>
         ) : (
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={100}>
             {testimonials.map((testimonial, index) => (
               <StaggerItem key={testimonial.id} index={index}>
               <div
-                className="group relative bg-glass-bg backdrop-blur-xl p-8 rounded-3xl border border-white/5 hover:border-glass-border-hover transition-all duration-500 hover:shadow-glass-card-hover h-full"
+                className="group relative glass-layer-2 glass-border-gradient p-8 rounded-3xl transition-all duration-500 hover-glow-gold h-full"
               >
-                {/* Quote Icon - Amber Gradient */}
+                {/* Quote Icon - Gold */}
                 <div className="absolute top-6 right-6 opacity-20 group-hover:opacity-40 transition-opacity">
-                  <Quote size={40} className="text-accent-amber" />
+                  <Quote size={40} className="text-gold-400" />
                 </div>
 
                 {/* Stars */}
@@ -93,7 +93,7 @@ export default function Testimonials() {
                     <Star
                       key={i}
                       size={16}
-                      className="text-accent-amber fill-accent-amber"
+                      className="text-gold-400 fill-gold-400"
                     />
                   ))}
                 </div>

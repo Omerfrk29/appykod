@@ -12,7 +12,7 @@ import { analytics } from '@/lib/analytics';
 const Hero3DScene = dynamic(() => import('./Hero3DScene'), {
   ssr: false,
   loading: () => (
-    <div className="absolute inset-0 bg-gradient-warm-glow opacity-20" />
+    <div className="absolute inset-0 bg-gradient-gold-radial opacity-20" />
   ),
 });
 
@@ -38,17 +38,18 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-bg-base"
+      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-obsidian-950"
     >
       {/* 3D Scene Background */}
       <Hero3DScene scrollProgress={scrollProgress} />
 
       {/* Gradient Overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-bg-base/30 to-bg-base/80 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-obsidian-950/30 to-obsidian-950/80 pointer-events-none" />
 
-      {/* Ambient glow effects */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-amber/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent-red/10 rounded-full blur-[80px] pointer-events-none" />
+      {/* Ambient glow effects - Gold/Copper tones */}
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gold-400/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-copper-400/4 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-violet/3 rounded-full blur-[200px] pointer-events-none" />
 
       {/* Main Content - Centered */}
       <div
@@ -58,19 +59,19 @@ export default function Hero() {
           transform: `translateY(${scrollProgress * 50}px)`,
         }}
       >
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-glass-border bg-glass-bg backdrop-blur-sm mb-8">
-          <span className="w-2 h-2 rounded-full bg-accent-amber animate-pulse" />
+        {/* Badge - Glassmorphism Pro */}
+        <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-layer-2 glass-border-gradient mb-8">
+          <span className="w-2 h-2 rounded-full bg-gold-400 animate-pulse shadow-glow-gold-sm" />
           <span className="text-sm text-text-secondary">
             {t('hero.badge') || 'Modern Software Solutions'}
           </span>
         </div>
 
-        {/* Main Heading */}
+        {/* Main Heading - Gold Shimmer */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-display font-black text-text-primary leading-tight tracking-tight mb-6">
           {t('hero.title.line1') || 'Dijital Hayalleri'}
           <br />
-          <span className="text-gradient-warm">
+          <span className="text-shimmer-gold">
             {t('hero.title.highlight') || 'Gerçeğe'}
           </span>{' '}
           {t('hero.title.line2') || 'Dönüştürüyoruz'}
@@ -82,7 +83,7 @@ export default function Hero() {
             'Web ve mobil uygulama geliştirmede uzman ekibimizle, işinizi bir sonraki seviyeye taşıyoruz.'}
         </p>
 
-        {/* CTA Buttons */}
+        {/* CTA Buttons - Gold Gradient */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             href="#contact"
@@ -90,7 +91,7 @@ export default function Hero() {
               handleSmoothScroll(e, '#contact');
               analytics.ctaClick('hero-contact');
             }}
-            className="btn-primary group"
+            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-gold-400 via-gold-300 to-copper-400 text-obsidian-950 font-semibold rounded-xl hover:shadow-glow-gold-lg transition-all duration-300 group"
           >
             {t('hero.cta.primary') || 'İletişime Geçin'}
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -102,29 +103,29 @@ export default function Hero() {
               handleSmoothScroll(e, '#projects');
               analytics.ctaClick('hero-projects');
             }}
-            className="btn-secondary group"
+            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 glass-layer-2 glass-border-gradient text-text-primary font-medium rounded-xl hover-glow-gold transition-all duration-300 group"
           >
             {t('hero.cta.secondary') || 'Projelerimiz'}
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
-        {/* Stats or Trust Badges */}
-        <div className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto">
-          <div className="text-center">
-            <div className="text-2xl sm:text-3xl font-bold text-gradient-warm">50+</div>
+        {/* Stats - Glass Cards with Gold Accent */}
+        <div className="mt-16 grid grid-cols-3 gap-6 max-w-lg mx-auto">
+          <div className="text-center p-4 glass-layer-1 rounded-2xl glass-border-gradient hover-glow-gold transition-all duration-300">
+            <div className="text-2xl sm:text-3xl font-bold text-gradient-gold">50+</div>
             <div className="text-sm text-text-muted mt-1">
               {t('hero.stats.projects') || 'Proje'}
             </div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl sm:text-3xl font-bold text-gradient-warm">30+</div>
+          <div className="text-center p-4 glass-layer-1 rounded-2xl glass-border-gradient hover-glow-gold transition-all duration-300">
+            <div className="text-2xl sm:text-3xl font-bold text-gradient-gold">30+</div>
             <div className="text-sm text-text-muted mt-1">
               {t('hero.stats.clients') || 'Mutlu Müşteri'}
             </div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl sm:text-3xl font-bold text-gradient-warm">5+</div>
+          <div className="text-center p-4 glass-layer-1 rounded-2xl glass-border-gradient hover-glow-gold transition-all duration-300">
+            <div className="text-2xl sm:text-3xl font-bold text-gradient-gold">5+</div>
             <div className="text-sm text-text-muted mt-1">
               {t('hero.stats.years') || 'Yıl Deneyim'}
             </div>

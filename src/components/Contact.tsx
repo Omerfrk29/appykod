@@ -65,20 +65,23 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="py-24 bg-bg-base relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-warm-glow opacity-20" />
-      <div className="absolute inset-0 bg-[radial-gradient(rgba(245,158,11,0.02)_1px,transparent_1px)] [background-size:32px_32px]" />
+    <section id="contact" className="py-24 bg-obsidian-900 relative overflow-hidden">
+      {/* Background - Gold Radial */}
+      <div className="absolute inset-0 bg-gradient-gold-radial opacity-20" />
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(212,175,55,0.02)_1px,transparent_1px)] [background-size:32px_32px]" />
+      {/* Ambient Glow */}
+      <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-gold-400/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-copper-400/4 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <ScrollReveal className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 bg-accent-amber/10 border border-accent-amber/20 rounded-full text-accent-amber text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-1.5 glass-layer-1 border border-gold-400/20 rounded-full text-gold-400 text-sm font-medium mb-4">
             {t('contact.badge')}
           </span>
           <h2 className="text-h2 font-bold text-text-primary mb-4">
             {t('contact.titleMain')}{' '}
-            <span className="text-transparent bg-gradient-warm bg-clip-text">
+            <span className="text-shimmer-gold">
               {t('contact.titleHighlight')}
             </span>
           </h2>
@@ -106,15 +109,15 @@ export default function Contact() {
                   ? t('contact.info.locationValue')
                   : t('contact.info.location2Value');
                 const content = (
-                  <div className="group flex items-start gap-4 p-6 bg-glass-bg backdrop-blur-xl rounded-2xl border border-white/5 hover:border-glass-border-hover transition-all duration-300">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-warm flex items-center justify-center flex-shrink-0 shadow-glow-amber">
-                      <Icon className="text-white" size={22} />
+                  <div className="group flex items-start gap-4 p-6 glass-layer-2 rounded-2xl hover:shadow-glow-gold-sm transition-all duration-300">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-400 to-copper-400 flex items-center justify-center flex-shrink-0 shadow-glow-gold-sm">
+                      <Icon className="text-obsidian-950" size={22} />
                     </div>
                     <div>
                       <h3 className="text-sm font-medium text-text-muted mb-1">
                         {label}
                       </h3>
-                      <p className="text-text-primary font-medium group-hover:text-accent-amber transition-colors">
+                      <p className="text-text-primary font-medium group-hover:text-gold-400 transition-colors">
                         {value}
                       </p>
                     </div>
@@ -131,8 +134,8 @@ export default function Contact() {
               })}
             </div>
 
-            {/* Additional CTA */}
-            <div className="p-6 bg-gradient-warm-soft rounded-2xl border border-accent-amber/20">
+            {/* Additional CTA - Glass Inner Glow */}
+            <div className="p-6 glass-layer-2 glass-inner-glow-gold rounded-2xl">
               <h3 className="text-lg font-bold text-text-primary mb-2">
                 {t('contact.guarantee.title')}
               </h3>
@@ -142,10 +145,10 @@ export default function Contact() {
             </div>
           </ScrollReveal>
 
-          {/* Right Form */}
+          {/* Right Form - Glass Effect */}
           <div
             ref={formRef}
-            className={`bg-glass-bg backdrop-blur-xl rounded-3xl p-8 border border-white/5 shadow-glass-card transition-all duration-700 ${
+            className={`glass-layer-3 glass-border-gradient rounded-3xl p-8 shadow-glass-xl transition-all duration-700 ${
               isInView
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-12'
@@ -174,7 +177,7 @@ export default function Contact() {
                   id="name"
                   name="name"
                   required
-                  className="w-full px-4 py-3.5 rounded-xl bg-bg-surface/50 border border-white/10 text-text-primary placeholder-text-muted focus:border-accent-amber focus:ring-2 focus:ring-accent-amber/20 focus:bg-bg-surface outline-none transition-all"
+                  className="w-full px-4 py-3.5 rounded-xl bg-obsidian-800/50 border border-white/10 text-text-primary placeholder-text-muted focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 focus:bg-obsidian-800 outline-none transition-all"
                   placeholder={t('contact.form.namePlaceholder')}
                 />
               </div>
@@ -191,7 +194,7 @@ export default function Contact() {
                   id="email"
                   name="email"
                   required
-                  className="w-full px-4 py-3.5 rounded-xl bg-bg-surface/50 border border-white/10 text-text-primary placeholder-text-muted focus:border-accent-amber focus:ring-2 focus:ring-accent-amber/20 focus:bg-bg-surface outline-none transition-all"
+                  className="w-full px-4 py-3.5 rounded-xl bg-obsidian-800/50 border border-white/10 text-text-primary placeholder-text-muted focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 focus:bg-obsidian-800 outline-none transition-all"
                   placeholder={t('contact.form.emailPlaceholder')}
                 />
               </div>
@@ -208,7 +211,7 @@ export default function Contact() {
                   name="content"
                   required
                   rows={4}
-                  className="w-full px-4 py-3.5 rounded-xl bg-bg-surface/50 border border-white/10 text-text-primary placeholder-text-muted focus:border-accent-amber focus:ring-2 focus:ring-accent-amber/20 focus:bg-bg-surface outline-none transition-all resize-none"
+                  className="w-full px-4 py-3.5 rounded-xl bg-obsidian-800/50 border border-white/10 text-text-primary placeholder-text-muted focus:border-gold-400 focus:ring-2 focus:ring-gold-400/20 focus:bg-obsidian-800 outline-none transition-all resize-none"
                   placeholder={t('contact.form.messagePlaceholder')}
                 />
               </div>
@@ -216,7 +219,7 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={status === 'loading' || status === 'success'}
-                className="w-full py-4 bg-gradient-warm text-white font-bold rounded-xl transition-all hover:shadow-glow-amber hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full py-4 bg-gradient-to-r from-gold-400 via-gold-300 to-copper-400 text-obsidian-950 font-bold rounded-xl transition-all hover:shadow-glow-gold hover:scale-[1.01] active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {status === 'loading' && (
                   <Loader2 className="animate-spin" size={20} />
