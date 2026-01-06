@@ -15,6 +15,7 @@ const footerLinks = [
   { href: '#services', labelKey: 'footer.links.services' },
   { href: '#projects', labelKey: 'footer.links.projects' },
   { href: '#contact', labelKey: 'footer.links.contact' },
+  { href: '/privacy', labelKey: 'footer.links.privacy', isExternal: false },
 ];
 
 const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
@@ -95,16 +96,29 @@ export default function Footer() {
 
             {/* Links */}
             <nav className="flex flex-wrap items-center justify-center gap-6">
-              {footerLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => handleSmoothScroll(e, link.href)}
-                  className="text-text-secondary hover:text-accent-amber font-medium text-sm transition-colors"
-                >
-                  {t(link.labelKey)}
-                </a>
-              ))}
+              {footerLinks.map((link) => {
+                if (link.isExternal === false) {
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="text-text-secondary hover:text-accent-amber font-medium text-sm transition-colors"
+                    >
+                      {t(link.labelKey)}
+                    </Link>
+                  );
+                }
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => handleSmoothScroll(e, link.href)}
+                    className="text-text-secondary hover:text-accent-amber font-medium text-sm transition-colors"
+                  >
+                    {t(link.labelKey)}
+                  </a>
+                );
+              })}
             </nav>
 
             {/* Social Icons - From Admin Panel */}

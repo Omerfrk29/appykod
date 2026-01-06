@@ -1,0 +1,54 @@
+{
+  "campaignName": "İşinizi Büyütün",
+  "sitelinks": [
+    {
+      "id": 1,
+      "linkText": "Hizmetlerimiz",
+      "descriptionLine1": "Web, mobil, UI/UX ve daha fazlası",
+      "descriptionLine2": "Profesyonel dijital çözümler",
+      "finalUrl": "https://appykod.com/#services"
+    },
+    {
+      "id": 2,
+      "linkText": "Projelerimiz",
+      "descriptionLine1": "Başarılı projelerimizi keşfedin",
+      "descriptionLine2": "Portföyümüzü inceleyin",
+      "finalUrl": "https://appykod.com/#projects"
+    },
+    {
+      "id": 3,
+      "linkText": "İletişim",
+      "descriptionLine1": "Projeniz için teklif alın",
+      "descriptionLine2": "7/24 destek ve danışmanlık",
+      "finalUrl": "https://appykod.com/#contact"
+    },
+    {
+      "id": 4,
+      "linkText": "Web Geliştirme",
+      "descriptionLine1": "Modern web uygulamaları",
+      "descriptionLine2": "Next.js, React, TypeScript",
+      "finalUrl": "https://appykod.com/services/web"
+    },
+    {
+      "id": 5,
+      "linkText": "Mobil Uygulamalar",
+      "descriptionLine1": "iOS ve Android uygulamaları",
+      "descriptionLine2": "Native performans garantisi",
+      "finalUrl": "https://appykod.com/services/mobile"
+    },
+    {
+      "id": 6,
+      "linkText": "Ücretsiz Teklif",
+      "descriptionLine1": "Projeniz için özel fiyat",
+      "descriptionLine2": "Hemen iletişime geçin",
+      "finalUrl": "https://appykod.com/#contact"
+    }
+  ],
+  "notes": {
+    "linkTextLimit": "Maksimum 25 karakter",
+    "descriptionLimit": "Her satır maksimum 35 karakter",
+    "totalSitelinks": 6,
+    "createdFor": "AppyKod Google Ads Kampanyası"
+  }
+}
+

@@ -167,7 +167,8 @@
     "links": {
       "services": "Services",
       "projects": "Projects",
-      "contact": "Contact"
+      "contact": "Contact",
+      "privacy": "Privacy Policy"
     },
     "cta": {
       "title": "Ready For",
@@ -280,5 +281,41 @@
     "learnMore": "Learn More",
     "analytics": "Analytics cookies help us understand how the website is used.",
     "necessary": "Necessary cookies are required for the basic functions of the website."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "subtitle": "The protection of your personal data is important to us. On this page, you can find information about how your data is collected, used, and protected.",
+    "lastUpdated": "Last Updated",
+    "introduction": "As AppyKod, we attach great importance to the protection of personal data of our visitors and customers. This privacy policy has been prepared in accordance with the Personal Data Protection Law No. 6698 (KVKK) and the European Union General Data Protection Regulation (GDPR).\n\nThis policy explains how your personal data collected when you visit our website or use our services is processed.",
+    "sections": {
+      "dataCollection": {
+        "title": "1. Data Collection",
+        "content": "We may collect the following personal data on our website:\n\n• Contact Form: Name, email address, and message content\n• Cookies: Website usage data and your preferences\n• Google Analytics: Anonymous usage statistics\n• Communication: Information you provide via email or phone\n\nThis data is collected to provide our services, facilitate communication, and improve the website."
+      },
+      "dataUsage": {
+        "title": "2. Data Usage",
+        "content": "Your collected personal data is used for the following purposes:\n\n• Responding to your contact requests\n• Providing information about our services\n• Improving website experience\n• Fulfilling our legal obligations\n• Business development and marketing activities (if you consent)\n\nYour data is stored only for the specified purposes and for legal periods."
+      },
+      "cookies": {
+        "title": "3. Cookies",
+        "content": "Our website uses cookies to improve user experience:\n\n• Necessary Cookies: Required for basic website functions.\n• Analytics Cookies: We collect website usage statistics with Google Analytics.\n• Preference Cookies: Used to remember settings such as your language preference.\n\nYou can manage your cookie preferences from your browser settings. However, some website features may not work when certain cookies are disabled."
+      },
+      "thirdParty": {
+        "title": "4. Third-Party Services",
+        "content": "We use the following third-party services to provide our services:\n\n• Google Analytics: Website traffic and usage analysis\n• Email Services: Delivery of contact form messages\n• Hosting Services: Secure storage of website and data\n\nThese services are subject to their own privacy policies and process your data only for service provision purposes."
+      },
+      "dataSecurity": {
+        "title": "5. Data Security",
+        "content": "We take the following measures to ensure the security of your personal data:\n\n• Secure data transmission with SSL/TLS encryption\n• Regular security updates and patches\n• Access controls and authorization mechanisms\n• Regular backup and data recovery procedures\n• Security audits and penetration tests\n\nAll data is protected with security measures compliant with industry standards."
+      },
+      "userRights": {
+        "title": "6. User Rights",
+        "content": "Under KVKK and GDPR, you have the following rights:\n\n• Right to Information: Learn which of your data is processed\n• Right of Access: Request access to your personal data\n• Right to Rectification: Request correction of incorrect or incomplete data\n• Right to Erasure: Request deletion of your data\n• Right to Object: Object to data processing\n• Data Portability: Transfer your data to another service\n\nYou can send an email to appykod@gmail.com to exercise these rights."
+      }
+    },
+    "contact": {
+      "title": "7. Contact",
+      "content": "You can contact us for questions about our privacy policy or requests regarding your data:"
+    }
   }
 }

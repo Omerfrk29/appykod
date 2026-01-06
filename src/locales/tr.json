@@ -167,7 +167,8 @@
     "links": {
       "services": "Hizmetler",
       "projects": "Projeler",
-      "contact": "İletişim"
+      "contact": "İletişim",
+      "privacy": "Gizlilik Politikası"
     },
     "cta": {
       "title": "Bir Sonraki Projeniz İçin",
@@ -280,5 +281,41 @@
     "learnMore": "Daha Fazla Bilgi",
     "analytics": "Analitik çerezler, web sitesinin nasıl kullanıldığını anlamamıza yardımcı olur.",
     "necessary": "Gerekli çerezler, web sitesinin temel işlevlerinin çalışması için zorunludur."
+  },
+  "privacy": {
+    "title": "Gizlilik Politikası",
+    "subtitle": "Kişisel verilerinizin korunması bizim için önemlidir. Bu sayfada verilerinizin nasıl toplandığı, kullanıldığı ve korunduğu hakkında bilgi bulabilirsiniz.",
+    "lastUpdated": "Son Güncelleme",
+    "introduction": "AppyKod olarak, ziyaretçilerimizin ve müşterilerimizin kişisel verilerinin korunmasına büyük önem veriyoruz. Bu gizlilik politikası, 6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) ve Avrupa Birliği Genel Veri Koruma Tüzüğü (GDPR) kapsamında hazırlanmıştır.\n\nBu politika, web sitemizi ziyaret ettiğinizde veya hizmetlerimizden yararlandığınızda toplanan kişisel verilerinizin nasıl işlendiğini açıklamaktadır.",
+    "sections": {
+      "dataCollection": {
+        "title": "1. Veri Toplama",
+        "content": "Web sitemizde aşağıdaki kişisel verileri toplayabiliriz:\n\n• İletişim Formu: Ad, e-posta adresi ve mesaj içeriği\n• Çerezler: Web sitesi kullanım verileri ve tercihleriniz\n• Google Analytics: Anonim kullanım istatistikleri\n• İletişim: E-posta veya telefon yoluyla sağladığınız bilgiler\n\nBu veriler, hizmetlerimizi sunmak, iletişimi sağlamak ve web sitesini iyileştirmek amacıyla toplanmaktadır."
+      },
+      "dataUsage": {
+        "title": "2. Veri Kullanımı",
+        "content": "Toplanan kişisel verileriniz aşağıdaki amaçlarla kullanılmaktadır:\n\n• İletişim taleplerinize yanıt vermek\n• Hizmetlerimiz hakkında bilgi sağlamak\n• Web sitesi deneyimini iyileştirmek\n• Yasal yükümlülüklerimizi yerine getirmek\n• İş geliştirme ve pazarlama faaliyetleri (izin verdiğiniz takdirde)\n\nVerileriniz, yalnızca belirtilen amaçlar doğrultusunda ve yasal süreler boyunca saklanmaktadır."
+      },
+      "cookies": {
+        "title": "3. Çerezler (Cookies)",
+        "content": "Web sitemiz, kullanıcı deneyimini iyileştirmek için çerezler kullanmaktadır:\n\n• Gerekli Çerezler: Web sitesinin temel işlevlerinin çalışması için zorunludur.\n• Analitik Çerezler: Google Analytics ile web sitesi kullanım istatistiklerini toplarız.\n• Tercih Çerezleri: Dil tercihiniz gibi ayarları hatırlamak için kullanılır.\n\nÇerez tercihlerinizi tarayıcı ayarlarınızdan yönetebilirsiniz. Ancak bazı çerezler devre dışı bırakıldığında web sitesinin bazı özellikleri çalışmayabilir."
+      },
+      "thirdParty": {
+        "title": "4. Üçüncü Taraf Servisler",
+        "content": "Hizmetlerimizi sunmak için aşağıdaki üçüncü taraf servisleri kullanmaktayız:\n\n• Google Analytics: Web sitesi trafiği ve kullanım analizi\n• E-posta Servisleri: İletişim formu mesajlarının iletilmesi\n• Barındırma Servisleri: Web sitesi ve verilerin güvenli saklanması\n\nBu servisler, kendi gizlilik politikalarına tabidir ve verilerinizi yalnızca hizmet sağlama amacıyla işlerler."
+      },
+      "dataSecurity": {
+        "title": "5. Veri Güvenliği",
+        "content": "Kişisel verilerinizin güvenliği için aşağıdaki önlemleri almaktayız:\n\n• SSL/TLS şifreleme ile güvenli veri aktarımı\n• Düzenli güvenlik güncellemeleri ve yamaları\n• Erişim kontrolleri ve yetkilendirme mekanizmaları\n• Düzenli yedekleme ve veri kurtarma prosedürleri\n• Güvenlik denetimleri ve penetrasyon testleri\n\nTüm veriler, endüstri standartlarına uygun güvenlik önlemleri ile korunmaktadır."
+      },
+      "userRights": {
+        "title": "6. Kullanıcı Hakları",
+        "content": "KVKK ve GDPR kapsamında aşağıdaki haklara sahipsiniz:\n\n• Bilgi Alma Hakkı: Hangi verilerinizin işlendiğini öğrenme\n• Erişim Hakkı: Kişisel verilerinize erişim talep etme\n• Düzeltme Hakkı: Yanlış veya eksik verilerin düzeltilmesini isteme\n• Silme Hakkı: Verilerinizin silinmesini talep etme\n• İtiraz Hakkı: Veri işlemeye itiraz etme\n• Veri Taşınabilirliği: Verilerinizi başka bir servise aktarma\n\nBu haklarınızı kullanmak için appykod@gmail.com adresine e-posta gönderebilirsiniz."
+      }
+    },
+    "contact": {
+      "title": "7. İletişim",
+      "content": "Gizlilik politikamız hakkında sorularınız veya verilerinizle ilgili talepleriniz için bizimle iletişime geçebilirsiniz:"
+    }
   }
 }
