@@ -30,7 +30,10 @@ jobs:
 
       - name: Build project
         run: npm run build
-
+        env:
+          MONGODB_URI: mongodb://localhost:27017/appykod
+          MONGODB_DB_NAME: appykod
+          
       - name: Run SonarQube Scanner
         uses: sonarsource/sonarqube-scan-action@master
         env:
