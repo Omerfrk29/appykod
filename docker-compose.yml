@@ -79,5 +79,5 @@ volumes:
 networks:
   web-network:
     external: true
-    name: birce_birce-network
+    name: web-network
 
